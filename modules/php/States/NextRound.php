@@ -8,14 +8,14 @@ use Bga\GameFramework\StateType;
 use Bga\Games\Quorum\Game;
 use Constants;
 
-class NextPlayer extends \Bga\GameFramework\States\GameState {
+class NextRound extends \Bga\GameFramework\States\GameState {
 
     function __construct(
         protected Game $game,
     ) {
         parent::__construct(
             $game,
-            id: Constants::STATE_ID_NEXT_PLAYER,
+            id: Constants::STATE_ID_NEXT_ROUND,
             type: StateType::GAME,
             updateGameProgression: true,
         );
@@ -27,14 +27,13 @@ class NextPlayer extends \Bga\GameFramework\States\GameState {
      * The onEnteringState method of state `nextPlayer` is called everytime the current game state is set to `nextPlayer`.
      */
     function onEnteringState() {
+        $round = $this->globals->inc("round", 1);
 
-        $activePlayerId = $this->game->activateNextPlayerCustom();
+        foreach ($this->game->getPlayers() as $playerId => $player) {
+            //$this->game->setPlayerGlobal($playerId, Constants::GLBL_DISCOVERY_TAKEN, true);
+        }
 
-        //$this->game->globals->set(Constants::GLBL_REMAINING_OSHAX_MOVES, 2);
-        //$this->game->setPlayerGlobal($activePlayerId, Constants::GLBL_DISCOVERY_TAKEN, false);
-
-        //$this->game->contextMgr->reset();
-
-        return PlayerTurn::class;
+        $this->notify->all('newRound', clienttranslate('&#10148; Round ${round}'), ["round" => $round]);
+        return NextPlayer::class;
     }
 }

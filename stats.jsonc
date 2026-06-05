@@ -1,28 +1,21 @@
-{    
-    // Statistics for the table
-    "table": {},
-    
-    // Statistics for each player
+{
+    "table": {
+      "turns_number": {
+        "id": 10,
+        "name": "Number of turns",
+        "type": "int"
+      }
+    },
     "player": {
-      /* 
-      EXAMPLE:
-
       "turns_number": {
         "id": 10,
         "name": "Number of turns",
         "type": "int"
       },
-      "player_teststat1": {
+      "game_toto": {
         "id": 11,
-        "name": "player test stat 1",
+        "name": "toto",
         "type": "int"
-      },
-      "player_teststat2": {
-        "id": 12,
-        "name": "player test stat 2",
-        "type": "float"
       }
-      */
-
     }
-}
+  }
