@@ -1,0 +1,37 @@
+#board {
+	display: grid;
+	gap: 5px;
+	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 300px)) min(40px, 5%);
+	width: 100%;
+	align-items: center;
+     justify-content: center;
+
+	.province {
+		width: 100%;
+		aspect-ratio: 206/386;
+		background-image: url('img/provinces.png');
+		background-size: 600% 100%;
+
+		&[data-province='1'] {
+			background-position: #{calc(0 * 100% / 5)} 50%;
+		}
+		&[data-province='2'] {
+			background-position: #{calc(1 * 100% / 5)} 50%;
+		}
+		&[data-province='3'] {
+			background-position: #{calc(2 * 100% / 5)} 50%;
+		}
+		&[data-province='4'] {
+			background-position: #{calc(3 * 100% / 5)} 50%;
+		}
+		&[data-province='5'] {
+			background-position: #{calc(4 * 100% / 5)} 50%;
+		}
+		&[data-province='6'] {
+			background-position: #{calc(5 * 100% / 5)} 50%;
+		}
+	}
+	.ghost-province {
+		overflow: hidden;
+	}
+}

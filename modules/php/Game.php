@@ -133,6 +133,9 @@ class Game extends \Bga\GameFramework\Table {
     }
 
     function setupSharedItems() {
+        $allProvinces = Constants::ALL_PROVINCES;
+        $randomizedProvinces = array_values($this->getRandomSlice($allProvinces, count(Constants::ALL_PROVINCES)));
+        $this->globals->set(Constants::GLBL_ORDERED_PROVINCES, $randomizedProvinces);
         // $this->cardManager->createCards($this->getCardsToGenerate());
     }
 
@@ -171,6 +174,8 @@ class Game extends \Bga\GameFramework\Table {
         $result = [];
         $result['expansion'] = $this->expansionManager->getExpansion();
         $result['version'] = $this->getGameVersion();
+        $result['orderedProvinces'] = $this->globals->get(Constants::GLBL_ORDERED_PROVINCES);
+        $this->dump('****************orderedProvinces***', $result['orderedProvinces']);
 
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.

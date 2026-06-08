@@ -54,10 +54,10 @@ interface QuorumGamedatas {
 	// Add here variables you set up in getAllDatas
 	hand: Array<QuorumCard>
 	treasures: TreasureCard[]
-	boardConfig: BoardConfig
 	boardContent: NationTile[]
 	selectableHandCards: NationTile[]
 	legacyCards: LegacyCard[]
+	orderedProvinces: number[]
 }
 
 interface CounterValue {

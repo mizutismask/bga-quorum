@@ -645,6 +645,42 @@
   font-weight: bold;
 }
 
+#board {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 300px)) min(40px, 5%);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+#board .province {
+  width: 100%;
+  aspect-ratio: 206/386;
+  background-image: url("img/provinces.png");
+  background-size: 600% 100%;
+}
+#board .province[data-province="1"] {
+  background-position: 0% 50%;
+}
+#board .province[data-province="2"] {
+  background-position: 20% 50%;
+}
+#board .province[data-province="3"] {
+  background-position: 40% 50%;
+}
+#board .province[data-province="4"] {
+  background-position: 60% 50%;
+}
+#board .province[data-province="5"] {
+  background-position: 80% 50%;
+}
+#board .province[data-province="6"] {
+  background-position: 100% 50%;
+}
+#board .ghost-province {
+  overflow: hidden;
+}
+
 #bga-help_buttons {
   position: fixed;
   bottom: 12px;

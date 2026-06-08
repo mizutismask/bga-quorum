@@ -9,6 +9,7 @@ import { Utils } from './utils'
 import { CardsManager } from './cards/cards'
 import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
+import { Board } from './Board'
 
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
@@ -18,6 +19,8 @@ export class Game extends BaseGame {
 	private handCardsCounters: Counter[] = []
 
 	private displayedTooltip: any //dijit.Tooltip
+
+	private board: Board
 
 	constructor(bga: Bga<QuorumPlayer, QuorumGamedatas>) {
 		super()
@@ -54,6 +57,8 @@ export class Game extends BaseGame {
 		})
 
 		$('overall-content').classList.add(`player-count-${this.getPlayersCount()}`)
+
+		this.board = new Board(this, this.gamedatas.orderedProvinces)
 
 		this.setupTooltips()
 		//this.setupHelpPopin()
