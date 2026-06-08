@@ -44,7 +44,16 @@ export class Board {
 				)
 			} else {
 				const province = new Province(this.game, color)
-				this.provinces[color] = province
+                this.provinces[color] = province
+                if(index === 1) {
+                    $(`province-${color}`).insertAdjacentHTML("beforeend",
+                        `<div class="province-arrow fa fa-chevron-left">`
+                    )
+                }else if(index === provincesWithGhosts.length - 2) {
+                    $(`province-${color}`).insertAdjacentHTML("beforeend",
+                        `<div class="province-arrow province-arrow-right fa fa-chevron-right">`
+                    )
+                }
 			}
 		})
 	}

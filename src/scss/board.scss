@@ -4,14 +4,14 @@
 	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 300px)) min(40px, 5%);
 	width: 100%;
 	align-items: center;
-     justify-content: center;
+	justify-content: center;
 
 	.province {
 		width: 100%;
 		aspect-ratio: 206/386;
 		background-image: url('img/provinces.png');
 		background-size: 600% 100%;
-        filter: drop-shadow(3px 2px 4px black);
+		filter: drop-shadow(3px 2px 4px black);
 
 		&[data-province='1'] {
 			background-position: #{calc(0 * 100% / 5)} 50%;
@@ -34,8 +34,22 @@
 	}
 	.ghost-province {
 		overflow: hidden;
-        .province {
-            filter: none;
-        }
+		.province {
+			filter: none;
+			display: flex;
+			align-items: center;
+			color: #535252;
+		}
+	}
+	.province-arrow {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		color: #535252;
+		left: 0px;
+	}
+	.province-arrow-right {
+		right: 0px;
+		left: unset;
 	}
 }

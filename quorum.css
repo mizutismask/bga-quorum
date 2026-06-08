@@ -683,6 +683,20 @@
 }
 #board .ghost-province .province {
   filter: none;
+  display: flex;
+  align-items: center;
+  color: #535252;
+}
+#board .province-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #535252;
+  left: 0px;
+}
+#board .province-arrow-right {
+  right: 0px;
+  left: unset;
 }
 
 #bga-help_buttons {

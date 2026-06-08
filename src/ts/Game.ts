@@ -84,6 +84,8 @@ export class Game extends BaseGame {
 		this.setTooltipToClass('revealed-tokens-back-counter', _('counter1 tooltip'))
 
 		this.setTooltipToClass('player-turn-order', _('First player'))
+		this.setTooltipToClass('province-arrow', _('Provinces are laid out in circle'))
+		this.setTooltipToClass('ghost-province', _('Provinces are laid out in circle'))
 	}
 
 	private setupPlayer(player: QuorumPlayer) {
