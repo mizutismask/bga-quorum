@@ -658,6 +658,7 @@
   aspect-ratio: 206/386;
   background-image: url("img/provinces.png");
   background-size: 600% 100%;
+  filter: drop-shadow(3px 2px 4px black);
 }
 #board .province[data-province="1"] {
   background-position: 0% 50%;
@@ -679,6 +680,9 @@
 }
 #board .ghost-province {
   overflow: hidden;
+}
+#board .ghost-province .province {
+  filter: none;
 }
 
 #bga-help_buttons {

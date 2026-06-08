@@ -11,6 +11,7 @@
 		aspect-ratio: 206/386;
 		background-image: url('img/provinces.png');
 		background-size: 600% 100%;
+        filter: drop-shadow(3px 2px 4px black);
 
 		&[data-province='1'] {
 			background-position: #{calc(0 * 100% / 5)} 50%;
@@ -33,5 +34,8 @@
 	}
 	.ghost-province {
 		overflow: hidden;
+        .province {
+            filter: none;
+        }
 	}
 }
