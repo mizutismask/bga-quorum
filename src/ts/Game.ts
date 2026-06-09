@@ -2,7 +2,7 @@ import { BgaCards, BgaAnimations, BgaAutofit } from './libs'
 import { BaseGame, log, isDebug, ANIMATION_MS, ACTION_TIMER_DURATION, SCORE_MS } from './base-game'
 import { GameFeatureConfig } from './gamefeatureconfig'
 import { PlayerTable } from './player-table'
-import { CardStock } from '../../bga-cards'
+import { CardStock, LineStock } from '../../bga-cards'
 import { QuorumCard, QuorumGamedatas, QuorumPlayer, NotifMaterialMove, NotifScoreArgs, NotifWinnerArgs } from './types'
 import { ScoreBoard } from './end-score'
 import { Utils } from './utils'
@@ -21,6 +21,7 @@ export class Game extends BaseGame {
 	private displayedTooltip: any //dijit.Tooltip
 
 	private board: Board
+	private river : LineStock<QuorumCard>
 
 	constructor(bga: Bga<QuorumPlayer, QuorumGamedatas>) {
 		super()
@@ -44,6 +45,10 @@ export class Game extends BaseGame {
 		})
 		this.cardsManager = new CardsManager(this)
 
+		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river'), {})
+		this.river.setSelectionMode('single')
+		this.river.addCards(this.gamedatas.river)
+		
 		if (gamedatas.lastTurn) {
 			this.notif_lastTurn()
 		}

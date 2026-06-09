@@ -58,6 +58,7 @@ interface QuorumGamedatas {
 	selectableHandCards: NationTile[]
 	legacyCards: LegacyCard[]
 	orderedProvinces: number[]
+	river: Array<QuorumCard>
 }
 
 interface CounterValue {

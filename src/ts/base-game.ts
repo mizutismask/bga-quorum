@@ -47,7 +47,7 @@ export abstract class BaseGame {
 			<div id="score">
 				<div id="table-wrapper">
 					<table>
-						<thead>
+						<thead> 
 							<tr id="scoretr"></tr>
 						</thead>
 						<tbody id="score-table-body">
@@ -56,6 +56,8 @@ export abstract class BaseGame {
 				</div>
 			</div>
 
+			<div id="river"></div>
+			<div id="board"></div>
 			<div id="player-tables"></div>
 		</div>`
 		)

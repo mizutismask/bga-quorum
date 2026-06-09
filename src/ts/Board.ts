@@ -20,13 +20,6 @@ export class Board {
 			orderedProvinces[0]
 		]
 
-		$('custom-game-area').insertAdjacentHTML(
-			'afterbegin',
-			`
-        <div id="board" class=""></div>
-    `
-		)
-
 		provincesWithGhosts.forEach((color, index) => {
 			if (index === 0) {
 				$('board').insertAdjacentHTML(
