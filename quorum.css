@@ -635,12 +635,18 @@
     transform: scale(0.15);
   }
 }
-.player-table {
+#player-tables {
   display: flex;
-  z-index: 25;
+  gap: 20px;
 }
-
-.player-name {
+#player-tables .player-table .cstm-player-hand {
+  zoom: 0.5;
+}
+#player-tables .player-table.own .cstm-player-hand {
+  zoom: 1;
+  flex-wrap: nowrap;
+}
+#player-tables .player-name {
   color: #1f273b;
   font-weight: bold;
 }
@@ -860,6 +866,7 @@ html {
 #custom-game-area #river {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 

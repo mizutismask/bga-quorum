@@ -27,8 +27,7 @@ interface QuorumPlayer extends Player {
 	tiles: number
 	fairies: number
 	hammers: number
-	legacyCards: LegacyCard[]
-	treasures: TreasureCard[]
+	hand: QuorumCard[]
 }
 
 interface QuorumGamedatas {

@@ -54,7 +54,7 @@ export class Game extends BaseGame {
 		})
 		this.cardsManager = new CardsManager(this)
 
-		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {})
+		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {wrap:'wrap'})
 		this.river.setSelectionMode('single')
 		this.river.addCards(this.gamedatas.river)
 
@@ -111,7 +111,7 @@ export class Game extends BaseGame {
 		this.playerTables[player.id] = new PlayerTable(
 			this,
 			player,
-			parseInt(player.id) === this.getPlayerId() ? this.gamedatas.hand : []
+			parseInt(player.id) === this.getPlayerId() ? this.gamedatas.hand : player.hand
 		)
 	}
 

@@ -197,7 +197,9 @@ class Game extends \Bga\GameFramework\Table {
             $currentPlayerOrder = intval($player['playerNo']);
             $player['playerNo'] = $currentPlayerOrder;
             //$player['discard'] = $this->cardManager->getCardsOfTypeArgFromLocation(TABLE_CARD, $currentPlayerOrder, MATERIAL_LOCATION_DISCARD);
-            //$player['hand'] = $this->cardManager->getCardsOfTypeArgFromLocation(TABLE_CARD, $currentPlayerOrder, MATERIAL_LOCATION_HAND);
+            if($playerId != $currentPlayerId) {
+                $player['hand'] = array_map(fn($card) => QuorumCard::stripSecretInfo($card), $this->cardManager->getPlayerHand($playerId));
+            }
 
             // $player['cardsCount'] = intval($this->actionCards->countCardInLocation("hand", $playerId));
         }

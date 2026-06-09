@@ -16,20 +16,18 @@ export class PlayerTable {
 		const isMyTable = Number(player.id) === game.getPlayerId()
 		const ownClass = isMyTable ? 'own' : ''
 		let html = `
-			<a id="anchor-player-${player.id}"></a>
-            <div id="player-table-${player.id}" class="player-order${player.playerNo} player-table ${ownClass}">
+		<div id="player-table-${player.id}" class="player-order${player.playerNo} player-table ${ownClass}">
+				<a id="anchor-player-${player.id}"></a>
 				<span class="player-name" style="color:#${player.color}">${player.name}</span>
             </div>
         `
 		dojo.place(html, 'player-tables')
 
-		if (isMyTable) {
-			const handHtml = `
+		const handHtml = `
 			<div id="hand-${player.id}" class="cstm-player-hand"></div>
         `
-			dojo.place(handHtml, `player-table-${player.id}`, 'first')
-			this.initHand(player, cards)
-		}
+		dojo.place(handHtml, `player-table-${player.id}`, 'last')
+		this.initHand(player, cards)
 	}
 
 	private initHand(player: QuorumPlayer, cards: QuorumCard[] = []) {
