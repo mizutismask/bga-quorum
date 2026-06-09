@@ -2,7 +2,7 @@ import { BgaCards, BgaAnimations, BgaAutofit } from './libs'
 import { BaseGame, log, isDebug, ANIMATION_MS, ACTION_TIMER_DURATION, SCORE_MS } from './base-game'
 import { GameFeatureConfig } from './gamefeatureconfig'
 import { PlayerTable } from './player-table'
-import { CardStock, LineStock } from '../../bga-cards'
+import { CardStock, Deck, LineStock } from '../../bga-cards'
 import { QuorumCard, QuorumGamedatas, QuorumPlayer, NotifMaterialMove, NotifScoreArgs, NotifWinnerArgs } from './types'
 import { ScoreBoard } from './end-score'
 import { Utils } from './utils'
@@ -10,6 +10,14 @@ import { CardsManager } from './cards/cards'
 import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
 import { Board } from './Board'
+
+export const PROVINCE_NEUTRAL = 0
+export const PROVINCE_ASIA = 1
+export const PROVINCE_GALLIA = 2
+export const PROVINCE_GERMANIA = 3
+export const PROVINCE_AFRICA = 4
+export const PROVINCE_MACEDONIA = 5
+export const PROVINCE_HISPANIA = 6
 
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
@@ -21,7 +29,8 @@ export class Game extends BaseGame {
 	private displayedTooltip: any //dijit.Tooltip
 
 	private board: Board
-	private river : LineStock<QuorumCard>
+	private river: LineStock<QuorumCard>
+	private riverDeck: Deck<QuorumCard>
 
 	constructor(bga: Bga<QuorumPlayer, QuorumGamedatas>) {
 		super()
@@ -45,10 +54,13 @@ export class Game extends BaseGame {
 		})
 		this.cardsManager = new CardsManager(this)
 
-		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river'), {})
+		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {})
 		this.river.setSelectionMode('single')
 		this.river.addCards(this.gamedatas.river)
-		
+
+		this.riverDeck = new BgaCards.Deck<QuorumCard>(this.cardsManager, document.getElementById('river-deck'), {})
+		this.riverDeck.addCard(this.gamedatas.riverTopCard, {})
+
 		if (gamedatas.lastTurn) {
 			this.notif_lastTurn()
 		}
@@ -130,7 +142,7 @@ export class Game extends BaseGame {
             this.revealedTokensBackCounters[playerId] = revealedTokensBackCounter;
 */
 		const ticketsCounter = new ebg.counter()
-		ticketsCounter.create(`tickets-player-counter-${player.id}`, {
+		/*ticketsCounter.create(`tickets-player-counter-${player.id}`, {
 			value: player.tickets,
 			playerCounter: 'tickets',
 			playerId: playerId
@@ -141,7 +153,7 @@ export class Game extends BaseGame {
 		cardsCounter.create(`hand-cards-counter-${player.id}`)
 		cardsCounter.setValue(player.cardsCount)
 		this.handCardsCounters[playerId] = cardsCounter
-
+*/
 		if (this.gameFeatures.showPlayerHelp && this.getPlayerId() === playerId) {
 			//help
 			dojo.place(`<div id="player-help" class="css-icon cstm-help-icon">?</div>`, `additional-icons-${player.id}`)

@@ -854,8 +854,13 @@ html {
   flex-direction: column;
   align-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 20px;
   padding: 5px;
+}
+#custom-game-area #river {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 svg {
@@ -909,7 +914,7 @@ svg {
   border-radius: 3%;
 }
 
-.Quorum-card .card-side {
+.quorum-card .card-side {
   border-radius: 3%;
 }
 

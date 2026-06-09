@@ -16,6 +16,7 @@ interface Card {
 }
 interface QuorumCard extends Card {
 	name: string //translated
+	province: number
 }
 interface NationTile extends Card {}
 interface TreasureCard extends Card {}
@@ -59,6 +60,7 @@ interface QuorumGamedatas {
 	legacyCards: LegacyCard[]
 	orderedProvinces: number[]
 	river: Array<QuorumCard>
+	riverTopCard: QuorumCard
 }
 
 interface CounterValue {

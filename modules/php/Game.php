@@ -24,6 +24,7 @@ namespace Bga\Games\Quorum;
 use Bga\GameFramework\Components\Counters\PlayerCounter;
 use Bga\GameFramework\Components\Deck;
 use Bga\Games\Quorum\ExpansionManager;
+use Bga\Games\Quorum\Objects\QuorumCard;
 use Bga\Games\Quorum\States\NextPlayer;
 use Constants;
 
@@ -190,6 +191,7 @@ class Game extends \Bga\GameFramework\Table {
 
         $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
         $result['river'] = $this->cardManager->getCardsInLocation("river");
+        $result['riverTopCard'] = QuorumCard::stripSecretInfo($this->cardManager->getTopOfLocation("deck"));
 
         foreach ($result['players'] as $playerId => &$player) {
             $currentPlayerOrder = intval($player['playerNo']);

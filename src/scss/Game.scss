@@ -43,8 +43,14 @@ html {
 	flex-direction: column;
 	align-content: center;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 20px;
 	padding: 5px;
+	
+	#river {
+		display: flex;
+		justify-content: center;
+		gap: 20px;
+	}
 }
 
 @mixin selected-element {
@@ -103,7 +109,7 @@ svg {
 	@include card-border;
 }
 
-.Quorum-card {
+.quorum-card {
 	.card-side {
 		@include card-border;
 	}

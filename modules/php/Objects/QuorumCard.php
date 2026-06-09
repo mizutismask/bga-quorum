@@ -23,7 +23,23 @@ class QuorumCard extends QuorumCardInfo {
         $this->location_arg = intval($dbCard['location_arg']);
         $this->type = intval($dbCard['type']);
         $this->type_arg = intval($dbCard['type_arg']);
-        //$cardInfo = $cardsDescription[$this->type][$this->type_arg];
+
+
+        $cardInfo = $cardsDescription["material"][$this->type][$this->type_arg];
         //$this->isGod = $this->type > 72;
+
+        $this->power = $cardInfo->power;
+        $this->province = $cardInfo->province;
+        /*$this->$scoringType = $cardInfo->scoringType;
+        $this->$influence = $cardInfo->influence;
+        $this->$tradeRessources = $cardInfo->tradeRessources;*/
+    }
+
+    public static function stripSecretInfo(QuorumCard $card): QuorumCard {
+        $copy = clone $card;
+        $copy->type = 0;
+        $copy->type_arg = 0;
+        unset($copy->power);
+        return $copy;
     }
 }

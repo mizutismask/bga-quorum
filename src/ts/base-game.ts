@@ -56,7 +56,10 @@ export abstract class BaseGame {
 				</div>
 			</div>
 
-			<div id="river"></div>
+			<div id="river">
+				<div id="river-deck"></div>
+				<div id="river-content"></div>
+			</div>
 			<div id="board"></div>
 			<div id="player-tables"></div>
 		</div>`
@@ -430,17 +433,4 @@ export abstract class BaseGame {
 		return buttonLabel.replace(regex, '')
 	}
 
-	/*
-	 * Detect if spectator or replay
-	 */
-	public isReadOnly() {
-		return !this.isNotSpectator || typeof this.gameui.g_replayFrom != 'undefined' || this.gameui.g_archive_mode
-	}
-
-	/**
-	 * @returns true for instant replay (during game) or archive mode (after game end)
-	 */
-	public isAnyTypeOfReplay() {
-		return typeof this.gameui.g_replayFrom != 'undefined' || this.gameui.g_archive_mode
-	}
 }
