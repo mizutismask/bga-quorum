@@ -14,7 +14,7 @@ export class Province {
 		province: number
 	) {
 		let html = `
-            <div id="province-${province}" class="province" data-province="${province}"></div>
+            <div id="province-${province}" class="province" data-province="${province}"><div id="province-${province}-token-slot" class="province-token-slot"></div></div>
         `
 		$('board').insertAdjacentHTML('beforeend', html)
 		this.element = $('province-' + province)

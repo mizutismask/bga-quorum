@@ -1,7 +1,7 @@
 #board {
 	display: grid;
 	gap: 5px;
-	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 300px)) min(40px, 5%);
+	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 250px)) min(40px, 5%);
 	width: 100%;
 	align-items: center;
 	justify-content: center;
@@ -30,6 +30,17 @@
 		}
 		&[data-province='6'] {
 			background-position: #{calc(5 * 100% / 5)} 50%;
+		}
+
+		.province-token-slot{
+			width: 20%;
+			aspect-ratio: 1;
+			position: absolute;
+			bottom:-1%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 50%;
+			border: 1px solid #535252;
 		}
 
 		.province-slots {
