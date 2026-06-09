@@ -3,12 +3,10 @@ import { QuorumCard, QuorumGame } from '../types'
 import { CardsManagerBase } from './cardsManagerBase'
 
 // <reference path="../card-manager.ts"/>
-export const IMAGE_ITEMS_PER_ROW = 10
+export const IMAGE_ITEMS_PER_ROW = 9
 
 const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement) => {
 	game.cardsManager.setFrontBackground(div as HTMLDivElement, card.type_arg)
-	const tokensId = `${game.cardsManager.getId(card)}-tokens`
-	const textId = `${game.cardsManager.getId(card)}-text`
 
 	//add help
 	const helpId = `${game.cardsManager.getId(card)}-front-info`
@@ -22,40 +20,25 @@ const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement)
 		//game.addTooltipHtml(div.id, tooltipContent)
 		game.addTooltipOnClickHelpButton(info.id, tooltipContent)
 	}
-
-	//adds tokens locations
-	if (!$(tokensId)) {
-		const container: HTMLDivElement = document.createElement('div')
-		container.id = tokensId
-		container.classList.add('tokens-location-wrapper')
-		div.appendChild(container)
-	}
-
-	if (!$(textId)) {
-		const container: HTMLDivElement = document.createElement('div')
-		container.id = tokensId
-		container.classList.add('bga-autofit', 'card-text-wrapper')
-		div.appendChild(container)
-	}
 }
 
+const multiplier = .75
 export class CardsManager extends CardsManagerBase<QuorumCard> {
 	constructor(public game: QuorumGame) {
 		super({
 			animationManager: game.animationManager,
-			type: 'card',
-			getId: (card) => `Quorum-card-${card.id}`,
+			type: 'quorum-card',
 			setupFrontDiv: setupFrontDiv(game),
 			setupDiv: (card: QuorumCard, div: HTMLElement) => {
-				div.classList.add('Quorum-card')
+				div.classList.add('quorum-card')
 				div.dataset.cardId = '' + card.id
 				div.dataset.cardType = '' + card.type
 			},
 			setupBackDiv: (card: QuorumCard, div: HTMLElement) => {
-				div.style.backgroundImage = `url('${g_gamethemeurl}img/Quorum-card-background.jpg')`
+				div.style.backgroundImage = `url('${g_gamethemeurl}img/card-backgrounds.jpg')`
 			},
-			cardHeight: undefined as unknown as number,
-			cardWidth: undefined as unknown as number
+			cardWidth: 248 * multiplier,
+			cardHeight: 347 * multiplier,
 		})
 	}
 
@@ -72,7 +55,7 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 	}
 
 	public setFrontBackground(cardDiv: HTMLDivElement, cardType: number) {
-		const imageUrl = `${g_gamethemeurl}img/Quorum-card-background.jpg`
+		const imageUrl = `${g_gamethemeurl}img/cards.jpg`
 		cardDiv.style.backgroundImage = `url('${imageUrl}')`
 		const imagePosition = cardType - 1
 		const row = Math.floor(imagePosition / IMAGE_ITEMS_PER_ROW)

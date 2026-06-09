@@ -188,7 +188,7 @@ class Game extends \Bga\GameFramework\Table {
         //counters
         $this->ticketsCounter->fillResult($result);
 
-        //$result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
+        $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
 
         foreach ($result['players'] as $playerId => &$player) {
             $currentPlayerOrder = intval($player['playerNo']);
