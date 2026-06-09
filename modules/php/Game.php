@@ -102,7 +102,6 @@ class Game extends \Bga\GameFramework\Table {
             )
         );
 
-        $this->reattributeColorsBasedOnPreferences($players, $gameinfos['player_colors']);
         $this->reloadPlayersBasicInfos();
 
         /************ Start the game initialization *****/
