@@ -49,23 +49,29 @@ class ExpansionManager {
         return $grid;*/
     }
 
-    function getNationTilesToGenerate() {
+    function getNormalCardsToGenerate() {
         $cards = [];
         switch ($this->getExpansion()) {
             default:
-                /* $cards = array(
-                    array('type' => Constants::NATION_ELF, 'type_arg' => 0, 'nbr' => 14),
-                    array('type' => Constants::NATION_DRAGON, 'type_arg' => 0, 'nbr' => 9),
-                    array('type' => Constants::NATION_DWARF, 'type_arg' => 0, 'nbr' => 10),
-                    array('type' => Constants::NATION_FAIRY, 'type_arg' => 0, 'nbr' => 7),
-                    array('type' => Constants::NATION_GHOST, 'type_arg' => 0, 'nbr' => 8),
-                    array('type' => Constants::NATION_GOBLIN, 'type_arg' => 0, 'nbr' => 13),
-                    array('type' => Constants::NATION_SORCERER, 'type_arg' => 0, 'nbr' => 8),
-                    array('type' => Constants::NATION_MERMAID, 'type_arg' => 0, 'nbr' => 11),
-                );*/
+                $cardsInfo = Material::getCards()[1];
+                foreach ($cardsInfo as $i => $info) {
+                    $cards[] = array('type' => 1, 'type_arg' => $i, 'nbr' => 1);
+                }
                 break;
         }
+        return $cards;
+    }
 
+    function getGodCardsToGenerate() {
+        $cards = [];
+        switch ($this->getExpansion()) {
+            default:
+                $cardsInfo = Material::getCards()[2];
+                foreach ($cardsInfo as $i => $info) {
+                    $cards[] = array('type' => 2, 'type_arg' => $i, 'nbr' => 1);
+                }
+                break;
+        }
         return $cards;
     }
 

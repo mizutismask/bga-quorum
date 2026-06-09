@@ -8,3 +8,6 @@ Typically, this directory should contain less than 10 files (beside
 box graphics and publisher images), with no file larger than 4 Mb.
 
 See: http://en.doc.boardgamearena.com/Game_art:_img_directory for more details.
+
+mogrify -path ./cropped -crop 248x347+30+55 +repage -quality 100 *.jpg
+montage `ls -v .` -tile 9 -geometry +0+0 cards.jpg

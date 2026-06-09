@@ -4,20 +4,16 @@ namespace Bga\Games\Quorum;
 
 use Bga\Games\Quorum\DeckManager;
 
-const TABLE_CARD = "action_card";
+const TABLE_CARD = "card";
 
 class CardManager extends DeckManager {
 
     public function dealHands($notify = false) {
-        $qty = 3;
+        $qty = 4;
         $players = $this->game->loadPlayersBasicInfos();
         foreach ($players as $playerId => $player) {
-            $this->addCardsToHand($qty, $playerId, $player["player_no"], $notify);
+            $this->addCardsToHand($qty, $playerId, $notify);
         }
-    }
-
-    public function pickInitialActionCards() {
-        $this->initRiver(4);
     }
 
     public function moveActionCardToPlayerHand($cardId, $playerId, bool $faceDown = false) {

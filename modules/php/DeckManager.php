@@ -18,7 +18,7 @@ class DeckManager {
     public function __construct(Game $game, string $tableName, Deck $deck, string $cast, string $materialType, array $castParameters = []) {
         $this->game = $game;
         $this->deck = $deck;
-        $this->cast = __NAMESPACE__ . '\\' . $cast; //fully qualified name because of namespaces
+        $this->cast = __NAMESPACE__ . '\\Objects\\' . $cast; //fully qualified name because of namespaces
         $this->castParameters = $castParameters;
         $this->materialType = $materialType;
         $this->tableName = $tableName;
@@ -164,9 +164,8 @@ class DeckManager {
         }
     }
 
-    public function addCardsToHand(int $qty, $playerId, int $playerPosition, $notify = false) {
-        $cards = array_slice($this->getCardsOfTypeArgFromLocationOrderBy($this->tableName, $playerPosition, 'deck', "card_location_arg", true), 0, $qty);
-        $this->deck->moveCards(array_map(fn($c) => $c->id, $cards), "hand", $playerId);
+    public function addCardsToHand(int $qty, int $playerId, $notify = false) {
+        $cards = $this->deck->pickCardsForLocation($qty, "deck", "hand", $playerId);
         if ($notify) {
             $this->game->notify->player($playerId, "materialMove",  "", [
                 'playerId' => $playerId,

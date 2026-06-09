@@ -36,9 +36,8 @@ class Game extends \Bga\GameFramework\Table {
     use GameUtilTrait;
     use DebugUtilTrait;
 
-    private Deck $destinations;
+    private Deck $cards;
     private CardManager $cardManager;
-    public $GRID_CARDS;
     public PlayerCounter $ticketsCounter;
     private ContextManager $contextManager;
     public ExpansionManager $expansionManager;
@@ -62,10 +61,10 @@ class Game extends \Bga\GameFramework\Table {
 
         $this->ticketsCounter = $this->counterFactory->createPlayerCounter("tickets");
 
-        $this->destinations = $this->deckFactory->createDeck("destination");
-        $this->destinations->autoreshuffle = true;
+        $this->cards = $this->deckFactory->createDeck("card");
+        $this->cards->autoreshuffle = true;
         $this->expansionManager = new ExpansionManager($this);
-        $this->cardManager = new CardManager($this, TABLE_CARD, $this->destinations, "Destination", Constants::MATERIAL_TYPE_CARD, ["material" => $this->GRID_CARDS, "deck" => $this->refreshGlobalValue(101)]);
+        $this->cardManager = new CardManager($this, TABLE_CARD, $this->cards, "QuorumCard", Constants::MATERIAL_TYPE_CARD, ["material" => Material::getCards()]);
         $this->contextManager = new ContextManager($this);
     }
 
@@ -126,7 +125,9 @@ class Game extends \Bga\GameFramework\Table {
 
     function setupTable(array $players) {
         $this->setupSharedItems();
-        //$this->cardManager->dealHands();
+        $this->cardManager->dealHands();
+        $this->cardManager->initRiver(5);
+        $this->cardManager->createCards($this->expansionManager->getGodCardsToGenerate());
         foreach ($players as $playerId => $player) {
         }
     }
@@ -135,7 +136,8 @@ class Game extends \Bga\GameFramework\Table {
         $allProvinces = Constants::ALL_PROVINCES;
         $randomizedProvinces = array_values($this->getRandomSlice($allProvinces, count(Constants::ALL_PROVINCES)));
         $this->globals->set(Constants::GLBL_ORDERED_PROVINCES, $randomizedProvinces);
-        // $this->cardManager->createCards($this->getCardsToGenerate());
+        
+        $this->cardManager->createCards($this->expansionManager->getNormalCardsToGenerate());
     }
 
     function hasReachedEndOfGameRequirements(): bool {

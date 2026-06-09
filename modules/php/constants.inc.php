@@ -57,4 +57,17 @@ class Constants {
     ];
 
     const GLBL_ORDERED_PROVINCES = 'ORDERED_PROVINCES';
+
+    const CARD_TYPE_MILITARY = 1;
+    const CARD_TYPE_INTRIGUE = 2;
+    const CARD_TYPE_ARCHITECTURE = 3;
+    const CARD_TYPE_TRADE = 4;
+    const CARD_TYPE_GOD = 5;
+
+    const TRADE_FISH=1;
+    const TRADE_WOOD=2;
+    const TRADE_SHEEP=3;
+    const TRADE_WINE=4;
+    const TRADE_WHEAT=5;
+    const TRADE_TOOL=6;
 }
