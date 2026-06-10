@@ -1,18 +1,38 @@
 #player-tables {
 	display: flex;
+    flex-wrap: wrap;
 	gap: 20px;
+    justify-content: center;
+    //align-items: center;
 	.player-table {
 		//display: flex;
 
 		.cstm-player-hand {
-            zoom: 0.5;
+			zoom: 0.5;
 		}
-        &.own {
-            .cstm-player-hand {
-                zoom: 1;
-                flex-wrap:nowrap;
-            }
-        }
+		&.own {
+			.cstm-player-hand {
+				zoom: 1;
+				flex-wrap: nowrap;
+			}
+
+			.played-cards {
+                zoom: 0.65;
+				.slot {
+					&::before {
+						content: attr(data-slot-number);
+						font-size: 66pt;
+						color: #9e9fa3;
+					}
+				}
+			}
+		}
+
+		.played-cards {
+            max-width: 1022px;
+			zoom: 0.45;
+            margin-top: 20px;
+		}
 	}
 
 	.player-name {

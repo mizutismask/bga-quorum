@@ -6,6 +6,7 @@ import { CardStock, Deck, LineStock } from '../../bga-cards'
 import { QuorumCard, QuorumGamedatas, QuorumPlayer, NotifMaterialMove, NotifScoreArgs, NotifWinnerArgs } from './types'
 import { ScoreBoard } from './end-score'
 import { Utils } from './utils'
+import { StockUtils } from './stock-utils'
 import { CardsManager } from './cards/cards'
 import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
@@ -55,7 +56,7 @@ export class Game extends BaseGame {
 		this.cardsManager = new CardsManager(this)
 
 		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {wrap:'wrap'})
-		this.river.setSelectionMode('single')
+		//this.river.setSelectionMode('single')
 		this.river.addCards(this.gamedatas.river)
 
 		this.riverDeck = new BgaCards.Deck<QuorumCard>(this.cardsManager, document.getElementById('river-deck'), {})

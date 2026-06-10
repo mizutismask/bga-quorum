@@ -637,7 +637,9 @@
 }
 #player-tables {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 #player-tables .player-table .cstm-player-hand {
   zoom: 0.5;
@@ -645,6 +647,19 @@
 #player-tables .player-table.own .cstm-player-hand {
   zoom: 1;
   flex-wrap: nowrap;
+}
+#player-tables .player-table.own .played-cards {
+  zoom: 0.65;
+}
+#player-tables .player-table.own .played-cards .slot::before {
+  content: attr(data-slot-number);
+  font-size: 66pt;
+  color: #9e9fa3;
+}
+#player-tables .player-table .played-cards {
+  max-width: 1022px;
+  zoom: 0.45;
+  margin-top: 20px;
 }
 #player-tables .player-name {
   color: #1f273b;

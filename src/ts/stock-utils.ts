@@ -4,7 +4,7 @@ import { IMAGE_ITEMS_PER_ROW } from './cards/cards'
 const CARD_WIDTH = 246 //also change in scss
 const CARD_HEIGHT = 344
 
-function getBackgroundInlineStyleForQuorumCard(destination: QuorumCard) {
+export function getBackgroundInlineStyleForQuorumCard(destination: QuorumCard) {
 	let file
 	switch (destination.type) {
 		case 1:
@@ -21,7 +21,7 @@ function getBackgroundInlineStyleForQuorumCard(destination: QuorumCard) {
 	}%;`
 }
 
-function generateSlotsIds(prefix: string, limit: number) {
+export function generateSlotsIds(prefix: string, limit: number) {
 	const ids = []
 	for (let index = 0; index < limit; index++) {
 		ids.push(prefix + (index + 1))
