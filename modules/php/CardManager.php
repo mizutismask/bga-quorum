@@ -3,6 +3,7 @@
 namespace Bga\Games\Quorum;
 
 use Bga\Games\Quorum\DeckManager;
+use Constants;
 
 const TABLE_CARD = "card";
 
@@ -22,5 +23,16 @@ class CardManager extends DeckManager {
 
     public function riverContainsEnoughGods(): bool {
         return $this->countCardsOfTypeFromLocation(TABLE_CARD, 2, "river") >= 3;
+    }
+
+    public function refillRiver() {
+        $newCard = $this->castSingle($this->deck->pickCardForLocation('deck', 'river'));
+
+        $this->game->notify->all('materialMove', "", [
+            'type' => Constants::MATERIAL_TYPE_CARD,
+            'from' => Constants::MATERIAL_LOCATION_DECK,
+            'to' => Constants::MATERIAL_LOCATION_RIVER,
+            'material' => [$newCard],
+        ]);
     }
 }

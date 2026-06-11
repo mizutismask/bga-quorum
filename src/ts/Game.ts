@@ -471,9 +471,11 @@ export class Game extends BaseGame {
 					}
 				})
 				break
-
+			case 'RIVER':
+				this.riverDeck.addCard(card, { finalSide: 'back' }).then(() => this.river.addCard(card, {bump: 1}))
+				break
 			default:
-				console.error('Festival move destination not handled', notif)
+				console.error('Card move destination not handled', notif)
 				break
 		}
 	}

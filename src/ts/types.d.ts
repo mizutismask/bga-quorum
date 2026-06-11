@@ -167,7 +167,7 @@ interface NotifImportantMessageArgs {
 	args: Array<any>
 }
 
-type MoveLocation = 'HAND' | 'DECK' | 'STOCK' | 'TABLE' | 'DISCARD' | 'square' | 'BOARD'
+type MoveLocation = 'HAND' | 'DECK' | 'STOCK' | 'TABLE' | 'DISCARD' | 'RIVER' | 'BOARD'
 
 interface NotifMaterialMove {
 	type: MaterialType

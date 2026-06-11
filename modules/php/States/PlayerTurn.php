@@ -43,6 +43,7 @@ class PlayerTurn extends GameState {
 
     #[PossibleAction]
     public function actTakeCard(int $cardId, int $activePlayerId, array $args) {
+        $nextState = PlayerTurn::class;
         // check input values
         $validMoves = array_map(fn($card) => $card->id, $args['selectableRiverCards']);
         if (!in_array($cardId, $validMoves)) {
@@ -54,11 +55,12 @@ class PlayerTurn extends GameState {
             //reveal the card and move it to player hand
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, false, clienttranslate('${player_name} takes a god card'));
             //go to province choice
-            //return GodEffect::class;
+            //$nextState= GodEffect::class;
         } else {
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, true, "");
-            return PlayerTurn::class;
         }
+        $this->game->cardManager->refillRiver();
+        return $nextState;
     }
 
     /**
