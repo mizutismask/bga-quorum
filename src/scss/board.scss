@@ -1,3 +1,5 @@
+@use 'GameVars' as vars;
+
 #board {
 	display: grid;
 	gap: 5px;
@@ -44,73 +46,122 @@
 		}
 
 		.province-slots {
+			.province-slot {
+				width: 15.6%;
+				aspect-ratio: 1;
+				position: absolute;
+				//border: 1px solid #535252;
+				border-radius: 50%;
+
+				&.left-column {
+					left: 9.5%;
+				}
+				&.right-column {
+					right: 7.4%;
+				}
+
+				&.slot-1,
+				&.slot-15 {
+					top: 81.7%;
+				}
+				&.slot-2,
+				&.slot-14 {
+					top: 70%;
+				}
+				&.slot-3,
+				&.slot-13 {
+					top: 59%;
+				}
+				&.slot-4,
+				&.slot-12 {
+					top: 47.4%;
+				}
+				&.slot-5,
+				&.slot-11 {
+					top: 36%;
+				}
+				&.slot-6,
+				&.slot-10 {
+					top: 25%;
+				}
+				&.slot-7,
+				&.slot-9 {
+					top: 13.3%;
+				}
+				&.slot-7 {
+					left: 21.8%;
+				}
+				&.slot-9 {
+					right: 18.5%;
+				}
+				&.slot-8 {
+					left: 43.6%;
+					top: 7%;
+				}
+
+				&[data-child-count='2'] {
+					.token:nth-child(1) {
+						transform: translateX(0%);
+					}
+
+					.token:nth-child(2) {
+						transform: translateX(-45%);
+					}
+				}
+
+				&[data-child-count='3'] {
+					.token:nth-child(1) {
+						transform: translateX(0%);
+					}
+
+					.token:nth-child(2) {
+						transform: translateX(-35%);
+					}
+
+					.token:nth-child(3) {
+						transform: translateX(-70%);
+					}
+				}
+
+				&[data-child-count='4'] {
+					.token:nth-child(1) {
+						transform: translateX(0%);
+					}
+
+					.token:nth-child(2) {
+						transform: translateX(-25%);
+					}
+
+					.token:nth-child(3) {
+						transform: translateX(-50%);
+					}
+
+					.token:nth-child(4) {
+						transform: translateX(-75%);
+					}
+				}
+			}
 			.token {
-				background-image: url('img/tokens.png');
-				background-size: 1000% 100%;
-				background-position: #{calc(0 * 100% / 10)} 50%;
+				//background-image: url('img/tokens.png');
+				//background-size: 1000% 100%;
+				//background-position: #{calc(0 * 100% / 10)} 50%;
 				width: 100%;
 				aspect-ratio: 1;
 				position: absolute;
 				bottom: 0;
 				left: 50%;
 				transform: translateX(-50%);
+				border-radius: 50%;
+				border: 1px solid #535252;
+				filter: drop-shadow(3px 2px 4px black);
 
-				.token-4 {
+				z-index: 1;
+
+				@each $name, $color in vars.$player-colors {
+					&[data-color='#{$color}'] {
+						background-color: ##{$color};
+					}
 				}
-			}
-		}
-
-		.province-slot {
-			width: 15.6%;
-			aspect-ratio: 1;
-			position: absolute;
-			//border: 1px solid #535252;
-			border-radius: 50%;
-
-			&.left-column {
-				left: 9.5%;
-			}
-			&.right-column {
-				right: 7.4%;
-			}
-
-			&.slot-1,
-			&.slot-15 {
-				top: 81.7%;
-			}
-			&.slot-2,
-			&.slot-14 {
-				top: 70%;
-			}
-			&.slot-3,
-			&.slot-13 {
-				top: 59%;
-			}
-			&.slot-4,
-			&.slot-12 {
-				top: 47.4%;
-			}
-			&.slot-5,
-			&.slot-11 {
-				top: 36%;
-			}
-			&.slot-6,
-			&.slot-10 {
-				top: 25%;
-			}
-			&.slot-7,
-			&.slot-9 {
-				top: 13.3%;
-			}
-			&.slot-7 {
-				left: 21.8%;
-			}
-			&.slot-9 {
-				right: 18.5%;
-			}
-			&.slot-8 {
-				left: 43.6%;
-				top: 7%;
 			}
 		}
 	}

@@ -180,7 +180,7 @@ class Game extends \Bga\GameFramework\Table {
         $result = [];
         $result['expansion'] = $this->expansionManager->getExpansion();
         $result['version'] = $this->getGameVersion();
-        $result['tokens'] = $this->tokenManager->getAll();
+        $result['tokens'] = $this->tokenManager->getAll("card_location, card_location_arg");
         $result['orderedProvinces'] = $this->globals->get(Constants::GLBL_ORDERED_PROVINCES);
         $this->dump('****************orderedProvinces***', $result['orderedProvinces']);
 

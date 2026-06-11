@@ -9,10 +9,11 @@ use Constants;
 const TABLE_TOKEN = "token";
 
 class TokenManager extends DeckManager {
-    public function getAll() {
+    public function getAll(string $orderBy) {
         $query = new QueryBuilder($this->game, TABLE_TOKEN);
         $res = $query
             ->select($this->game->getTypicalTableFields())
+            ->orderBy($orderBy)
             ->get();
         return $this->cast($res);
     }

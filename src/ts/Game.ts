@@ -133,9 +133,13 @@ export class Game extends BaseGame {
 			const tokenDiv = document.createElement('div')
 			tokenDiv.id = `token-${t.type}-${t.type_arg}`
 			tokenDiv.classList.add('token', 'token-' + t.type)
+			tokenDiv.dataset.color =
+				'' + Object.values(this.gamedatas.players).find((p) => Number(p.id) == t.type_arg).color
 
 			log(`#province-${t.type} .slot-${t.location}`)
-			document.querySelector(`#province-${t.type} .slot-${t.location}`).appendChild(tokenDiv)
+			const dest = document.querySelector<HTMLElement>(`#province-${t.type} .slot-${t.location}`)
+			dest.appendChild(tokenDiv)
+			dest.dataset.childCount = dest.children.length.toString()
 		})
 	}
 
@@ -506,8 +510,10 @@ export class Game extends BaseGame {
 			case 'BOARD':
 				cards.forEach((c) => {
 					const elmt = document.getElementById(`token-${c.type}-${c.type_arg}`)
-					const dest = document.querySelector(`#province-${c.type} .slot-${c.location}`)
+					elmt.parentElement.dataset.childCount = (elmt.children.length - 1).toString()
+					const dest = document.querySelector<HTMLElement>(`#province-${c.type} .slot-${c.location}`)
 					this.animationManager.slideAndAttach(elmt, dest, { duration: ANIMATION_MS })
+					dest.dataset.childCount = dest.children.length.toString()
 				})
 				break
 			default:
