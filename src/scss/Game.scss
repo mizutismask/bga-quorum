@@ -38,6 +38,15 @@ html {
 	display: none !important;
 }
 
+#buttonResetRiver{
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
 #custom-game-area {
 	display: flex;
 	flex-direction: column;

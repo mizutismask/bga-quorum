@@ -1,4 +1,4 @@
-import { Game} from '../Game'
+import { Game } from '../Game'
 import { log } from '../base-game'
 import { QuorumGamedatas, QuorumPlayer, PlayerTurnArgs } from '../types'
 import { Utils } from '../utils'
@@ -23,7 +23,6 @@ export class PlayerTurn {
 		)
 
 		if (isCurrentPlayerActive) {
-			
 			log('selectableHandCards', args.selectableHandCards)
 			//this.game.playerTables[this.game.getPlayerId()].setHandSelectionMode('single', args.selectableHandCards)
 			if (args.canUseFairy) {
@@ -39,10 +38,16 @@ export class PlayerTurn {
 				id: 'buttonPass',
 				color: 'primary'
 			})
-			
+
 			this.bga.statusBar.addActionButton(_('Undo'), () => this.game.takeAction('actUndo', { qty: -1 }), {
 				id: 'buttonUndo',
 				color: 'alert'
+			})
+
+			log('riverdeck', $('river-deck'))
+			this.bga.statusBar.addActionButton(_('Redraw'), () => this.game.takeAction('actResetRiver', {}), {
+				id: 'buttonResetRiver',
+				destination: $('river-deck')
 			})
 
 			//this.game.board.grid.onSlotClick = (slotId: number | string) => this.game.onSquareClick(slotId)

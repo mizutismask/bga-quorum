@@ -641,6 +641,9 @@
   gap: 20px;
   justify-content: center;
 }
+#player-tables .player-table {
+  display: flex;
+}
 #player-tables .player-table .cstm-player-hand {
   zoom: 0.5;
 }
@@ -708,6 +711,17 @@
   transform: translateX(-50%);
   border-radius: 50%;
   border: 1px solid #535252;
+}
+#board .province .province-slots .token {
+  background-image: url("img/tokens.png");
+  background-size: 1000% 100%;
+  background-position: 0% 50%;
+  width: 100%;
+  aspect-ratio: 1;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 #board .province .province-slot {
   width: 15.6%;
@@ -878,6 +892,15 @@ html {
 
 .hidden {
   display: none !important;
+}
+
+#buttonResetRiver {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 #custom-game-area {

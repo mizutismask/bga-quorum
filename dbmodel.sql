@@ -42,6 +42,15 @@ CREATE TABLE IF NOT EXISTS `card` (
     PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `token` (
+    `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Technical unique id',
+    `card_type` varchar(16) NOT NULL COMMENT 'Card type',
+    `card_type_arg` int(11) NOT NULL COMMENT 'Sub type',   
+    `card_location` varchar(20) NOT NULL COMMENT 'Card location',
+    `card_location_arg` int(11) NOT NULL COMMENT 'Hand player or deck order',
+    PRIMARY KEY (`card_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 --Action log to resolve things in correct order
 CREATE TABLE IF NOT EXISTS `context_log` (
  `id` int NOT NULL AUTO_INCREMENT,

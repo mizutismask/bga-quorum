@@ -37,8 +37,9 @@ class Game extends \Bga\GameFramework\Table {
     use GameUtilTrait;
     use DebugUtilTrait;
 
-    private Deck $cards;
+    private Deck $cards, $tokens;
     private CardManager $cardManager;
+    private TokenManager $tokenManager;
     public PlayerCounter $ticketsCounter;
     private ContextManager $contextManager;
     public ExpansionManager $expansionManager;
@@ -64,8 +65,10 @@ class Game extends \Bga\GameFramework\Table {
 
         $this->cards = $this->deckFactory->createDeck("card");
         $this->cards->autoreshuffle = true;
+        $this->tokens = $this->deckFactory->createDeck("token");
         $this->expansionManager = new ExpansionManager($this);
         $this->cardManager = new CardManager($this, TABLE_CARD, $this->cards, "QuorumCard", Constants::MATERIAL_TYPE_CARD, ["material" => Material::getCards()]);
+        $this->tokenManager = new TokenManager($this, TABLE_TOKEN, $this->tokens, "Token", Constants::MATERIAL_TYPE_TOKEN, []);
         $this->contextManager = new ContextManager($this);
     }
 
@@ -129,6 +132,7 @@ class Game extends \Bga\GameFramework\Table {
         $this->cardManager->dealHands();
         $this->cardManager->initRiver(5);
         $this->cardManager->createCards($this->expansionManager->getGodCardsToGenerate());
+        $this->tokenManager->createCards($this->expansionManager->getTokensToGenerate(), false, "1");
         foreach ($players as $playerId => $player) {
         }
     }
@@ -176,6 +180,7 @@ class Game extends \Bga\GameFramework\Table {
         $result = [];
         $result['expansion'] = $this->expansionManager->getExpansion();
         $result['version'] = $this->getGameVersion();
+        $result['tokens'] = $this->tokenManager->getAll();
         $result['orderedProvinces'] = $this->globals->get(Constants::GLBL_ORDERED_PROVINCES);
         $this->dump('****************orderedProvinces***', $result['orderedProvinces']);
 

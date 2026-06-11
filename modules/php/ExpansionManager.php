@@ -75,16 +75,17 @@ class ExpansionManager {
         return $cards;
     }
 
-    function getTreasureTilesToGenerate() {
+    function getTokensToGenerate() {
         $cards = [];
         switch ($this->getExpansion()) {
             default:
-                $cards = array(
-                    array('type' => 0, 'type_arg' => 0, 'nbr' => 20),
-                );
+                foreach ($this->game->getPlayers() as $playerId => $player) {
+                    foreach (Constants::ALL_PROVINCES as $province) {
+                        $cards[] = array('type' => $province, 'type_arg' => $playerId, 'nbr' => 1);
+                    }
+                }
                 break;
         }
-
         return $cards;
     }
 

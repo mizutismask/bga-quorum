@@ -55,7 +55,9 @@ export class Game extends BaseGame {
 		})
 		this.cardsManager = new CardsManager(this)
 
-		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {wrap:'wrap'})
+		this.river = new BgaCards.LineStock<QuorumCard>(this.cardsManager, document.getElementById('river-content'), {
+			wrap: 'wrap'
+		})
 		//this.river.setSelectionMode('single')
 		this.river.addCards(this.gamedatas.river)
 
@@ -77,6 +79,7 @@ export class Game extends BaseGame {
 		$('overall-content').classList.add(`player-count-${this.getPlayersCount()}`)
 
 		this.board = new Board(this, this.gamedatas.orderedProvinces)
+		this.createTokens()
 
 		this.setupTooltips()
 		//this.setupHelpPopin()
@@ -112,8 +115,20 @@ export class Game extends BaseGame {
 		this.playerTables[player.id] = new PlayerTable(
 			this,
 			player,
-			parseInt(player.id) === this.getPlayerId() ? this.gamedatas.hand : player.hand
+			parseInt(player.id) === this.getPlayerId() ? this.gamedatas.hand : player.hand,
+			undefined
 		)
+	}
+
+	private createTokens() {
+		this.gamedatas.tokens.forEach((t) => {
+			const tokenDiv = document.createElement('div')
+			tokenDiv.id = `token-${t.type}-${t.type_arg}`
+			tokenDiv.classList.add('token', 'token-' + t.type)
+
+			log(`#province-${t.type} .slot-${t.location}`)
+			document.querySelector(`#province-${t.type} .slot-${t.location}`).appendChild(tokenDiv)
+		})
 	}
 
 	private setupMiniPlayerBoard(player: QuorumPlayer) {
