@@ -34,6 +34,10 @@ export class PlayerTurn {
 				this.game.river.setSelectionMode('single', args.selectableRiverCards)
 				this.game.river.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) =>
 					this.game.onRiverSelectionChange(lastChange)
+			} else {
+				this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('single', args.selectableHandCards)
+				this.game.playerTables[this.game.getPlayerId()].handStock.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) =>
+					this.game.onHandSelectionChange(lastChange)
 			}
 
 			if (args.canResetRiver) {

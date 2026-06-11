@@ -97,6 +97,7 @@ interface PlayerTurnArgs {
 	canTakeCard: boolean
 	canResetRiver: boolean
 	selectableRiverCards: QuorumCard[]
+	selectableHandCards: QuorumCard[]
 }
 
 interface LegacyEffectArgs {

@@ -15,6 +15,7 @@ class Constants {
     const MATERIAL_LOCATION_STOCK = "STOCK";
     const MATERIAL_LOCATION_DISCARD = "DISCARD";
     const MATERIAL_LOCATION_RIVER = "RIVER";
+    const MATERIAL_LOCATION_BOARD = "BOARD";
 
     /* 
     * Game constants 

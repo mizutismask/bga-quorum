@@ -30,8 +30,8 @@ class QuorumCard extends QuorumCardInfo {
 
         $this->power = $cardInfo->power;
         $this->province = $cardInfo->province;
+        $this->influence = $cardInfo->influence;
         /*$this->$scoringType = $cardInfo->scoringType;
-        $this->$influence = $cardInfo->influence;
         $this->$tradeRessources = $cardInfo->tradeRessources;*/
     }
 

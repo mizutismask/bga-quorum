@@ -37,7 +37,8 @@ class PlayerTurn extends GameState {
         return [
             "canTakeCard" => !$this->globals->get(Constants::GLBL_TOOK_CARD),
             "canResetRiver" => !$this->globals->get(Constants::GLBL_DID_RESET_RIVER) && $this->game->cardManager->riverContainsEnoughGods(),
-            "selectableRiverCards" => $this->getSelectableCards($activePlayerId),
+            "selectableRiverCards" => $this->getSelectableRiverCards($activePlayerId),
+            "selectableHandCards" => $this->getSelectableHandCards($activePlayerId),
         ];
     }
 
@@ -61,6 +62,22 @@ class PlayerTurn extends GameState {
         }
         $this->game->cardManager->refillRiver();
         return $nextState;
+    }
+
+    #[PossibleAction]
+    public function actPlayCard(int $cardId, int $activePlayerId, array $args) {
+        // check input values
+        $validMoves = array_map(fn($card) => $card->id, $args['selectableHandCards']);
+        if (!in_array($cardId, $validMoves)) {
+            throw new UserException(clienttranslate('You can’t play this card'));
+        }
+        $card = $this->game->cardManager->getCard($cardId);
+        //move tokens accordingly
+        $this->game->tokenManager->moveNationToken($card->province, $activePlayerId,  $card->influence);
+
+        $this->game->cardManager->discardCard($activePlayerId, $cardId, "", []);
+
+        return NextPlayer::class;
     }
 
     /**
@@ -87,7 +104,7 @@ class PlayerTurn extends GameState {
         }
     }
 
-    private function getSelectableCards(int $playerId): array {
+    private function getSelectableRiverCards(int $playerId): array {
         $cards = $this->game->cardManager->getRiverCards();
         $playerHand = $this->game->cardManager->getPlayerHand($playerId);
         $godInHand = array_filter($playerHand, fn($card) => $card->isGod);
@@ -95,6 +112,12 @@ class PlayerTurn extends GameState {
             //remove gods
             $cards = array_filter($cards, fn($card) => !$card->isGod());
         }
+        return $cards;
+    }
+
+    private function getSelectableHandCards(int $playerId): array {
+        $playerHand = $this->game->cardManager->getPlayerHand($playerId);
+        $cards = array_filter($playerHand, fn($card) => !$card->isGod);
         return $cards;
     }
 

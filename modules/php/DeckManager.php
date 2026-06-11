@@ -275,7 +275,7 @@ class DeckManager {
         return $this->castParameters ? new $this->cast($c, $this->castParameters) : new $this->cast($c);
     }
 
-    public function discardCard(int $playerId, int $cardId, $msg = "", $msgParameters) {
+    public function discardCard(int $playerId, int $cardId, $msg = "", array $msgParameters) {
         $this->deck->playCard($cardId);
         $this->game->notify->all("materialMove",  $msg ? $msg : clienttranslate('${player_name} discards a card'), [
             'player_name' => $this->game->getPlayerNameById($playerId),
