@@ -261,6 +261,17 @@ class Game extends \Bga\GameFramework\Table {
     function toggleResetTurn(bool $value) {
         $this->globals->set(Constants::CAN_RESET_TURN, $value);
     }
+
+    function getProvinceName(int $province) {
+        return match ($province) {
+            Constants::PROVINCE_AFRICA => clienttranslate("Africa"),
+            Constants::PROVINCE_GALLIA => clienttranslate("Gallia"),
+            Constants::PROVINCE_ASIA => clienttranslate("Asia"),
+            Constants::PROVINCE_GERMANIA => clienttranslate("Germania"),
+            Constants::PROVINCE_HISPANIA => clienttranslate("Hispania"),
+            Constants::PROVINCE_MACEDONIA => clienttranslate("Macedonia"),
+        };
+    }
     /*
         In this space, you can put any utility methods useful for your game logic
     */
