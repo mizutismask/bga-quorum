@@ -57,6 +57,8 @@ class Constants {
     ];
 
     const GLBL_ORDERED_PROVINCES = 'ORDERED_PROVINCES';
+    const GLBL_TOOK_CARD = 'TOOK_CARD';
+    const GLBL_DID_RESET_RIVER = 'DID_RESET_RIVER';
 
     const CARD_TYPE_MILITARY = 1;
     const CARD_TYPE_INTRIGUE = 2;

@@ -7,7 +7,7 @@ import { QuorumCard, QuorumGame, QuorumPlayer } from './types'
  * Player table.
  */
 export class PlayerTable {
-	private handStock: LineStock<QuorumCard> | null = null
+	public handStock: LineStock<QuorumCard> | null = null
 	private playedCardsStock: SlotStock<QuorumCard> | null = null
 
 	constructor(

@@ -26,7 +26,7 @@ class QuorumCard extends QuorumCardInfo {
 
 
         $cardInfo = $cardsDescription["material"][$this->type][$this->type_arg];
-        //$this->isGod = $this->type > 72;
+        $this->isGod = $this->type == 2;
 
         $this->power = $cardInfo->power;
         $this->province = $cardInfo->province;

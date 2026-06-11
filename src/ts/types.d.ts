@@ -17,6 +17,7 @@ interface Card {
 interface QuorumCard extends Card {
 	name: string //translated
 	province: number
+	isGod: boolean
 }
 interface Token extends Card {
 }
@@ -93,13 +94,9 @@ interface BoardConfig {
 }
 
 interface PlayerTurnArgs {
-	canUndo: boolean
-	canCancel: boolean
-	canPass: boolean
-	selectableHandCards: NationTile[]
-	canUseHammer: Boolean
-	canUseFairy: Boolean
-	ghostBlockedSquareIds: number[]
+	canTakeCard: boolean
+	canResetRiver: boolean
+	selectableRiverCards: QuorumCard[]
 }
 
 interface LegacyEffectArgs {

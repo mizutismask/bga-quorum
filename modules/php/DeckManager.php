@@ -142,6 +142,11 @@ class DeckManager {
         return $this->game->getUniqueIntValueFromDB($sql);
     }
 
+    public function countCardsOfTypeFromLocation(string $tableName, int $type, string $location) {
+        $sql = "SELECT count(card_id) FROM $tableName where card_location = '$location' and card_type = '$type'";
+        return $this->game->getUniqueIntValueFromDB($sql);
+    }
+
     public function getCastedTopOfLocationForTypeArg(string $location, int $typeArg) {
         return  $this->castSingle($this->game->getTopOfLocationForTypeArg($this->tableName, $location, $typeArg), true);
     }

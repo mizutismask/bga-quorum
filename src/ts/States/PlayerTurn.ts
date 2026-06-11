@@ -1,6 +1,6 @@
 import { Game } from '../Game'
 import { log } from '../base-game'
-import { QuorumGamedatas, QuorumPlayer, PlayerTurnArgs } from '../types'
+import { QuorumGamedatas, QuorumPlayer, PlayerTurnArgs, QuorumCard } from '../types'
 import { Utils } from '../utils'
 
 /**
@@ -19,60 +19,40 @@ export class PlayerTurn {
 	 */
 	onEnteringState(args: PlayerTurnArgs, isCurrentPlayerActive: boolean) {
 		this.bga.statusBar.setTitle(
-			isCurrentPlayerActive ? _('You must end your turn') : _('${actplayer} must place a tile or end his turn')
+			isCurrentPlayerActive
+				? args.canTakeCard
+					? _('${you} must take a card from the river')
+					: _('${you} must play a card from your hand')
+				: args.canTakeCard
+					? _('${actplayer} must take a card from the river')
+					: _('${actplayer} must play a card from his hand')
 		)
 
 		if (isCurrentPlayerActive) {
-			log('selectableHandCards', args.selectableHandCards)
 			//this.game.playerTables[this.game.getPlayerId()].setHandSelectionMode('single', args.selectableHandCards)
-			if (args.canUseFairy) {
-				this.bga.statusBar.addActionButton(
-					_('Use fairy'),
-					() => {
-						this.game.takeAction('actUseToken', { tokenType: 1 })
-					},
-					{ tooltip: _('You’ll be able to place dwarves and mermaids on any square') }
-				)
+			if (args.canTakeCard) {
+				this.game.river.setSelectionMode('single', args.selectableRiverCards)
+				this.game.river.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) =>
+					this.game.onRiverSelectionChange(lastChange)
 			}
-			this.bga.statusBar.addActionButton(_('End turn'), () => this.game.takeAction('actPass'), {
-				id: 'buttonPass',
-				color: 'primary'
-			})
 
-			this.bga.statusBar.addActionButton(_('Undo'), () => this.game.takeAction('actUndo', { qty: -1 }), {
-				id: 'buttonUndo',
-				color: 'alert'
-			})
-
-			log('riverdeck', $('river-deck'))
-			this.bga.statusBar.addActionButton(_('Redraw'), () => this.game.takeAction('actResetRiver', {}), {
-				id: 'buttonResetRiver',
-				destination: $('river-deck')
-			})
-
-			//this.game.board.grid.onSlotClick = (slotId: number | string) => this.game.onSquareClick(slotId)
-			/*this.game.playerTables[this.game.getPlayerId()].handStock!.onSelectionChange = (
-				selection: NationTile[],
-				lastChange: NationTile | null
-			) => {
-				this.game.handSelectionChange(selection, lastChange)
-			}*/
+			if (args.canResetRiver) {
+				this.bga.statusBar.addActionButton(_('Redraw'), () => this.game.takeAction('actResetRiver', {}), {
+					id: 'buttonResetRiver',
+					destination: $('river-deck')
+				})
+			}
 		} else {
-			//this.game.playerTables[this.game.getPlayerId()].setHandSelectionMode('none', undefined)
+			this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('none')
+			this.game.river.setSelectionMode('none')
 		}
-		this.toggleActionButtons(args, isCurrentPlayerActive)
-	}
-
-	private toggleActionButtons(args: PlayerTurnArgs, isCurrentPlayerActive: boolean) {
-		document.getElementById('buttonPass')?.classList.toggle('disabled', !args.canPass)
-		document.getElementById('buttonCancel')?.classList.toggle('disabled', !args.canCancel)
-		document.getElementById('buttonUndo')?.classList.toggle('disabled', !args.canUndo)
 	}
 
 	/**
 	 * This method is called each time we are leaving the game state. You can use this method to perform some user interface changes at this moment.
 	 */
 	onLeavingState(args: PlayerTurnArgs, isCurrentPlayerActive: boolean) {
-		//this.game.playerTables[this.game.getPlayerId()].setHandSelectionMode('none', undefined)
+		this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('none')
+		this.game.river.setSelectionMode('none')
 	}
 }

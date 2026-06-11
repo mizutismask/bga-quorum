@@ -32,24 +32,33 @@ class PlayerTurn extends GameState {
      *
      * This method returns some additional information that is very specific to the `PlayerTurn` game state.
      */
-    public function getArgs(): array {
+    public function getArgs(int $activePlayerId): array {
         // Get some values from the current game situation from the database.
         return [
-            "canPass" => true,
-            "canResetTurn" => $this->globals->get(Constants::CAN_RESET_TURN),
+            "canTakeCard" => !$this->globals->get(Constants::GLBL_TOOK_CARD),
+            "canResetRiver" => !$this->globals->get(Constants::GLBL_DID_RESET_RIVER) && $this->game->cardManager->riverContainsEnoughGods(),
+            "selectableRiverCards" => $this->getSelectableCards($activePlayerId),
         ];
     }
 
     #[PossibleAction]
-    public function actMoveOshax(int $slot, int $activePlayerId, array $args) {
+    public function actTakeCard(int $cardId, int $activePlayerId, array $args) {
         // check input values
-        $validMoves = $args['oshaxValidMoves'];
-        if (!in_array($slot, $validMoves)) {
-            throw new UserException(clienttranslate('You cannot reach this location'));
+        $validMoves = array_map(fn($card) => $card->id, $args['selectableRiverCards']);
+        if (!in_array($cardId, $validMoves)) {
+            throw new UserException(clienttranslate('You can take a card only from the river and you should not have more than 3 gods in your hand'));
         }
-        //do the action
-
-        return PlayerTurn::class;
+        $card = $this->game->cardManager->getCard($cardId);
+        $this->globals->set(Constants::GLBL_TOOK_CARD, true);
+        if ($card->isGod) {
+            //reveal the card and move it to player hand
+            $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, false, clienttranslate('${player_name} takes a god card'));
+            //go to province choice
+            //return GodEffect::class;
+        } else {
+            $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, true, "");
+            return PlayerTurn::class;
+        }
     }
 
     /**
@@ -74,6 +83,17 @@ class PlayerTurn extends GameState {
         } else {
             return NextPlayer::class;
         }
+    }
+
+    private function getSelectableCards(int $playerId): array {
+        $cards = $this->game->cardManager->getRiverCards();
+        $playerHand = $this->game->cardManager->getPlayerHand($playerId);
+        $godInHand = array_filter($playerHand, fn($card) => $card->isGod);
+        if (count($godInHand) == 3) {
+            //remove gods
+            $cards = array_filter($cards, fn($card) => !$card->isGod());
+        }
+        return $cards;
     }
 
     #[CheckAction(false)]
@@ -101,16 +121,14 @@ class PlayerTurn extends GameState {
      * but use the $playerId passed in parameter and $this->game->getPlayerNameById($playerId) instead.
      */
     function zombie(int $playerId) {
-        //zombie level 1
-        $args = $this->getArgs();
-        $mandatoryMoveDone = $args['mandatoryMoveDone'];
-        if ($mandatoryMoveDone) {
-            return $this->actPass($playerId);
+        //zombie level 1 (random action)
+        $args = $this->getArgs($playerId);
+        if ($args['canTakeCard'] && $args['selectableRiverCards']) {
+            return $this->actTakeCard(array_shift($args['selectableRiverCards']->id), $playerId, $args);
         } else {
-            //random oshax move
             $oshaxValidMoves = $args['oshaxValidMoves'];
             $slot = $this->game->getRandomValue($oshaxValidMoves);
-            return $this->actMoveOshax($slot, $playerId, $args);
+            return $this->actTakeCard($slot, $playerId, $args);
         }
     }
 }

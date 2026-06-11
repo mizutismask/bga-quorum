@@ -30,7 +30,8 @@ class NextPlayer extends \Bga\GameFramework\States\GameState {
 
         $activePlayerId = $this->game->activateNextPlayerCustom();
 
-        //$this->game->globals->set(Constants::GLBL_REMAINING_OSHAX_MOVES, 2);
+        $this->game->globals->set(Constants::GLBL_TOOK_CARD, false);
+        $this->game->globals->set(Constants::GLBL_DID_RESET_RIVER, false);
         //$this->game->setPlayerGlobal($activePlayerId, Constants::GLBL_DISCOVERY_TAKEN, false);
 
         //$this->game->contextMgr->reset();

@@ -19,4 +19,8 @@ class CardManager extends DeckManager {
     public function moveActionCardToPlayerHand($cardId, $playerId, bool $faceDown = false) {
         $this->moveCardToPlayerHand($cardId, $playerId, $faceDown, clienttranslate('${player_name} takes an action card'));
     }
+
+    public function riverContainsEnoughGods(): bool {
+        return $this->countCardsOfTypeFromLocation(TABLE_CARD, 2, "river") >= 3;
+    }
 }

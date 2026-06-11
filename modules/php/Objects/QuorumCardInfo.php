@@ -11,8 +11,9 @@ class QuorumCardInfo {
     public int $scoringType;
     public int $influence;
     public array $tradeRessources;
+    public bool $isGod;
 
-    public function __construct(int $power, int $province, int $influence, int $scoringType,array $tradeRessources = []) {
+    public function __construct(int $power, int $province, int $influence, int $scoringType, array $tradeRessources = []) {
         $this->power = $power;
         $this->province = $province;
         $this->tradeRessources = $tradeRessources;

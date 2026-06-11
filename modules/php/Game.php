@@ -38,8 +38,8 @@ class Game extends \Bga\GameFramework\Table {
     use DebugUtilTrait;
 
     private Deck $cards, $tokens;
-    private CardManager $cardManager;
-    private TokenManager $tokenManager;
+    public CardManager $cardManager;
+    public TokenManager $tokenManager;
     public PlayerCounter $ticketsCounter;
     private ContextManager $contextManager;
     public ExpansionManager $expansionManager;
