@@ -75,7 +75,7 @@ class PlayerTurn extends GameState {
         //move tokens accordingly
         $this->game->tokenManager->moveNationToken($card->province, $activePlayerId,  $card->influence);
 
-        $this->game->cardManager->discardCard($activePlayerId, $cardId, "", []);
+        $this->game->cardManager->insertCardOnExtremePosition($cardId, "played-$activePlayerId", true);
 
         return NextPlayer::class;
     }

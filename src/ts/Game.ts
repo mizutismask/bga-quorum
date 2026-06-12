@@ -124,7 +124,7 @@ export class Game extends BaseGame {
 			this,
 			player,
 			parseInt(player.id) === this.getPlayerId() ? this.gamedatas.hand : player.hand,
-			undefined
+			player.playedCards
 		)
 	}
 
@@ -480,36 +480,41 @@ export class Game extends BaseGame {
 
 	async notif_cardMove(cards: QuorumCard[], notif: NotifMaterialMove) {
 		const card = cards.at(0)
-		switch (notif.to) {
-			case 'HAND':
-				return Promise.all(cards.map((c) => this.addCardToHand(c, notif)))
-				break
-			case 'RIVER':
-				if (cards.length == 5) {
-					/*await this.riverDeck.addCards(cards, {
+		if (notif.to.startsWith('played-')) {
+			const pId = notif.to.replace("played-", "")
+			this.playerTables[pId].playedCardsStock.addCard(card)
+		} else {
+			switch (notif.to) {
+				case 'HAND':
+					return Promise.all(cards.map((c) => this.addCardToHand(c, notif)))
+					break
+				case 'RIVER':
+					if (cards.length == 5) {
+						/*await this.riverDeck.addCards(cards, {
 						initialSide: 'back',
 						finalSide: 'back',
 						animationsActive: false
 					})*/
-					await this.river.removeAll()
-					await this.riverDeck.shuffle()
-					return await this.river.addCards(cards, { bump: 1 })
-				} else {
-					await this.riverDeck.addCard(card, {
-						initialSide: 'back',
-						finalSide: 'back',
-						animationsActive: false
-					})
-					await this.riverDeck.flipCard(card, {})
-					return await this.river.addCard(card, { bump: 1 })
-				}
-				break
-			case 'DISCARD':
-				return await this.cardsManager.getCardStock(card)?.removeCards(cards, { fadeOut: true })
-				break
-			default:
-				console.error('Card move destination not handled', notif)
-				break
+						await this.river.removeAll()
+						await this.riverDeck.shuffle()
+						return await this.river.addCards(cards, { bump: 1 })
+					} else {
+						await this.riverDeck.addCard(card, {
+							initialSide: 'back',
+							finalSide: 'back',
+							animationsActive: false
+						})
+						await this.riverDeck.flipCard(card, {})
+						return await this.river.addCard(card, { bump: 1 })
+					}
+					break
+				case 'DISCARD':
+					return await this.cardsManager.getCardStock(card)?.removeCards(cards, { fadeOut: true })
+					break
+				default:
+					console.error('Card move destination not handled', notif)
+					break
+			}
 		}
 	}
 

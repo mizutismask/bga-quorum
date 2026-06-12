@@ -30,7 +30,7 @@ class DeckManager {
             $this->deck->shuffle('deck');
     }
 
-    public function shuffle(string $location='deck'){
+    public function shuffle(string $location = 'deck') {
         $this->deck->shuffle($location);
     }
 
@@ -257,6 +257,17 @@ class DeckManager {
 
     public function getPlayerHand(int $playerId) {
         return $this->cast($this->deck->getPlayerHand($playerId));
+    }
+
+    public function insertCardOnExtremePosition(int $cardId, string $location, bool $onTop) {
+        $this->deck->insertCardOnExtremePosition($cardId, $location, $onTop);
+        $refreshedCard = $this->getCard($cardId);
+        $this->game->notify->all("materialMove", '', [
+            'type' => $this->materialType,
+            'to' => $location,
+            'toArg' => $refreshedCard->location_arg,
+            'material' => [$refreshedCard],
+        ]);
     }
 
     protected function cast(array $cards, bool $optional = false) {

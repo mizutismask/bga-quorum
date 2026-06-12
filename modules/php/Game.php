@@ -201,6 +201,7 @@ class Game extends \Bga\GameFramework\Table {
         foreach ($result['players'] as $playerId => &$player) {
             $currentPlayerOrder = intval($player['playerNo']);
             $player['playerNo'] = $currentPlayerOrder;
+            $player['playedCards'] = $this->cardManager->getCardsInLocation("played-$playerId");
             //$player['discard'] = $this->cardManager->getCardsOfTypeArgFromLocation(TABLE_CARD, $currentPlayerOrder, MATERIAL_LOCATION_DISCARD);
             if($playerId != $currentPlayerId) {
                 $player['hand'] = array_map(fn($card) => QuorumCard::stripSecretInfo($card), $this->cardManager->getPlayerHand($playerId));

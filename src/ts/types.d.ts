@@ -31,6 +31,7 @@ interface QuorumPlayer extends Player {
 	fairies: number
 	hammers: number
 	hand: QuorumCard[]
+	playedCards: QuorumCard[]
 }
 
 interface QuorumGamedatas {
