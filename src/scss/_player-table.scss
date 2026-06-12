@@ -19,11 +19,11 @@
 			.played-cards {
                 zoom: 0.65;
 				.slot {
-					&::before {
+					/*&::before {
 						content: attr(data-slot-number);
 						font-size: 66pt;
 						color: #9e9fa3;
-					}
+					}*/
 				}
 			}
 		}
