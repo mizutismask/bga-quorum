@@ -47,6 +47,11 @@ html {
 	margin-right: 0px;
 }
 
+#river-deck{
+	justify-self: left;
+	align-self: flex-start;
+}
+
 #custom-game-area {
 	display: flex;
 	flex-direction: column;

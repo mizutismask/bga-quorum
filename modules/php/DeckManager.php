@@ -30,6 +30,9 @@ class DeckManager {
             $this->deck->shuffle('deck');
     }
 
+    public function shuffle(string $location='deck'){
+        $this->deck->shuffle($location);
+    }
 
     public function shuffleLocationByTypeArg(string $location, int $typeArg): void {
         $cards = $this->getCardsOfTypeArgFromLocation($this->tableName, $typeArg, $location);

@@ -442,9 +442,14 @@ export class Game extends BaseGame {
 		]
 
 		notifs.forEach((notif) => {
-			dojo.subscribe(notif[0], this, `notif_${notif[0]}`)
-			//comment to prevent formating to glue these 2 lines
-			;(this.gameui as any).notifqueue.setSynchronous(notif[0], notif[1])
+			dojo.subscribe(notif[0], this, (notifDetails: Notif<any>) => {
+				log(`notif_${notif[0]}`, notifDetails.args)
+
+				const promise = this[`notif_${notif[0]}`](notifDetails.args)
+
+				// tell the UI notification ends, if the function returned a promise
+				promise?.then(() => (this as any).notifqueue.onSynchronousNotificationEnd())
+			})
 		})
 	}
 
@@ -452,20 +457,20 @@ export class Game extends BaseGame {
 	 * Updates a total or subtotal
 	 * @param notif
 	 */
-	notif_score(notif: Notif<NotifScoreArgs>) {
+	notif_score(notif: NotifScoreArgs) {
 		log('notif_score', notif)
-		this.scoreBoard.updateScore(notif.args.playerId, notif.args.scoreType, notif.args.score)
+		this.scoreBoard.updateScore(notif.playerId, notif.scoreType, notif.score)
 	}
 
-	notif_materialMove(notif: Notif<NotifMaterialMove>) {
+	notif_materialMove(notif: NotifMaterialMove) {
 		log('notif_materialMove', notif)
-		switch (notif.args.type) {
+		switch (notif.type) {
 			case 'CARD':
-				const cards = notif.args.material as Array<QuorumCard>
+				const cards = notif.material as Array<QuorumCard>
 				this.notif_cardMove(cards, notif)
 				break
 			case 'TOKEN':
-				this.notif_tokenMove(notif.args.material as Array<Token>, notif)
+				this.notif_tokenMove(notif.material as Array<Token>, notif)
 				break
 			default:
 				console.error('Material type move not handled', notif)
@@ -473,30 +478,34 @@ export class Game extends BaseGame {
 		}
 	}
 
-	notif_cardMove(cards: QuorumCard[], notif: Notif<NotifMaterialMove>) {
+	async notif_cardMove(cards: QuorumCard[], notif: NotifMaterialMove) {
 		const card = cards.at(0)
-		switch (notif.args.to) {
+		switch (notif.to) {
 			case 'HAND':
-				cards.forEach((c) => {
-					if (c.isGod) {
-						this.river.flipCard(card, {})
-						if (notif.args.toArg == this.getPlayerId()) {
-							this.playerTables[this.getPlayerId()].handStock.addCard(card)
-						} else {
-							this.river.removeCard(card, { slideTo: this.bga.playerPanels.getElement(notif.args.toArg) })
-						}
-					} else {
-						if (notif.args.toArg == this.getPlayerId()) {
-							this.playerTables[this.getPlayerId()].handStock.addCard(card)
-						}
-					}
-				})
+				return Promise.all(cards.map((c) => this.addCardToHand(c, notif)))
 				break
 			case 'RIVER':
-				this.riverDeck.addCard(card, { finalSide: 'back' }).then(() => this.river.addCard(card, { bump: 1 }))
+				if (cards.length == 5) {
+					/*await this.riverDeck.addCards(cards, {
+						initialSide: 'back',
+						finalSide: 'back',
+						animationsActive: false
+					})*/
+					await this.river.removeAll()
+					await this.riverDeck.shuffle()
+					return await this.river.addCards(cards, { bump: 1 })
+				} else {
+					await this.riverDeck.addCard(card, {
+						initialSide: 'back',
+						finalSide: 'back',
+						animationsActive: false
+					})
+					await this.riverDeck.flipCard(card, {})
+					return await this.river.addCard(card, { bump: 1 })
+				}
 				break
 			case 'DISCARD':
-				this.cardsManager.getCardStock(card)?.removeCard(card, { fadeOut: true })
+				return await this.cardsManager.getCardStock(card)?.removeCards(cards, { fadeOut: true })
 				break
 			default:
 				console.error('Card move destination not handled', notif)
@@ -504,9 +513,26 @@ export class Game extends BaseGame {
 		}
 	}
 
-	notif_tokenMove(cards: Token[], notif: Notif<NotifMaterialMove>) {
+	async addCardToHand(card: QuorumCard, notif: NotifMaterialMove) {
+		if (card.isGod) {
+			this.river.flipCard(card, {})
+			if (notif.toArg == this.getPlayerId()) {
+				return await this.playerTables[this.getPlayerId()].handStock.addCard(card)
+			} else {
+				return await this.river.removeCard(card, {
+					slideTo: this.bga.playerPanels.getElement(notif.toArg)
+				})
+			}
+		} else {
+			if (notif.toArg == this.getPlayerId()) {
+				return await this.playerTables[this.getPlayerId()].handStock.addCard(card)
+			}
+		}
+	}
+
+	notif_tokenMove(cards: Token[], notif: NotifMaterialMove) {
 		const card = cards.at(0)
-		switch (notif.args.to) {
+		switch (notif.to) {
 			case 'BOARD':
 				cards.forEach((c) => {
 					const elmt = document.getElementById(`token-${c.type}-${c.type_arg}`)

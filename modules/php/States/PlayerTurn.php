@@ -80,6 +80,20 @@ class PlayerTurn extends GameState {
         return NextPlayer::class;
     }
 
+    #[PossibleAction]
+    public function actResetRiver(int $activePlayerId) {
+        $river = $this->game->cardManager->getRiverCards();
+        $this->game->cardManager->replaceRiver();
+        //put the old river cards back in the deck and shuffle
+        foreach ($river as $card) {
+            $this->game->cardManager->moveCardToLocation($card, "deck", 0, false);
+        }
+        $this->game->cardManager->shuffle();
+
+        $this->globals->set(Constants::GLBL_DID_RESET_RIVER, true);
+        return PlayerTurn::class;
+    }
+
     /**
      * Player action, example content.
      *
