@@ -34,6 +34,7 @@ class TokenManager extends DeckManager {
             "provinceName" => $this->game->getProvinceName($province),
             "i18n" => ["provinceName"],
         ]);
+        return $refreshedToken;
     }
 
     public function getNationToken(int $province, int $playerId) {

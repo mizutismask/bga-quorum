@@ -41,8 +41,8 @@ export class Game extends BaseGame {
 	public cardsManager!: CardsManager
 
 	private scoreBoard!: ScoreBoard
-	private nationRankCounters: Counter[] = []
-	private handCardsCounters: Counter[] = []
+	public nationRankCounters: Counter[] = []
+	public nationValueCounters: Counter[] = []
 
 	private displayedTooltip: any //dijit.Tooltip
 
@@ -147,7 +147,9 @@ export class Game extends BaseGame {
 
 			const dest = document.querySelector<HTMLElement>(`#province-${t.type} .slot-${t.location}`)
 			dest.appendChild(tokenDiv)
-			dest.dataset.childCount = dest.children.length.toString()
+			if (t.location != '0') {
+				dest.dataset.childCount = dest.children.length.toString()
+			}
 		})
 	}
 
@@ -168,6 +170,7 @@ export class Game extends BaseGame {
 				`<div id="province-${province}-counter-${player.id}-wrapper" class="counter province-counter">
 					<div class="icon province-${province}"></div> 
 					<span id="province-${province}-player-counter-${player.id}"></span>
+					(<span id="province-${province}-value-player-counter-${player.id}" style="padding:0px"></span>)
 				</div>`
 			)
 			const nationCounter = new ebg.counter()
@@ -177,6 +180,14 @@ export class Game extends BaseGame {
 				playerId: playerId
 			})
 			this.nationRankCounters[playerId] = nationCounter
+
+			const nationValueCounter = new ebg.counter()
+			nationValueCounter.create(`province-${province}-value-player-counter-${player.id}`, {
+				value: player['nationValueCounter_' + province],
+				playerCounter: 'nationValueCounter_' + province,
+				playerId: playerId
+			})
+			this.nationValueCounters[playerId] = nationValueCounter
 		})
 
 		/* const revealedTokensBackCounter = new ebg.counter();

@@ -73,11 +73,42 @@ class PlayerTurn extends GameState {
         }
         $card = $this->game->cardManager->getCard($cardId);
         //move tokens accordingly
-        $this->game->tokenManager->moveNationToken($card->province, $activePlayerId,  $card->influence);
+        $moved = $this->game->tokenManager->moveNationToken($card->province, $activePlayerId,  $card->influence);
+        $this->game->nationValueCounters[$card->province]->set($activePlayerId, intval($moved->location));
+        $this->updateRanks();
 
         $this->game->cardManager->insertCardOnExtremePosition($cardId, "played-$activePlayerId", true);
 
         return NextPlayer::class;
+    }
+
+    private function updateRanks() {
+        $tokens = $this->game->tokenManager->getAll("card_location desc, card_location_arg");
+        foreach (Constants::ALL_PROVINCES as $province) {
+            $provinceTokens = array_values(array_filter($tokens, fn($token) => $token->type == $province));
+            $this->game->dump('****************province***', $province);
+            $this->game->dump('****************provinceTokens***', json_encode($provinceTokens));
+            $rank = $this->game->getPlayerCount() + 1;
+
+            foreach ($provinceTokens as $token) {
+                if ((int) $token->location === 0) {
+                    $this->game->nationRankCounters[$province]->set($token->type_arg, $this->game->getPlayerCount());
+                    continue;
+                }
+                $rank = 1;
+
+                foreach ($provinceTokens as $otherToken) {
+                    if (
+                        (int) $otherToken->location > (int) $token->location ||
+                        ((int) $otherToken->location == (int) $token->location && (int) $otherToken->location_arg < (int) $token->location_arg)
+                    ) {
+                        ++$rank;
+                    }
+                }
+
+                $this->game->nationRankCounters[$province]->set($token->type_arg, $rank);
+            }
+        }
     }
 
     #[PossibleAction]

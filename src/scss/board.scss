@@ -99,6 +99,23 @@
 					top: 7%;
 				}
 
+				&.slot-0 {
+					position: absolute;
+					//for tokens in the middle
+					top: 42%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					display: grid;
+					gap: 5px;
+					grid-template-columns: min-content min-content;
+					width: 35%;
+					border-radius: unset;
+					.token {
+						//width: 50%;
+						position:relative;
+					}
+				}
+
 				&[data-child-count='2'] {
 					.token:nth-child(1) {
 						transform: translateX(0%);

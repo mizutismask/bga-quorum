@@ -44,10 +44,13 @@ class Game extends \Bga\GameFramework\Table {
     private ContextManager $contextManager;
     public ExpansionManager $expansionManager;
     /**
-     * 
      * @var array<PlayerCounter> $nationRankCounters
      */
-    private array $nationRankCounters = [];
+    public array $nationRankCounters = [];
+    /**
+     * @var array<PlayerCounter> $nationValueCounters
+     */
+    public array $nationValueCounters = [];
 
     function __construct() {
         // Your global variables labels:
@@ -70,6 +73,7 @@ class Game extends \Bga\GameFramework\Table {
 
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province] = $this->counterFactory->createPlayerCounter("nationRankCounter_" . $province);
+            $this->nationValueCounters[$province] = $this->counterFactory->createPlayerCounter("nationValueCounter_" . $province, 0, 15);
         }
 
         $this->cards = $this->deckFactory->createDeck("card");
@@ -128,6 +132,7 @@ class Game extends \Bga\GameFramework\Table {
 
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province]->initDb(array_keys($players), count($players));
+            $this->nationValueCounters[$province]->initDb(array_keys($players), 0);
         }
 
         // TODO: setup the initial game situation here
@@ -145,7 +150,7 @@ class Game extends \Bga\GameFramework\Table {
         $this->cardManager->dealHands();
         $this->cardManager->initRiver(5);
         $this->cardManager->createCards($this->expansionManager->getGodCardsToGenerate());
-        $this->tokenManager->createCards($this->expansionManager->getTokensToGenerate(), false, "1");
+        $this->tokenManager->createCards($this->expansionManager->getTokensToGenerate(), false, "0");
         foreach ($players as $playerId => $player) {
         }
     }
@@ -208,6 +213,7 @@ class Game extends \Bga\GameFramework\Table {
         $this->ticketsCounter->fillResult($result);
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province]->fillResult($result);
+            $this->nationValueCounters[$province]->fillResult($result);
         }
 
         $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);

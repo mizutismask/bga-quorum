@@ -680,6 +680,20 @@
   left: 43.6%;
   top: 7%;
 }
+#board .province .province-slots .province-slot.slot-0 {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  gap: 5px;
+  grid-template-columns: min-content min-content;
+  width: 35%;
+  border-radius: unset;
+}
+#board .province .province-slots .province-slot.slot-0 .token {
+  position: relative;
+}
 #board .province .province-slots .province-slot[data-child-count="2"] .token:nth-child(1) {
   transform: translateX(0%);
 }

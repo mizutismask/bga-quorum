@@ -14,7 +14,9 @@ export class Province {
 		province: number
 	) {
 		let html = `
-            <div id="province-${province}" class="province" data-province="${province}"><div id="province-${province}-token-slot" class="province-token-slot"></div></div>
+            <div id="province-${province}" class="province" data-province="${province}">
+				<div id="province-${province}-token-slot" class="province-token-slot"></div>
+			</div>
         `
 		$('board').insertAdjacentHTML('beforeend', html)
 		this.element = $('province-' + province)
@@ -23,13 +25,14 @@ export class Province {
 			'beforeend',
 			`
             <div class="province-slots">
-                ${Array.from({ length: 15 }, (_, i) => `<div class="province-slot slot-${i + 1} ${this.getSlotClasses(i+1)}"></div>`).join('')}
+                ${Array.from({ length: 16 }, (_, i) => `<div class="province-slot slot-${i} ${this.getSlotClasses(i)}"></div>`).join('')}
             </div>
         `
 		)
 	}
 
 	private getSlotClasses(i: number) {
+		if (i == 0) return ''
 		if (i < 7) return 'left-column'
 		if (i > 9) return 'right-column'
 		return ''
