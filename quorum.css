@@ -859,6 +859,33 @@ html {
   display: none !important;
 }
 
+.province-counter .icon {
+  background-image: url("img/provinces-logos.png");
+  background-size: 600% 100%;
+}
+.province-counter .icon.province-1 {
+  background-position: 0% 0%;
+}
+.province-counter .icon.province-2 {
+  background-position: 20% 0%;
+}
+.province-counter .icon.province-3 {
+  background-position: 40% 0%;
+}
+.province-counter .icon.province-4 {
+  background-position: 60% 0%;
+}
+.province-counter .icon.province-5 {
+  background-position: 80% 0%;
+}
+.province-counter .icon.province-6 {
+  background-position: 100% 0%;
+}
+
+.province-counters {
+  flex-wrap: wrap;
+}
+
 #buttonResetRiver {
   position: absolute;
   bottom: 0px;

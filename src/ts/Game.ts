@@ -28,11 +28,20 @@ export const PROVINCE_AFRICA = 4
 export const PROVINCE_MACEDONIA = 5
 export const PROVINCE_HISPANIA = 6
 
+const ALL_PROVINCES = [
+	PROVINCE_ASIA,
+	PROVINCE_GALLIA,
+	PROVINCE_GERMANIA,
+	PROVINCE_AFRICA,
+	PROVINCE_MACEDONIA,
+	PROVINCE_HISPANIA
+]
+
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
 
 	private scoreBoard!: ScoreBoard
-	private ticketsCounters: Counter[] = []
+	private nationRankCounters: Counter[] = []
 	private handCardsCounters: Counter[] = []
 
 	private displayedTooltip: any //dijit.Tooltip
@@ -136,7 +145,6 @@ export class Game extends BaseGame {
 			tokenDiv.dataset.color =
 				'' + Object.values(this.gamedatas.players).find((p) => Number(p.id) == t.type_arg).color
 
-			log(`#province-${t.type} .slot-${t.location}`)
 			const dest = document.querySelector<HTMLElement>(`#province-${t.type} .slot-${t.location}`)
 			dest.appendChild(tokenDiv)
 			dest.dataset.childCount = dest.children.length.toString()
@@ -147,22 +155,29 @@ export class Game extends BaseGame {
 		const playerId = Number(player.id)
 		this.bga.playerPanels.getElement(playerId).insertAdjacentHTML(
 			'afterbegin',
-			`<div id="counters-${player.id}" class="counters">
-			<div id="tickets-counter-${player.id}-wrapper" class="counter tickets-counter">
-			<div class="icon expTicket"></div> 
-			<span id="tickets-player-counter-${player.id}"></span>
-			</div>
-			
-			<div id="hand-cards-counter-${player.id}-wrapper" class="counter hand-cards-counter counter-left-part">
-			<div class="fa fa-hand-paper-o"></div> 
-			<span id="hand-cards-counter-${player.id}"></span>
-			</div>
+			`<div id="counters-${player.id}" class="counters province-counters">
 			</div>
 			<div id="additional-info-${player.id}" class="counters additional-info">
 			<div id="additional-icons-${player.id}" class="additional-icons"></div> 
 			</div>
 			`
 		)
+		ALL_PROVINCES.forEach((province) => {
+			$(`counters-${player.id}`).insertAdjacentHTML(
+				'beforeend',
+				`<div id="province-${province}-counter-${player.id}-wrapper" class="counter province-counter">
+					<div class="icon province-${province}"></div> 
+					<span id="province-${province}-player-counter-${player.id}"></span>
+				</div>`
+			)
+			const nationCounter = new ebg.counter()
+			nationCounter.create(`province-${province}-player-counter-${player.id}`, {
+				value: player['nationRankCounter_' + province],
+				playerCounter: 'nationRankCounter_' + province,
+				playerId: playerId
+			})
+			this.nationRankCounters[playerId] = nationCounter
+		})
 
 		/* const revealedTokensBackCounter = new ebg.counter();
 		revealedTokensBackCounter.create(`revealed-tokens-back-counter-${player.id}`);
@@ -481,7 +496,7 @@ export class Game extends BaseGame {
 	async notif_cardMove(cards: QuorumCard[], notif: NotifMaterialMove) {
 		const card = cards.at(0)
 		if (notif.to.startsWith('played-')) {
-			const pId = notif.to.replace("played-", "")
+			const pId = notif.to.replace('played-', '')
 			this.playerTables[pId].playedCardsStock.addCard(card)
 		} else {
 			switch (notif.to) {

@@ -11,3 +11,5 @@ See: http://en.doc.boardgamearena.com/Game_art:_img_directory for more details.
 
 mogrify -path ./cropped -crop 248x347+30+55 +repage -quality 100 *.jpg
 montage `ls -v .` -tile 9 -geometry +0+0 cards.jpg
+
+montage `ls -v .` -background none -tile 6 -geometry +0+0 provinces-logos.png

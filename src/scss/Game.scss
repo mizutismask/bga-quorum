@@ -38,7 +38,23 @@ html {
 	display: none !important;
 }
 
-#buttonResetRiver{
+.province-counter {
+	.icon {
+		background-image: url('img/provinces-logos.png');
+		background-size: 600% 100%;
+		@for $i from 1 through 6 {
+			&.province-#{$i} {
+				background-position: #{calc(($i - 1) * 100% / 5)} 0%;
+			}
+		}
+	}
+}
+
+.province-counters{
+	flex-wrap: wrap;
+}
+
+#buttonResetRiver {
 	position: absolute;
 	bottom: 0px;
 	left: 50%;
@@ -47,7 +63,7 @@ html {
 	margin-right: 0px;
 }
 
-#river-deck{
+#river-deck {
 	justify-self: left;
 	align-self: flex-start;
 }

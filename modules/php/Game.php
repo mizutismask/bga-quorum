@@ -43,6 +43,11 @@ class Game extends \Bga\GameFramework\Table {
     public PlayerCounter $ticketsCounter;
     private ContextManager $contextManager;
     public ExpansionManager $expansionManager;
+    /**
+     * 
+     * @var array<PlayerCounter> $nationRankCounters
+     */
+    private array $nationRankCounters = [];
 
     function __construct() {
         // Your global variables labels:
@@ -62,6 +67,10 @@ class Game extends \Bga\GameFramework\Table {
         $this->expansionManager = new ExpansionManager($this);
 
         $this->ticketsCounter = $this->counterFactory->createPlayerCounter("tickets");
+
+        foreach (Constants::ALL_PROVINCES as $province) {
+            $this->nationRankCounters[$province] = $this->counterFactory->createPlayerCounter("nationRankCounter_" . $province);
+        }
 
         $this->cards = $this->deckFactory->createDeck("card");
         $this->cards->autoreshuffle = true;
@@ -117,6 +126,10 @@ class Game extends \Bga\GameFramework\Table {
         $this->initStats();
         $this->ticketsCounter->initDb(array_keys($players));
 
+        foreach (Constants::ALL_PROVINCES as $province) {
+            $this->nationRankCounters[$province]->initDb(array_keys($players), count($players));
+        }
+
         // TODO: setup the initial game situation here
         $this->globals->set(Constants::LAST_TURN, 0); // last turn is the id of the last player, 0 if it's not last turn
         $this->setupTable($players);
@@ -141,7 +154,7 @@ class Game extends \Bga\GameFramework\Table {
         $allProvinces = Constants::ALL_PROVINCES;
         $randomizedProvinces = array_values($this->getRandomSlice($allProvinces, count(Constants::ALL_PROVINCES)));
         $this->globals->set(Constants::GLBL_ORDERED_PROVINCES, $randomizedProvinces);
-        
+
         $this->cardManager->createCards($this->expansionManager->getNormalCardsToGenerate());
     }
 
@@ -193,6 +206,9 @@ class Game extends \Bga\GameFramework\Table {
 
         //counters
         $this->ticketsCounter->fillResult($result);
+        foreach (Constants::ALL_PROVINCES as $province) {
+            $this->nationRankCounters[$province]->fillResult($result);
+        }
 
         $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
         $result['river'] = $this->cardManager->getCardsInLocation("river");
@@ -203,7 +219,7 @@ class Game extends \Bga\GameFramework\Table {
             $player['playerNo'] = $currentPlayerOrder;
             $player['playedCards'] = $this->cardManager->getCardsInLocation("played-$playerId");
             //$player['discard'] = $this->cardManager->getCardsOfTypeArgFromLocation(TABLE_CARD, $currentPlayerOrder, MATERIAL_LOCATION_DISCARD);
-            if($playerId != $currentPlayerId) {
+            if ($playerId != $currentPlayerId) {
                 $player['hand'] = array_map(fn($card) => QuorumCard::stripSecretInfo($card), $this->cardManager->getPlayerHand($playerId));
             }
 
