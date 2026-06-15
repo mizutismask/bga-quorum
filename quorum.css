@@ -566,6 +566,8 @@
 }
 #player-tables .player-table {
   display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #player-tables .player-table .cstm-player-hand {
   zoom: 0.5;
@@ -585,7 +587,7 @@
   }*/
 }
 #player-tables .player-table .played-cards {
-  max-width: 1022px;
+  max-width: 860px;
   zoom: 0.45;
   margin-top: 20px;
 }

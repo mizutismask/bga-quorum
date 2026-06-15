@@ -23,7 +23,7 @@ const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement)
 	}
 }
 
-const multiplier = .65
+const multiplier = .55
 export class CardsManager extends CardsManagerBase<QuorumCard> {
 	constructor(public game: QuorumGame) {
 		super({

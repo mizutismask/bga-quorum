@@ -6,6 +6,8 @@
     //align-items: center;
 	.player-table {
 		display: flex;
+		flex-direction: column;
+		align-items: center;
 
 		.cstm-player-hand {
 			zoom: 0.5;
@@ -29,7 +31,7 @@
 		}
 
 		.played-cards {
-            max-width: 1022px;
+            max-width: 860px;
 			zoom: 0.45;
             margin-top: 20px;
 		}
