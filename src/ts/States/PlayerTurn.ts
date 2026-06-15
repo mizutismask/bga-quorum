@@ -32,12 +32,24 @@ export class PlayerTurn {
 			//this.game.playerTables[this.game.getPlayerId()].setHandSelectionMode('single', args.selectableHandCards)
 			if (args.canTakeCard) {
 				this.game.river.setSelectionMode('single', args.selectableRiverCards)
-				this.game.river.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) =>
-					this.game.onRiverSelectionChange(lastChange)
+				this.game.river.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) => {
+					if (this.game.river.isSelected(lastChange)) {
+						this.game.onRiverSelectionChange(lastChange)
+					}
+				}
 			} else {
-				this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('single', args.selectableHandCards)
-				this.game.playerTables[this.game.getPlayerId()].handStock.onSelectionChange = (selection: QuorumCard[], lastChange: QuorumCard | null) =>
-					this.game.onHandSelectionChange(lastChange)
+				this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode(
+					'single',
+					args.selectableHandCards
+				)
+				this.game.playerTables[this.game.getPlayerId()].handStock.onSelectionChange = (
+					selection: QuorumCard[],
+					lastChange: QuorumCard | null
+				) => {
+					if (this.game.playerTables[this.game.getPlayerId()].handStock.isSelected(lastChange)) {
+						this.game.onHandSelectionChange(lastChange)
+					}
+				}
 			}
 
 			if (args.canResetRiver) {
