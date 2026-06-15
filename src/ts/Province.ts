@@ -50,7 +50,7 @@ export class Province {
 		slot.insertAdjacentHTML(
 			'beforeend',
 			`
-			<div class="province-token" data-value="${value}">${value}</div>
+			<div class="province-token" data-value="${value}"></div>
 			`
 		)
 		const newToken = this.element.querySelector<HTMLElement>('.province-token-slot .province-token')
