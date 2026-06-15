@@ -171,8 +171,12 @@ class Game extends \Bga\GameFramework\Table {
     }
 
     function hasReachedEndOfGameRequirements(): bool {
-        //TODO
-        return $this->globals->get("round") == 4;
+        foreach ($this->getPlayers() as $playerId => $player) {
+            if ($this->cardManager->countCardsInLocation("played-$playerId") != 12) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

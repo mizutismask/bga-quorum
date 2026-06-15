@@ -63,11 +63,11 @@ class Constants {
     const GLBL_DID_RESET_RIVER = 'DID_RESET_RIVER';
     const GLBL_CURRENT_GOD = 'CURRENT_GOD';
 
-    const CARD_TYPE_MILITARY = 1;
-    const CARD_TYPE_INTRIGUE = 2;
-    const CARD_TYPE_ARCHITECTURE = 3;
-    const CARD_TYPE_TRADE = 4;
-    const CARD_TYPE_GOD = 5;
+    const CARD_TYPE_MILITARY = 11;
+    const CARD_TYPE_INTRIGUE = 12;
+    const CARD_TYPE_ARCHITECTURE = 13;
+    const CARD_TYPE_TRADE = 14;
+    const CARD_TYPE_GOD = 15;
 
     const TRADE_FISH = 1;
     const TRADE_WOOD = 2;

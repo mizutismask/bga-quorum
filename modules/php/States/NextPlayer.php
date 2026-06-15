@@ -28,15 +28,20 @@ class NextPlayer extends \Bga\GameFramework\States\GameState {
      */
     function onEnteringState() {
 
-        $activePlayerId = $this->game->activateNextPlayerCustom();
+        if ($this->game->hasReachedEndOfGameRequirements()) {
+            return EndScore::class;
+        } else {
+            
+            $activePlayerId = $this->game->activateNextPlayerCustom();
 
-        $this->game->globals->set(Constants::GLBL_TOOK_CARD, false);
-        $this->game->globals->set(Constants::GLBL_DID_RESET_RIVER, false);
-        $this->game->globals->delete(Constants::GLBL_CURRENT_GOD);
-        //$this->game->setPlayerGlobal($activePlayerId, Constants::GLBL_DISCOVERY_TAKEN, false);
+            $this->game->globals->set(Constants::GLBL_TOOK_CARD, false);
+            $this->game->globals->set(Constants::GLBL_DID_RESET_RIVER, false);
+            $this->game->globals->delete(Constants::GLBL_CURRENT_GOD);
+            //$this->game->setPlayerGlobal($activePlayerId, Constants::GLBL_DISCOVERY_TAKEN, false);
 
-        //$this->game->contextMgr->reset();
+            //$this->game->contextMgr->reset();
 
-        return PlayerTurn::class;
+            return PlayerTurn::class;
+        }
     }
 }

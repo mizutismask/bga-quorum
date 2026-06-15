@@ -33,8 +33,8 @@ class QuorumCard extends QuorumCardInfo {
         $this->influence = $cardInfo->influence;
         $this->leftEffect = $cardInfo->leftEffect;
         $this->rightEffect = $cardInfo->rightEffect;
-        /*$this->$scoringType = $cardInfo->scoringType;
-        $this->$tradeRessources = $cardInfo->tradeRessources;*/
+        $this->scoringType = $cardInfo->scoringType;
+        $this->tradeRessources = $cardInfo->tradeRessources;
     }
 
     public static function stripSecretInfo(QuorumCard $card): QuorumCard {
@@ -45,6 +45,8 @@ class QuorumCard extends QuorumCardInfo {
         unset($copy->influence);
         unset($copy->leftEffect);
         unset($copy->rightEffect);
+        unset($copy->scoringType);
+        unset($copy->tradeRessources);
         return $copy;
     }
 }

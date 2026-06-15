@@ -7,49 +7,64 @@ import { QuorumGame, QuorumPlayer } from './types'
 export class ScoreBoard {
 	constructor(
 		private game: QuorumGame,
-		private players: QuorumPlayer[]
+		private players: QuorumPlayer[],
+		private orderedProvinces: number[]
 	) {
 		const headers = document.getElementById('scoretr')
 		if (!headers) throw new Error('scoretr not found to populate the scoreboard')
 
+		const body = document.getElementById('score-table-body')
+		if (!body) throw new Error('score-table-body not found to populate the scoreboard')
+
 		if (!headers.childElementCount) {
-			headers.insertAdjacentHTML(
-				'afterbegin',
+			headers.innerHTML = '<th></th>'
+
+			players.forEach((player) => {
+				headers.insertAdjacentHTML(
+					'beforeend',
+					`
+			<th colspan="4" style="color: #${player.color}">${player.name}</th>
+			`
+				)
+			})
+
+			body.innerHTML = `
+		<tr>
+			<td></td>
+			${players
+				.map(
+					() => `
+				<td>${_('Rank')}</td>
+				<td>${_('Cards count')}</td>
+				<td>${_('Influence')}</td>
+				<td>${_('Total')}</td>
+			`
+				)
+				.join('')}
+		</tr>
+	`
+
+			this.orderedProvinces.forEach((province) => {
+				body.insertAdjacentHTML(
+					'beforeend',
+					`
+			<tr id="province-score-${province}">
+				<td class="province-score-name province-${province}">${_(`Province ${province}`)}</td>
+				${players
+					.map(
+						(player) => `
+					<td id="province-${province}-rank-${player.id}" class="score-number"></td>
+					<td id="province-${province}-cards-${player.id}" class="score-number"></td>
+					<td id="province-${province}-influence-${player.id}" class="score-number"></td>
+					<td id="province-${province}-total-${player.id}" class="score-number total"></td>
 				`
-                <th></th>
-                <th id="th-destination-reached-score" class="">${_('Destinations reached')}</th>
-                <th id="th-revealed-tokens-back-score" class="">${_('Revealed destinations reached')}</th>
-                <th id="th-destination-unreached-score" class="">${_('Destinations not reached')}</th>
-                <th id="th-total-score" class="total-score">${_('Total')}</th>
-            `
-			)
+					)
+					.join('')}
+			</tr>
+			`
+				)
+			})
 		}
-
-		players.forEach((player) => {
-			const playerId = Number(player.id)
-
-			/*dojo.place(
-                `<tr id="score${player.id}">
-                    <td id="score-name-${player.id}" class="player-name" style="color: #${
-                    player.color
-                }"><span id="score-winner-${player.id}"/> <span>${player.name}</span></td>
-                    <td id="destination-reached${player.id}" class="score-number">${
-                    player.completedDestinations.length + player.sharedCompletedDestinationsCount
-                }</td>
-                    <td id="revealed-tokens-back${player.id}" class="score-number">${
-                    player.revealedTokensBackCount
-                }</td>
-                    <td id="destination-unreached${player.id}" class="score-number">${this.preventMinusZero(
-                    player.uncompletedDestinations?.length
-                )}</td>
-                    <td id="revealed-tokens-left${player.id}" class="score-number">${this.preventMinusZero(
-                    player.revealedTokensLeftCount
-                )}</td>
-                    <td id="total${player.id}" class="score-number total">${player.score}</td>
-                </tr>`,
-                "score-table-body"
-            );*/
-		})
 	}
 
 	public updateScores(players: QuorumPlayer[]) {
