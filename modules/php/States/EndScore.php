@@ -58,7 +58,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
         foreach (Constants::ALL_PROVINCES as $province) {
             foreach ($players as $playerId => $player) {
-                $this->scoreProvince($province, $playerId, $playedCards);
+                $this->scoreProvince($playerId, $province,  $playedCards[$playerId]);
             }
         }
 
@@ -89,6 +89,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
             Constants::PROVINCE_MACEDONIA => Constants::CARD_TYPE_ARCHITECTURE
         ];
         $value = $this->game->nationValueCounters[$province]->get($playerId);
+        //throw new \Exception(json_encode($this->game->nationValueCounters));
         if ($value > 0) {
             switch ($province) {
                 case Constants::PROVINCE_GERMANIA:
@@ -101,6 +102,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
+                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
                     break;
                 case Constants::PROVINCE_AFRICA:
                     $cardsCount = count(array_filter($playedCards, fn($card) => $card->power === 1));
@@ -109,6 +111,8 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
+                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
+                    break;
                 case Constants::PROVINCE_ASIA:
                     $cardsCount = count(array_filter($playedCards, fn($card) => $card->power === 2));
                     $rank = $this->game->nationRankCounters[$province]->get($playerId);
@@ -116,8 +120,17 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
+                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
+                    break;
             }
         }
+    }
+
+    private function notifyScore(int $playerId, int $province, int $score, int $influence, int $rank, int $multiplier, int $cardsCount) {
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $rank, "scoreType" => "province-$province-rank"]);
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"]);
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $multiplier, "scoreType" => "province-$province-influence"]);
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]);
     }
 
     /**

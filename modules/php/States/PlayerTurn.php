@@ -56,7 +56,7 @@ class PlayerTurn extends GameState {
             //reveal the card and move it to player hand
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, false, clienttranslate('${player_name} takes a god card'));
             $this->game->globals->set(Constants::GLBL_CURRENT_GOD, $cardId);
-            $nextState= GodEffect::class;
+            $nextState = GodEffect::class;
         } else {
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, true, "");
         }
@@ -194,11 +194,13 @@ class PlayerTurn extends GameState {
         //zombie level 1 (random action)
         $args = $this->getArgs($playerId);
         if ($args['canTakeCard'] && $args['selectableRiverCards']) {
-            return $this->actTakeCard(array_shift($args['selectableRiverCards']->id), $playerId, $args);
+            $validMoves = $args['selectableRiverCards'];
+            $card = $this->game->getRandomValue($validMoves);
+            return $this->actTakeCard($card->id, $playerId, $args);
         } else {
-            $oshaxValidMoves = $args['oshaxValidMoves'];
-            $slot = $this->game->getRandomValue($oshaxValidMoves);
-            return $this->actTakeCard($slot, $playerId, $args);
+            $validMoves = $args['selectableHandCards'];
+            $card = $this->game->getRandomValue($validMoves);
+            return $this->actPlayCard($card->id, $playerId, $args);
         }
     }
 }

@@ -20,48 +20,48 @@ export class ScoreBoard {
 			headers.innerHTML = '<th></th>'
 
 			players.forEach((player) => {
-				headers.insertAdjacentHTML(
-					'beforeend',
-					`
-			<th colspan="4" style="color: #${player.color}">${player.name}</th>
-			`
-				)
-			})
+				const playerId = Number(player.id)
 
-			body.innerHTML = `
-		<tr>
-			<td></td>
-			${players
-				.map(
-					() => `
-				<td>${_('Rank')}</td>
-				<td>${_('Cards count')}</td>
-				<td>${_('Influence')}</td>
-				<td>${_('Total')}</td>
-			`
-				)
-				.join('')}
-		</tr>
-	`
-
-			this.orderedProvinces.forEach((province) => {
-				body.insertAdjacentHTML(
-					'beforeend',
+				dojo.place(
 					`
-			<tr id="province-score-${province}">
-				<td class="province-score-name province-${province}">${_(`Province ${province}`)}</td>
-				${players
+		<table id="score-${playerId}" class="score-player-table">
+			<thead>
+				<tr>
+					<th colspan="5" style="color: #${player.color}">
+						<span id="score-winner-${playerId}"></span>
+						${player.name}
+					</th>
+				</tr>
+				<tr>
+					<th></th>
+					<th>${_('Rank')}</th>
+					<th>${_('Cards count')}</th>
+					<th>${_('Influence')}</th>
+					<th>${_('Total')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				${this.orderedProvinces
 					.map(
-						(player) => `
-					<td id="province-${province}-rank-${player.id}" class="score-number"></td>
-					<td id="province-${province}-cards-${player.id}" class="score-number"></td>
-					<td id="province-${province}-influence-${player.id}" class="score-number"></td>
-					<td id="province-${province}-total-${player.id}" class="score-number total"></td>
-				`
+						(province) => `
+						<tr>
+							<td class="province-${province}">${this.game.getProvinceName(province)}</td>
+							<td id="province-${province}-rank-${playerId}" class="score-number"></td>
+							<td id="province-${province}-cards-${playerId}" class="score-number"></td>
+							<td id="province-${province}-influence-${playerId}" class="score-number"></td>
+							<td id="province-${province}-total-${playerId}" class="score-number total"></td>
+						</tr>
+					`
 					)
 					.join('')}
-			</tr>
-			`
+				<tr>
+					<td colspan="4">${_('Total')}</td>
+					<td id="total-${playerId}" class="score-number total">${player.score}</td>
+				</tr>
+			</tbody>
+		</table>
+		`,
+					'score-table-body'
 				)
 			})
 		}

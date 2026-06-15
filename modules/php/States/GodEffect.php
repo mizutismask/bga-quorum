@@ -69,7 +69,7 @@ class GodEffect extends GameState {
             $god->leftEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence'),
             ['amount' => abs($god->leftEffect), 'province' => $this->game->getProvinceName($leftProvince)]
         ));
-       
+
         $rightProvince = $this->getRightProvince($province);
         $this->game->nationInfluenceCounters[$rightProvince]->inc($god->rightEffect, new NotificationMessage(
             $god->rightEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence'),
@@ -117,13 +117,7 @@ class GodEffect extends GameState {
      */
     function zombie(int $playerId) {
         //zombie level 1 (random action)
-        $args = $this->getArgs($playerId);
-        if ($args['canTakeCard'] && $args['selectableRiverCards']) {
-            return $this->actTakeCard(array_shift($args['selectableRiverCards']->id), $playerId, $args);
-        } else {
-            $oshaxValidMoves = $args['oshaxValidMoves'];
-            $slot = $this->game->getRandomValue($oshaxValidMoves);
-            return $this->actTakeCard($slot, $playerId, $args);
-        }
+        $possible = Constants::ALL_PROVINCES;
+        return $this->actChooseProvince($this->game->getRandomValue($possible), $playerId, $this->getArgs($playerId));
     }
 }

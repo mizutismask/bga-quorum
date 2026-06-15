@@ -59,8 +59,8 @@ export class PlayerTurn {
 				})
 			}
 		} else {
-			this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('none')
-			this.game.river.setSelectionMode('none')
+			//this.game.playerTables[this.game.getPlayerId()].handStock!.setSelectionMode('none')
+			//this.game.river.setSelectionMode('none')
 		}
 	}
 
