@@ -337,6 +337,24 @@ export class Game extends BaseGame {
 	//// Utility methods
 	///////////////////////////////////////////////////
 
+	public getProvinceName(province: number): string {
+		switch (province) {
+			case PROVINCE_AFRICA:
+				return _('Africa')
+			case PROVINCE_GALLIA:
+				return _('Gallia')
+			case PROVINCE_ASIA:
+				return _('Asia')
+			case PROVINCE_GERMANIA:
+				return _('Germania')
+			case PROVINCE_HISPANIA:
+				return _('Hispania')
+			case PROVINCE_MACEDONIA:
+				return _('Macedonia')
+			default:
+				throw new Error(`Unknown province: ${province}`)
+		}
+	}
 	private getSelectedIdsAsParam(stock: CardStock<QuorumCard>) {
 		return stock
 			.getSelection()
@@ -357,26 +375,28 @@ export class Game extends BaseGame {
 	}
 
 	public addTooltipOnClickHelpButton(id, html, delay) {
-		/*let tooltip = new dijit.Tooltip({
-						label: html,
-						showDelay: delay
-						})
-						
-						dojo.connect($(id), 'click', (evt) => {
-							evt.stopPropagation()
-							
-							if (tooltip.state == 'SHOWING') {
-								this.closeCurrentTooltip()
-								} else {
-									this.closeCurrentTooltip()
-								tooltip.open($(id))
-								this.displayedTooltip = tooltip
-								}
-								})
-								
-								dojo.connect($(id), 'mouseleave', () => {
-									tooltip.close()
-									})*/
+		let tooltip = new dijit.Tooltip({
+			label: html,
+			showDelay: delay
+		})
+		log('create TooltipOnClickHelpButton', tooltip, id)
+
+		dojo.connect($(id), 'click', (evt) => {
+			evt.stopPropagation()
+			log('show TooltipOnClickHelpButton', id)
+
+			if (tooltip.state == 'SHOWING') {
+				this.closeCurrentTooltip()
+			} else {
+				this.closeCurrentTooltip()
+				tooltip.open($(id))
+				this.displayedTooltip = tooltip
+			}
+		})
+
+		dojo.connect($(id), 'mouseleave', () => {
+			tooltip.close()
+		})
 	}
 
 	public dontPreloadUselessAssets() {

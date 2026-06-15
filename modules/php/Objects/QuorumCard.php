@@ -40,6 +40,7 @@ class QuorumCard extends QuorumCardInfo {
         $copy->type = 0;
         $copy->type_arg = 0;
         unset($copy->power);
+        unset($copy->influence);
         return $copy;
     }
 }

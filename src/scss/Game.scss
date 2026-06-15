@@ -50,7 +50,7 @@ html {
 	}
 }
 
-.province-counters{
+.province-counters {
 	flex-wrap: wrap;
 }
 
@@ -219,23 +219,23 @@ svg {
 		display: none;
 		width: 25px;
 		height: 25px;
-		position: relative;
-		top: 10px;
-		left: 10px;
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
 	}
 
 	&.card-info-small {
 		display: none;
 		width: 11px;
 		height: 11px;
-		position: relative;
+		position: absolute;
 		top: 5px;
 		left: 5px;
 		font-size: x-small;
 	}
 }
 
-.card .card-sides .card-side.front .card-info {
+.bga-cards_card > .bga-cards_card-sides > .bga-cards_card-side.front > .card-info {
 	pointer-events: all;
 }
 

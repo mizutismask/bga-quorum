@@ -17,6 +17,8 @@ interface Card {
 interface QuorumCard extends Card {
 	name: string //translated
 	province: number
+	power: number
+	influence: number
 	isGod: boolean
 }
 interface Token extends Card {
@@ -85,6 +87,7 @@ interface QuorumGame /*extends Game*/ {
 	addTooltipOnClickHelpButton(idButton: string, tooltipContent: string, delay?: number): void
 	handSelectionChange(selection: NationTile[], lastChange: NationTile | null): void
 	takeAction(action: string, data?: any, options?: { lock: boolean; checkAction: boolean }): Promise<void>
+	getProvinceName(province: number): string
 }
 
 interface BoardConfig {

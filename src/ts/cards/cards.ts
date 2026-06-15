@@ -1,3 +1,4 @@
+import { log } from '../base-game'
 import { TooltipElement } from '../tooltipable'
 import { QuorumCard, QuorumGame } from '../types'
 import { CardsManagerBase } from './cardsManagerBase'
@@ -17,13 +18,15 @@ const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement)
 		info.innerText = '?'
 		info.classList.add('css-icon', 'card-info')
 		div.appendChild(info)
-		const tooltipContent = game.cardsManager.getTooltip(card)
-		//game.addTooltipHtml(div.id, tooltipContent)
-		game.addTooltipOnClickHelpButton(info.id, tooltipContent)
+		if (game.cardsManager.isCardVisible(card)) {
+			const tooltipContent = game.cardsManager.getTooltip(card)
+			game.setTooltip(div.id, tooltipContent)
+			game.addTooltipOnClickHelpButton(info.id, tooltipContent)
+		}
 	}
 }
 
-const multiplier = .55
+const multiplier = 0.55
 export class CardsManager extends CardsManagerBase<QuorumCard> {
 	constructor(public game: QuorumGame) {
 		super({
@@ -40,7 +43,7 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 				game.cardsManager.setBackBackground(div as HTMLDivElement, card)
 			},
 			cardWidth: 248 * multiplier,
-			cardHeight: 347 * multiplier,
+			cardHeight: 347 * multiplier
 		})
 	}
 
@@ -49,7 +52,11 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 	}
 
 	public getTooltipContent(): TooltipElement<QuorumCard>[] {
-		return [{ title: _('Objective'), contentProvider: (c: QuorumCard) => this.getDesc(c) }]
+		return [
+			{ title: _('Province'), contentProvider: (c: QuorumCard) => this.game.getProvinceName(c.province) },
+			{ title: _('Influence'), contentProvider: (c: QuorumCard) => c.influence.toString() },
+			{ title: _('Power'), contentProvider: (c: QuorumCard) => c.power.toString() }
+		]
 	}
 
 	public getDesc(card: QuorumCard) {
@@ -69,7 +76,7 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 	}
 
 	public setBackBackground(cardDiv: HTMLDivElement, card: QuorumCard) {
-		const cardType = card.province?? 7
+		const cardType = card.province ?? 7
 		const imageUrl = `${g_gamethemeurl}img/backs.jpg`
 		cardDiv.style.backgroundImage = `url('${imageUrl}')`
 		const imagePosition = cardType - 1
