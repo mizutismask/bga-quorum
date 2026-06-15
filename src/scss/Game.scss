@@ -15,14 +15,6 @@ $CARD_WIDTH: calc(#{$BASE_CARD_WIDTH}px * $cardSizeModifier); //also change in s
 $CARD_HEIGHT: calc(#{$BASE_CARD_HEIGHT}px * $cardSizeModifier);
 $CARD_RATIO: list.slash($BASE_CARD_WIDTH, $BASE_CARD_HEIGHT);
 
-@mixin selected-element {
-	box-shadow: 0 0 5px 5px rgb(200, 255, 47);
-}
-
-@mixin card-border {
-	border-radius: 3%;
-}
-
 html {
 	/*background: rgb(21, 104, 134);
     background-repeat: no-repeat;
@@ -136,19 +128,19 @@ svg {
 }
 
 .bga-cards_selected-card {
-	@include selected-element;
-	@include card-border;
+	@include vars.selected-element;
+	@include vars.card-border;
 }
 
 .quorum-card {
 	.card-side {
-		@include card-border;
+		@include vars.card-border;
 	}
 }
 
 .deck {
 	&[data-empty='true'] {
-		@include card-border;
+		@include vars.card-border;
 		outline: 2px dashed vars.$main-color;
 	}
 }
@@ -166,7 +158,7 @@ svg {
 
 .card-stock {
 	.slot {
-		@include card-border;
+		@include vars.card-border;
 		aspect-ratio: $CARD_RATIO;
 		width: $CARD_WIDTH;
 		background: hsla(0, 0%, 100%, 0.4);
@@ -262,7 +254,7 @@ svg {
 	.player-help-visible {
 		background-size: 200%;
 		background-image: url('img/helpCards.jpg');
-		@include card-border;
+		@include vars.card-border;
 		$helpVisibleModifier: 0.9;
 		width: calc(246px * $helpVisibleModifier);
 		height: calc(344px * $helpVisibleModifier);

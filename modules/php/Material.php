@@ -95,16 +95,15 @@ class Material {
         71 => new QuorumCardInfo(2, Constants::PROVINCE_GERMANIA, 3, Constants::CARD_TYPE_MILITARY),
         72 => new QuorumCardInfo(3, Constants::PROVINCE_GERMANIA, 2, Constants::CARD_TYPE_MILITARY),
       ],
-      2 => [
+      2 => [ 
         //gods
-        73 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD),
-        74 => new QuorumCardInfo(2, Constants::PROVINCE_ASIA, 1, Constants::CARD_TYPE_GOD),
-        75 => new QuorumCardInfo(3, Constants::PROVINCE_ASIA, 1, Constants::CARD_TYPE_GOD),
-        76 => new QuorumCardInfo(1, Constants::PROVINCE_HISPANIA, 1, Constants::CARD_TYPE_GOD),
-        77 => new QuorumCardInfo(2, Constants::PROVINCE_HISPANIA, 1, Constants::CARD_TYPE_GOD),
-        78 => new QuorumCardInfo(3, Constants::PROVINCE_HISPANIA, 1, Constants::CARD_TYPE_GOD),
-        79 => new QuorumCardInfo(1, Constants::PROVINCE_AFRICA, 1, Constants::CARD_TYPE_GOD),
-        80 => new QuorumCardInfo(2, Constants::PROVINCE_AFRICA, 1, Constants::CARD_TYPE_GOD),
+        73 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],1,1,),
+        74 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],-1,-1,),
+        75 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],1,1,),
+        76 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],-1,1,),
+        77 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],1,-1,),
+        78 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],1,-1,),
+        79 => new QuorumCardInfo(0, Constants::PROVINCE_NEUTRAL, 1, Constants::CARD_TYPE_GOD, [],-1,-1,),
       ]
     ];
   }

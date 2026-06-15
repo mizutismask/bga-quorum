@@ -8,3 +8,11 @@ $player-colors: (
 	'yellow': 'f9dd3b',
 	'red': 'd0535a'
 );
+
+@mixin selected-element {
+	box-shadow: 0 0 5px 5px $selected-color;
+}
+
+@mixin card-border {
+	border-radius: 3%;
+}

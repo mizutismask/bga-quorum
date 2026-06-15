@@ -12,12 +12,16 @@ class QuorumCardInfo {
     public int $influence;
     public array $tradeRessources;
     public bool $isGod;
+    public int $leftEffect;
+    public int $rightEffect;
 
-    public function __construct(int $power, int $province, int $influence, int $scoringType, array $tradeRessources = []) {
+    public function __construct(int $power, int $province, int $influence, int $scoringType, array $tradeRessources = [], int $leftEffect = 0, int $rightEffect = 0) {
         $this->power = $power;
         $this->province = $province;
         $this->tradeRessources = $tradeRessources;
         $this->influence = $influence;
         $this->scoringType = $scoringType;
+        $this->leftEffect = $leftEffect;
+        $this->rightEffect = $rightEffect;
     }
 }

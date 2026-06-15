@@ -31,6 +31,8 @@ class QuorumCard extends QuorumCardInfo {
         $this->power = $cardInfo->power;
         $this->province = $cardInfo->province;
         $this->influence = $cardInfo->influence;
+        $this->leftEffect = $cardInfo->leftEffect;
+        $this->rightEffect = $cardInfo->rightEffect;
         /*$this->$scoringType = $cardInfo->scoringType;
         $this->$tradeRessources = $cardInfo->tradeRessources;*/
     }
@@ -41,6 +43,8 @@ class QuorumCard extends QuorumCardInfo {
         $copy->type_arg = 0;
         unset($copy->power);
         unset($copy->influence);
+        unset($copy->leftEffect);
+        unset($copy->rightEffect);
         return $copy;
     }
 }

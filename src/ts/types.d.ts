@@ -67,6 +67,12 @@ interface QuorumGamedatas {
 	river: Array<QuorumCard>
 	riverTopCard: QuorumCard
 	tokens: Token[]
+	nationInfluenceCounter_1: number
+	nationInfluenceCounter_2: number
+	nationInfluenceCounter_3: number
+	nationInfluenceCounter_4: number
+	nationInfluenceCounter_5: number
+	nationInfluenceCounter_6: number
 }
 
 interface CounterValue {
@@ -88,6 +94,7 @@ interface QuorumGame /*extends Game*/ {
 	handSelectionChange(selection: NationTile[], lastChange: NationTile | null): void
 	takeAction(action: string, data?: any, options?: { lock: boolean; checkAction: boolean }): Promise<void>
 	getProvinceName(province: number): string
+	onProvinceClick(province: number): void
 }
 
 interface BoardConfig {

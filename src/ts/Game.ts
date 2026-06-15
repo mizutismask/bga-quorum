@@ -19,6 +19,7 @@ import { CardsManager } from './cards/cards'
 import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
 import { Board } from './Board'
+import { GodEffect } from './States/GodEffect'
 
 export const PROVINCE_NEUTRAL = 0
 export const PROVINCE_ASIA = 1
@@ -55,6 +56,7 @@ export class Game extends BaseGame {
 		this.bga = bga
 		this.bga.states.register('PlayerTurn', new PlayerTurn(this, this.bga))
 		this.bga.states.register('NextPlayer', new NextPlayer(this, this.bga))
+		this.bga.states.register('GodEffect', new GodEffect(this, this.bga))
 		this.bga.userPreferences.onChange = (pref_id, pref_value) => this.customPreferenceChanged(pref_id, pref_value)
 	}
 
@@ -97,6 +99,7 @@ export class Game extends BaseGame {
 
 		this.board = new Board(this, this.gamedatas.orderedProvinces)
 		this.createTokens()
+		this.showProvinceInfluence()
 
 		this.setupTooltips()
 		//this.setupHelpPopin()
@@ -116,7 +119,7 @@ export class Game extends BaseGame {
 
 		log('Ending game setup')
 	}
-
+	
 	private setupTooltips() {
 		//todo change counter names
 		this.setTooltipToClass('revealed-tokens-back-counter', _('counter1 tooltip'))
@@ -237,6 +240,13 @@ export class Game extends BaseGame {
 		}
 	}
 
+	private showProvinceInfluence() {
+		ALL_PROVINCES.forEach((province) => {
+			this.board.setInfluenceToken(province, this.gamedatas[`nationInfluenceCounter_${province}`])
+		})
+	}
+
+
 	private setupHelpPopin() {
 		new HelpManager(this, {
 			buttons: [
@@ -319,6 +329,10 @@ export class Game extends BaseGame {
 		}
 	}
 
+	onProvinceClick(province: number): void {
+		this.takeAction('actChooseProvince', { 'province': province }).then(() => Utils.removeClass('province-enabled', $('board')))
+	}
+
 	public onEnteringState(stateName: string, args: any) {
 		log('Entering state: ' + stateName, args)
 
@@ -352,7 +366,7 @@ export class Game extends BaseGame {
 			case PROVINCE_MACEDONIA:
 				return _('Macedonia')
 			default:
-				throw new Error(`Unknown province: ${province}`)
+				return _('Neutral')
 		}
 	}
 	private getSelectedIdsAsParam(stock: CardStock<QuorumCard>) {
@@ -379,11 +393,9 @@ export class Game extends BaseGame {
 			label: html,
 			showDelay: delay
 		})
-		log('create TooltipOnClickHelpButton', tooltip, id)
 
 		dojo.connect($(id), 'click', (evt) => {
 			evt.stopPropagation()
-			log('show TooltipOnClickHelpButton', id)
 
 			if (tooltip.state == 'SHOWING') {
 				this.closeCurrentTooltip()
@@ -484,6 +496,7 @@ export class Game extends BaseGame {
 			['highlightWinnerScore', ANIMATION_MS],
 			['materialMove', ANIMATION_MS],
 			['lastTurn', 1],
+			['setTableCounter', ANIMATION_MS*3],
 			['importantMessage', 3000]
 		]
 
@@ -497,6 +510,14 @@ export class Game extends BaseGame {
 				promise?.then(() => (this as any).notifqueue.onSynchronousNotificationEnd())
 			})
 		})
+	}
+
+	async notif_setTableCounter(args) {
+		log('notif_setTableCounter', args)
+		const { name, value, oldValue, inc, absInc, playerId } = args
+		if (name.startsWith('nationInfluenceCounter_')) {
+			return this.board.setInfluenceToken(name.replace('nationInfluenceCounter_', ''), value)
+		}
 	}
 
 	/**

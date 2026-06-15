@@ -68,7 +68,7 @@ class ExpansionManager {
             default:
                 $cardsInfo = Material::getCards()[2];
                 foreach ($cardsInfo as $i => $info) {
-                    $cards[] = array('type' => 2, 'type_arg' => $i, 'nbr' => 1);
+                    $cards[] = array('type' => 2, 'type_arg' => $i, 'nbr' => 2);
                 }
                 break;
         }

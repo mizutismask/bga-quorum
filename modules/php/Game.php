@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace Bga\Games\Quorum;
 
 use Bga\GameFramework\Components\Counters\PlayerCounter;
+use Bga\GameFramework\Components\Counters\TableCounter;
 use Bga\GameFramework\Components\Deck;
 use Bga\Games\Quorum\ExpansionManager;
 use Bga\Games\Quorum\Objects\QuorumCard;
@@ -51,6 +52,10 @@ class Game extends \Bga\GameFramework\Table {
      * @var array<PlayerCounter> $nationValueCounters
      */
     public array $nationValueCounters = [];
+    /**
+     * @var array<TableCounter> $nationInfluenceCounters
+     */
+    public array $nationInfluenceCounters = [];
 
     function __construct() {
         // Your global variables labels:
@@ -74,6 +79,7 @@ class Game extends \Bga\GameFramework\Table {
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province] = $this->counterFactory->createPlayerCounter("nationRankCounter_" . $province);
             $this->nationValueCounters[$province] = $this->counterFactory->createPlayerCounter("nationValueCounter_" . $province, 0, 15);
+            $this->nationInfluenceCounters[$province] = $this->counterFactory->createTableCounter("nationInfluenceCounter_" . $province, 1, 4);
         }
 
         $this->cards = $this->deckFactory->createDeck("card");
@@ -133,6 +139,7 @@ class Game extends \Bga\GameFramework\Table {
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province]->initDb(array_keys($players), count($players));
             $this->nationValueCounters[$province]->initDb(array_keys($players), 0);
+            $this->nationInfluenceCounters[$province]->initDb(2);
         }
 
         // TODO: setup the initial game situation here
@@ -214,6 +221,7 @@ class Game extends \Bga\GameFramework\Table {
         foreach (Constants::ALL_PROVINCES as $province) {
             $this->nationRankCounters[$province]->fillResult($result);
             $this->nationValueCounters[$province]->fillResult($result);
+            $this->nationInfluenceCounters[$province]->fillResult($result);
         }
 
         $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
