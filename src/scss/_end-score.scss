@@ -1,76 +1,129 @@
-.gamestate_endOfRound #score, .gamestate_gameEnd #score {
-	display: flex;
+.gamestate_EndOfRound #score,
+.gamestate_GameEnd #score .gamestate_EndScore #score,
+.gamestate_DebugGameEnd #score {
+	display: block;
+}
+#score {
+	display: none;
 }
 
-#score {
-   // display: none;
-    justify-content: center;
-    $border-color: #459dbe;
-    $shadow-color: #054259;
-    $winner-color: gold;
+#score-tables {
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+    flex-wrap: wrap;
+	$border-color: #8fbcb4;
+	$shadow-color: #054259;
+	$winner-color: gold;
+	$text-color: rgb(255, 255, 255);
 
-    #table-wrapper {
-        padding: 40px;
-        //background: url('img/score-background.png');//todo find something
-        background-size: 100% 100%;
+	padding: 2%;
+	//background: url('img/score-background.png');//todo find something
+	background-size: 100% 100%;
 
-        table {
+	.player-score-container {
+		border-radius: 10px;
+		display: flex;
+		gap: 35px;
+		justify-content: space-evenly;
+	}
 
-            tbody {
-                tr {
-                    border-top: 1px solid $border-color;
-                }
-            }
+	table {
+		tbody {
+			tr {
+				border-top: 1px solid $border-color;
+			}
+		}
 
-            td, th {
-                &:not(:first-child) {
-                    border-left: 1px solid $border-color;
-                }
-            }
+		td,
+		th {
+			&:not(:first-child) {
+				border-left: 1px solid $border-color;
+			}
+		}
 
-            tr {
-                height: 40px;
+		tr {
+			height: 40px;
 
-                th {
-                    text-align: center;
-                    color: white;
-                    text-shadow: 0px 0px 1px $shadow-color, 0px 0px 2px $shadow-color, 0px 0px 3px $shadow-color;
-                    padding: 8px;
-                }
+			th {
+				text-align: center;
+				color: $text-color;
+				text-shadow:
+					0px 0px 1px $shadow-color,
+					0px 0px 2px $shadow-color,
+					0px 0px 3px $shadow-color;
+				padding: 8px;
 
-                td {
-                    width: 100px;
-                    text-align: center;
+				h3 {
+					//ellipsis for long names
+					margin: 0;
+					display: -webkit-box;
+					-webkit-line-clamp: 2; /* Number of lines to show */
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+			}
 
-                    &:not(:first-child) {
-                        font-size: 150%;
-                        color: white;
-                        text-shadow: 0px 0px 1px $shadow-color, 0px 0px 2px $shadow-color, 0px 0px 3px $shadow-color;
-                    }
+			td {
+				width: 100px;
+				text-align: center;
 
-                    &.player-name {
-                        color: $shadow-color;
-                        width: 181px;
-                        font-weight: bold;
-                        text-shadow: 0px 0px 1px white, 0px 0px 2px white, 0px 0px 3px white;
-                        word-break: break-all;
-                        text-overflow: ellipsis;
-                        font-size: 120%;
-                    }
+				&:first-child {
+					//font-size: 150%;
+					color: $text-color;
+					text-shadow:
+						0px 0px 1px $shadow-color,
+						0px 0px 2px $shadow-color,
+						0px 0px 3px $shadow-color;
+				}
 
-                    &.total {
-                        font-weight: bold;
-                    }
-                    &.highlight {
-						color: $winner-color;
-					}
-                    
-                }
-            }
-        }
-    }
-    
-    .score-number {
+				&:not(:first-child) {
+					color: $text-color;
+					text-shadow:
+						0px 0px 1px $shadow-color,
+						0px 0px 2px $shadow-color,
+						0px 0px 3px $shadow-color;
+				}
+
+				&.player-name {
+					color: $shadow-color;
+					width: 181px;
+					font-weight: bold;
+					text-shadow:
+						0px 0px 1px white,
+						0px 0px 2px white,
+						0px 0px 3px white;
+					word-break: break-all;
+					text-overflow: ellipsis;
+					font-size: 120%;
+				}
+
+				&.total {
+					font-weight: bold;
+				}
+				&.highlight {
+					color: $winner-color;
+				}
+			}
+		}
+	}
+
+	.score-provinces-table {
+		/*td, th {
+			&:last-child {
+				border-right: 1px solid $border-color;
+			}
+		}*/
+	}
+	.score-types-table {
+		/*td, th {
+			&:first-child {
+				border-left: 1px solid $border-color;
+			}
+		}*/
+	}
+
+	.score-number {
 		transition: color 0.5s ease-in-out;
 
 		&.animatedScore {

@@ -11,98 +11,88 @@ export class ScoreBoard {
 		private players: QuorumPlayer[],
 		private orderedProvinces: number[]
 	) {
-		const headers = document.getElementById('scoretr')
-		if (!headers) throw new Error('scoretr not found to populate the scoreboard')
+		const container = document.getElementById('score-tables')
+		if (!container) {
+			throw new Error('score-tables not found')
+		}
 
-		const body = document.getElementById('score-table-body')
-		if (!body) throw new Error('score-table-body not found to populate the scoreboard')
+		if (!container.childElementCount) {
+			container.innerHTML = players
+				.map((player) => {
+					const playerId = Number(player.id)
 
-		if (!headers.childElementCount) {
-			headers.innerHTML = '<th></th>'
-			players.forEach((player) => {
-				const playerId = Number(player.id)
+					return `
+				<div class="player-score-container whiteblock">
+					
 
-				dojo.place(
-					`
-		<table id="score-${playerId}" class="score-player-table">
-			<thead>
-				<tr>
-					<th colspan="5" style="color: #${player.color}">
-						<span id="score-winner-${playerId}"></span>
-						${player.name}
-					</th>
-				</tr>
-				<tr>
-					<th></th>
-					<th>${_('Rank')}</th>
-					<th>${_('Cards count')}</th>
-					<th>${_('Influence')}</th>
-					<th>${_('Total')}</th>
-				</tr>
-			</thead>
-			<tbody>
-				${this.orderedProvinces
-					.map(
-						(province) => `
-						<tr>
-							<td class="province-${province}">${this.game.getProvinceName(province)}</td>
-							<td id="province-${province}-rank-${playerId}" class="score-number"></td>
-							<td id="province-${province}-cards-${playerId}" class="score-number"></td>
-							<td id="province-${province}-influence-${playerId}" class="score-number"></td>
-							<td id="province-${province}-total-${playerId}" class="score-number total"></td>
-						</tr>
-					`
-					)
-					.join('')}
-				<tr>
-					<td colspan="4">${_('Total')}</td>
-					<td id="total-${playerId}" class="score-number total">${player.score}</td>
-				</tr>
-			</tbody>
-		</table>
-		`,
-					'score-table-body'
-				)
+					<table id="score-${playerId}" class="score-player-table score-provinces-table">
+						<thead>
+							<tr>
+								<th><h3 style="color: #${player.color}">
+									<span id="score-winner-${playerId}"></span>
+									${player.name}
+								</h3></th>
+								<th>${_('Rank')}</th>
+								<th>${_('Cards count')}</th>
+								<th>${_('Influence')}</th>
+								<th>${_('Total')}</th>
+							</tr>
+						</thead>
+						<tbody>
+							${this.orderedProvinces
+								.map(
+									(province) => `
+										<tr>
+											<td class="province-${province}">
+												${this.game.getProvinceName(province)}
+											</td>
+											<td id="province-${province}-rank-${playerId}"></td>
+											<td id="province-${province}-cards-${playerId}"></td>
+											<td id="province-${province}-influence-${playerId}"></td>
+											<td id="province-${province}-total-${playerId}"></td>
+										</tr>
+									`
+								)
+								.join('')}
+							<tr>
+								<td colspan="4">${_('Total')}</td>
+								<td id="total-${playerId}">${player.score}</td>
+							</tr>
+						</tbody>
+					</table>
 
-				dojo.place(
-					`
-		<table id="score-types-${playerId}" class="score-player-table">
-			<thead>
-				<tr>
-					<th colspan="3" style="color: #${player.color}">
-						<span id="score-winner-${playerId}"></span>
-						${player.name}
-					</th>
-				</tr>
-				<tr>
-					<th></th>
-					<th>${''}</th>
-					<th>${_('Total')}</th>
-				</tr>
-			</thead>
-			<tbody>
-				${ALL_SCORING_TYPES.map(
-					(type) => `
-						<tr>
-							<td class="type-${type}">${this.game.getScoringTypeName(type)}</td>
-							<td id="type-${type}-computation-${playerId}" class="score-number"></td>
-							<td id="type-${type}-total-${playerId}" class="score-number total"></td>
-						</tr>
-					`
-				).join('')}
-				<tr>
-					<td colspan="3">${_('Total')}</td>
-					<td id="type-total-${playerId}" class="score-number total">${player.score}</td>
-				</tr>
-			</tbody>
-		</table>
-		`,
-					'score-table-body'
-				)
-			})
+					<table id="score-types-${playerId}" class="score-player-table score-types-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th></th>
+								<th>${_('Total')}</th>
+							</tr>
+						</thead>
+						<tbody>
+							${ALL_SCORING_TYPES.map(
+								(type) => `
+									<tr>
+										<td class="type-${type}">
+											${this.game.getScoringTypeName(type)}
+										</td>
+										<td id="type-${type}-computation-${playerId}"></td>
+										<td id="type-${type}-total-${playerId}"></td>
+									</tr>
+								`
+							).join('')}
+							<tr>
+								<td colspan="2">${_('Total')}</td>
+								<td id="type-total-${playerId}">${player.score}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			`
+				})
+				.join('')
 		}
 	}
-
 	public updateScores(players: QuorumPlayer[]) {
 		/*players.forEach((p) => {
             document.getElementById(`destination-reached${p.id}`).innerHTML = (
@@ -126,7 +116,7 @@ export class ScoreBoard {
 		return '-' + score.toString()
 	}
 
-	public updateScore(playerId: number, scoreType: string, score: number|string, animate: boolean = true) {
+	public updateScore(playerId: number, scoreType: string, score: number | string, animate: boolean = true) {
 		let elt = dojo.byId(scoreType)
 		if (!elt) {
 			const playerVariant = `${scoreType}-${playerId}`

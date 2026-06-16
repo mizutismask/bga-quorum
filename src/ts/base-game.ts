@@ -45,14 +45,7 @@ export abstract class BaseGame {
 			`
 		<div id="custom-game-area">
 			<div id="score">
-				<div id="table-wrapper">
-					<table>
-						<thead> 
-							<tr id="scoretr"></tr>
-						</thead>
-						<tbody id="score-table-body">
-						</tbody>
-					</table>
+				<div id="score-tables">
 				</div>
 			</div>
 

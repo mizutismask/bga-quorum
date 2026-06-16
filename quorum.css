@@ -488,42 +488,66 @@
   background-color: red;
 }
 
-.gamestate_endOfRound #score, .gamestate_gameEnd #score {
-  display: flex;
+.gamestate_EndOfRound #score,
+.gamestate_GameEnd #score .gamestate_EndScore #score,
+.gamestate_DebugGameEnd #score {
+  display: block;
 }
 
 #score {
-  justify-content: center;
+  display: none;
 }
-#score #table-wrapper {
-  padding: 40px;
+
+#score-tables {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2%;
   background-size: 100% 100%;
 }
-#score #table-wrapper table tbody tr {
-  border-top: 1px solid #459dbe;
+#score-tables .player-score-container {
+  border-radius: 10px;
+  display: flex;
+  gap: 35px;
+  justify-content: space-evenly;
 }
-#score #table-wrapper table td:not(:first-child), #score #table-wrapper table th:not(:first-child) {
-  border-left: 1px solid #459dbe;
+#score-tables table tbody tr {
+  border-top: 1px solid #8fbcb4;
 }
-#score #table-wrapper table tr {
+#score-tables table td:not(:first-child),
+#score-tables table th:not(:first-child) {
+  border-left: 1px solid #8fbcb4;
+}
+#score-tables table tr {
   height: 40px;
 }
-#score #table-wrapper table tr th {
+#score-tables table tr th {
   text-align: center;
-  color: white;
+  color: rgb(255, 255, 255);
   text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
   padding: 8px;
 }
-#score #table-wrapper table tr td {
+#score-tables table tr th h3 {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+#score-tables table tr td {
   width: 100px;
   text-align: center;
 }
-#score #table-wrapper table tr td:not(:first-child) {
-  font-size: 150%;
-  color: white;
+#score-tables table tr td:first-child {
+  color: rgb(255, 255, 255);
   text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
 }
-#score #table-wrapper table tr td.player-name {
+#score-tables table tr td:not(:first-child) {
+  color: rgb(255, 255, 255);
+  text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
+}
+#score-tables table tr td.player-name {
   color: #054259;
   width: 181px;
   font-weight: bold;
@@ -532,16 +556,30 @@
   text-overflow: ellipsis;
   font-size: 120%;
 }
-#score #table-wrapper table tr td.total {
+#score-tables table tr td.total {
   font-weight: bold;
 }
-#score #table-wrapper table tr td.highlight {
+#score-tables table tr td.highlight {
   color: gold;
 }
-#score .score-number {
+#score-tables .score-provinces-table {
+  /*td, th {
+  	&:last-child {
+  		border-right: 1px solid $border-color;
+  	}
+  }*/
+}
+#score-tables .score-types-table {
+  /*td, th {
+  	&:first-child {
+  		border-left: 1px solid $border-color;
+  	}
+  }*/
+}
+#score-tables .score-number {
   transition: color 0.5s ease-in-out;
 }
-#score .score-number.animatedScore {
+#score-tables .score-number.animatedScore {
   color: red !important;
   /*animation:  grow-then-shrink-animation 3s ;*/
 }
