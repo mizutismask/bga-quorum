@@ -6,7 +6,8 @@
 		display: contents;
 	}
 	#player-tables .player-table .cstm-player-hand,
-	#custom-game-area #river {//, #board .ghost-province
+	#custom-game-area #river {
+		//, #board .ghost-province
 		display: none;
 	}
 	#board {
@@ -27,7 +28,7 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	$border-color: #8fbcb4;
-	$shadow-color: #054259;
+	$shadow-color: #1f3f39;
 	$winner-color: gold;
 	$text-color: rgb(255, 255, 255);
 
@@ -43,6 +44,11 @@
 	}
 
 	table {
+		background-color: lightseagreen;
+		//border-collapse: separate;
+		border-spacing: 0;
+		border-radius: 10px;
+		overflow: hidden;
 		tbody {
 			tr {
 				border-top: 1px solid $border-color;
@@ -99,10 +105,10 @@
 						0px 0px 3px $shadow-color;
 				}
 
-                &:last-child {
-                    font-weight: bold;
-                    font-size: 120%;
-                }
+				&:last-child {
+					font-weight: bold;
+					font-size: 120%;
+				}
 
 				&.player-name {
 					color: $shadow-color;

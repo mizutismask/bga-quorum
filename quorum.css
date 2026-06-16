@@ -335,7 +335,7 @@
   font-weight: bold;
 }
 .counter span {
-  padding: 0 5px 0 5px;
+  padding: 0 2px 0 5px;
 }
 
 .counters {
@@ -539,6 +539,12 @@
   gap: 35px;
   justify-content: space-evenly;
 }
+#score-tables table {
+  background-color: lightseagreen;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
 #score-tables table tbody tr {
   border-top: 1px solid #8fbcb4;
 }
@@ -552,7 +558,7 @@
 #score-tables table tr th {
   text-align: center;
   color: rgb(255, 255, 255);
-  text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
+  text-shadow: 0px 0px 1px #1f3f39, 0px 0px 2px #1f3f39, 0px 0px 3px #1f3f39;
   padding: 8px;
 }
 #score-tables table tr th h3 {
@@ -568,18 +574,18 @@
 }
 #score-tables table tr td:first-child {
   color: rgb(255, 255, 255);
-  text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
+  text-shadow: 0px 0px 1px #1f3f39, 0px 0px 2px #1f3f39, 0px 0px 3px #1f3f39;
 }
 #score-tables table tr td:not(:first-child) {
   color: rgb(255, 255, 255);
-  text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
+  text-shadow: 0px 0px 1px #1f3f39, 0px 0px 2px #1f3f39, 0px 0px 3px #1f3f39;
 }
 #score-tables table tr td:last-child {
   font-weight: bold;
   font-size: 120%;
 }
 #score-tables table tr td.player-name {
-  color: #054259;
+  color: #1f3f39;
   width: 181px;
   font-weight: bold;
   text-shadow: 0px 0px 1px white, 0px 0px 2px white, 0px 0px 3px white;
@@ -989,6 +995,7 @@ html {
 
 .province-counters {
   flex-wrap: wrap;
+  gap: 5px;
 }
 
 #buttonResetRiver {
