@@ -228,7 +228,7 @@ class Game extends \Bga\GameFramework\Table {
         }
 
         $result['hand'] = $this->cardManager->getPlayerHand($currentPlayerId);
-        $result['river'] = $this->cardManager->getCardsInLocation("river");
+        $result['river'] = $this->cardManager->getPublicRiverCards();
         $result['riverTopCard'] = QuorumCard::stripSecretInfo($this->cardManager->getTopOfLocation("deck"));
 
         foreach ($result['players'] as $playerId => &$player) {

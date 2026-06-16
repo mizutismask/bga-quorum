@@ -3,6 +3,7 @@
 namespace Bga\Games\Quorum;
 
 use Bga\Games\Quorum\DeckManager;
+use Bga\Games\Quorum\Objects\QuorumCard;
 use Constants;
 
 const TABLE_CARD = "card";
@@ -32,8 +33,18 @@ class CardManager extends DeckManager {
             'type' => Constants::MATERIAL_TYPE_CARD,
             'from' => Constants::MATERIAL_LOCATION_DECK,
             'to' => Constants::MATERIAL_LOCATION_RIVER,
-            'material' => [$newCard],
+            'material' => [$newCard->isGod ? QuorumCard::stripSecretInfo($newCard) : $newCard],
         ]);
+    }
+
+    public function getPublicRiverCards(): array {
+        $cards = $this->getCardsInLocation("river");
+        $publicInfo = [];
+        foreach ($cards as $i => $c) {
+            if ($c->isGod) $publicInfo[] = QuorumCard::stripSecretInfo($c);
+            else $publicInfo[] = $c;
+        }
+        return $publicInfo;
     }
 
     public function sortPlayedCards() { //'province', "power"
