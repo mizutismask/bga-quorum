@@ -47,7 +47,10 @@ export class PlayerTable {
 		this.playedCardsStock = new BgaCards.SlotStock<QuorumCard>(
 			this.game.cardsManager,
 			$(`played-cards-${player.id}`),
-			{ slotsIds: generateSlotsIds('slot-', 12), mapCardToSlot: (card) => 'slot-' + card.location_arg }
+			{
+				slotsIds: generateSlotsIds('slot-', 12), mapCardToSlot: (card) => 'slot-' + card.location_arg,
+				//sort: BgaCards.sort('province', "power"), //cant work since they is slot mapping TODO
+			}
 		)
 		$(`played-cards-${player.id}`).querySelectorAll<HTMLElement>('.slot').forEach((element) => {
 			element.dataset.slotNumber = element.dataset.slotId.replace('slot-', '')

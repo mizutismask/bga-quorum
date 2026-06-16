@@ -489,9 +489,36 @@
 }
 
 .gamestate_EndOfRound #score,
-.gamestate_GameEnd #score .gamestate_EndScore #score,
+.gamestate_GameEnd #score,
+.gamestate_EndScore #score,
 .gamestate_DebugGameEnd #score {
-  display: block;
+  display: contents;
+}
+.gamestate_EndOfRound #player-tables .player-table .cstm-player-hand,
+.gamestate_EndOfRound #custom-game-area #river,
+.gamestate_GameEnd #player-tables .player-table .cstm-player-hand,
+.gamestate_GameEnd #custom-game-area #river,
+.gamestate_EndScore #player-tables .player-table .cstm-player-hand,
+.gamestate_EndScore #custom-game-area #river,
+.gamestate_DebugGameEnd #player-tables .player-table .cstm-player-hand,
+.gamestate_DebugGameEnd #custom-game-area #river {
+  display: none;
+}
+.gamestate_EndOfRound #board,
+.gamestate_GameEnd #board,
+.gamestate_EndScore #board,
+.gamestate_DebugGameEnd #board {
+  zoom: 0.5;
+}
+.gamestate_EndOfRound #player-tables .player-table .played-cards,
+.gamestate_EndOfRound #player-tables .player-table.own .played-cards,
+.gamestate_GameEnd #player-tables .player-table .played-cards,
+.gamestate_GameEnd #player-tables .player-table.own .played-cards,
+.gamestate_EndScore #player-tables .player-table .played-cards,
+.gamestate_EndScore #player-tables .player-table.own .played-cards,
+.gamestate_DebugGameEnd #player-tables .player-table .played-cards,
+.gamestate_DebugGameEnd #player-tables .player-table.own .played-cards {
+  zoom: 1;
 }
 
 #score {
@@ -503,7 +530,7 @@
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 2%;
+  padding: 20px 2%;
   background-size: 100% 100%;
 }
 #score-tables .player-score-container {
@@ -546,6 +573,10 @@
 #score-tables table tr td:not(:first-child) {
   color: rgb(255, 255, 255);
   text-shadow: 0px 0px 1px #054259, 0px 0px 2px #054259, 0px 0px 3px #054259;
+}
+#score-tables table tr td:last-child {
+  font-weight: bold;
+  font-size: 120%;
 }
 #score-tables table tr td.player-name {
   color: #054259;
