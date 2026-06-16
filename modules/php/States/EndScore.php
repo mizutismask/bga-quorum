@@ -57,14 +57,27 @@ class EndScore extends \Bga\GameFramework\States\GameState {
             $playedCards[$playerId] = $this->game->cardManager->getCardsInLocation("played-$playerId");
         }
 
+        $provinceTotalByPlayer = array_fill_keys(array_keys($this->game->getPlayers()), 0);
         foreach (Constants::ALL_PROVINCES as $province) {
             foreach ($players as $playerId => $player) {
-                $this->scoreProvince($playerId, $province,  $playedCards[$playerId]);
+                $total = $this->scoreProvince($playerId, $province,  $playedCards[$playerId]);
+                $provinceTotalByPlayer[$playerId] += $total;
             }
         }
 
+        foreach ($players as $playerId => $player) {
+            $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $provinceTotalByPlayer[$playerId], "scoreType" => "total"]);
+        }
+
+        $typeTotalByPlayer = array_fill_keys(array_keys($this->game->getPlayers()), 0);
         foreach ([Constants::CARD_TYPE_MILITARY, Constants::CARD_TYPE_TRADE, Constants::CARD_TYPE_ARCHITECTURE, Constants::CARD_TYPE_INTRIGUE] as $scoringType) {
-            $this->scoreCardType($scoringType, $playedCards);
+            $total = $this->scoreCardType($scoringType, $playedCards);
+            foreach ($players as $p => $player) {
+                $typeTotalByPlayer[$p] += $total[$p];
+            }
+        }
+        foreach ($players as $playerId => $player) {
+            $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $typeTotalByPlayer[$playerId], "scoreType" => "type-total"]);
         }
     }
 
@@ -80,15 +93,15 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
     /**
      * @param array<QuorumCard> $playedCards 
-     * @return void 
      */
-    private function scoreProvince(int $playerId, int $province, array $playedCards) {
+    private function scoreProvince(int $playerId, int $province, array $playedCards): int {
         $scoringMatch = [
             Constants::PROVINCE_GERMANIA => Constants::CARD_TYPE_INTRIGUE,
             Constants::PROVINCE_GALLIA => Constants::CARD_TYPE_MILITARY,
             Constants::PROVINCE_HISPANIA => Constants::CARD_TYPE_TRADE,
             Constants::PROVINCE_MACEDONIA => Constants::CARD_TYPE_ARCHITECTURE
         ];
+        $score = 0;
         $value = $this->game->nationValueCounters[$province]->get($playerId);
         //throw new \Exception(json_encode($this->game->nationValueCounters));
         if ($value > 0) {
@@ -125,6 +138,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     break;
             }
         }
+        return $score;
     }
 
     private function notifyProvinceScore(int $playerId, int $province, int $score, int $influence, int $rank, int $multiplier, int $cardsCount) {
@@ -143,27 +157,31 @@ class EndScore extends \Bga\GameFramework\States\GameState {
      * 
      * @param int $scoringType 
      * @param array<array<QuorumCard>> $playedCards 
-     * @return void 
      */
     private function scoreCardType(int $scoringType, array $playedCards) {
+        $scores = array_fill_keys(array_keys($this->game->getPlayers()), 0);
         foreach ($this->game->getPlayers() as $playerId => $player) {
             $cardsOfType = array_filter($playedCards[$playerId], fn($card) => $card->scoringType === $scoringType);
             switch ($scoringType) {
                 case Constants::CARD_TYPE_MILITARY:
-                    $this->scoreMilitary($playerId, $cardsOfType);
+                    $scores[$playerId] = $this->scoreMilitary($playerId, $cardsOfType);
+                    break;
                 case Constants::CARD_TYPE_TRADE:
-                    $this->scoreTrade($playerId, $cardsOfType);
+                    $scores[$playerId] = $this->scoreTrade($playerId, $cardsOfType);
+                    break;
                 case Constants::CARD_TYPE_ARCHITECTURE:
-                    $this->scoreArchitecture($playerId, $cardsOfType);
+                    $scores[$playerId] = $this->scoreArchitecture($playerId, $cardsOfType);
+                    break;
                 case Constants::CARD_TYPE_INTRIGUE:
-                    $this->scoreIntrigue($playerId, $playedCards[$playerId]);
+                    $scores[$playerId] = $this->scoreIntrigue($playerId, $playedCards[$playerId]);
+                    break;
             }
         }
+        return $scores;
     }
 
     /**
      * @param array<QuorumCard> $playedCards 
-     * @return void 
      */
     private function scoreIntrigue(int $playerId, $playedCards) {
         $threes = array_filter($playedCards, fn($card) => $card->power === 3);
@@ -172,11 +190,11 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
 
         $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_INTRIGUE, $score, count($threes) . "x" . count($intrigues));
+        return $score;
     }
 
     /**
      * @param array<QuorumCard> $cardsOfType 
-     * @return void 
      */
     private function scoreTrade(int $playerId, $cardsOfType) {
         $resourceCounts = [];
@@ -206,24 +224,24 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
 
         $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_TRADE, $score, $computation);
+        return $score;
     }
 
     /**
      * @param array<QuorumCard> $cardsOfType 
-     * @return void 
      */
-    private function scoreArchitecture(int $playerId, $cardsOfType) {
+    private function scoreArchitecture(int $playerId, $cardsOfType): int {
         $pointsByCount = [0 => 0, 1 => 1, 2 => 4, 3 => 8, 4 => 12, 5 => 18, 6 => 24];
         $points = $pointsByCount[count($cardsOfType)];
+        $this->game->playerScore->inc($playerId, $points, new NotificationMessage(""));
         $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_ARCHITECTURE, $points, count($cardsOfType) . "->" . $points);
         return $points;
     }
 
     /**
      * @param array<QuorumCard> $cardsOfType 
-     * @return void 
      */
-    private function scoreMilitary(int $playerId, $cardsOfType) {
+    private function scoreMilitary(int $playerId, $cardsOfType): int {
         $powerCounts = [];
 
         foreach ($cardsOfType as $card) {
@@ -267,5 +285,6 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $score += $pairs23 * 5;
         $this->game->playerScore->inc($playerId, $pairs23 * 5, new NotificationMessage(""));
         $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_MILITARY, $score, $groupsOfThree . "x10 + " . $pairs12 + $pairs23 . "x5");
+        return $score;
     }
 }
