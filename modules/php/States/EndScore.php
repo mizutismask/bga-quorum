@@ -37,6 +37,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
      */
     public function onEnteringState() {
         // Here, we would compute scores if they are not updated live, and compute average statistics
+        $this->game->cardManager->sortPlayedCards();
         $this->scorePoints();
         $this->scoreTieBreaker();
 

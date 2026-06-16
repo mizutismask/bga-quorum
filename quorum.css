@@ -508,7 +508,7 @@
 .gamestate_GameEnd #board,
 .gamestate_EndScore #board,
 .gamestate_DebugGameEnd #board {
-  zoom: 0.5;
+  zoom: 0.7;
 }
 .gamestate_EndOfRound #player-tables .player-table .played-cards,
 .gamestate_EndOfRound #player-tables .player-table.own .played-cards,
@@ -645,7 +645,7 @@
   flex-wrap: nowrap;
 }
 #player-tables .player-table.own .played-cards {
-  zoom: 0.65;
+  zoom: 0.83;
 }
 #player-tables .player-table.own .played-cards .slot {
   /*&::before {

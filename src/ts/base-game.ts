@@ -12,7 +12,7 @@ export const log = isDebug ? console.log.bind(window.console) : function () {}
 export abstract class BaseGame {
 	protected player_id!: string
 	protected players!: { [playerId: number]: Player }
-	public playerTables: { [playerId: number]: PlayerTable } = []
+	public playerTables: Record<number, PlayerTable> = {};
 	protected playerNumber!: number
 	// @ts-ignore
 	public animationManager: BgaAnimations.Manager

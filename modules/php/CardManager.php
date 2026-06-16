@@ -35,4 +35,24 @@ class CardManager extends DeckManager {
             'material' => [$newCard],
         ]);
     }
+
+    public function sortPlayedCards() { //'province', "power"
+        foreach ($this->game->getPlayers() as $playerId => $player) {
+            $cards = $this->getCardsInLocation("played-$playerId");
+            usort($cards, function ($a, $b) {
+                return [$a->scoringType, $a->power] <=> [$b->scoringType, $b->power];
+            });
+            foreach ($cards as $i => $card) {
+                $this->deck->moveCard($card->id, "played-$playerId", $i + 1);
+            }
+            $refreshed = $this->getCardsInLocation("played-$playerId", null, "location_arg");
+            $this->game->notify->all("materialMove",  "",  [
+                'playerId' => $playerId,
+                'type' => $this->materialType,
+                'from' => "played-$playerId",
+                'to' => "played-$playerId",
+                'material' => $refreshed,
+            ]);
+        }
+    }
 }

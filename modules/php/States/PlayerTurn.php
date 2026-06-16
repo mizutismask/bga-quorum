@@ -155,7 +155,7 @@ class PlayerTurn extends GameState {
         $godInHand = array_filter($playerHand, fn($card) => $card->isGod);
         if (count($godInHand) == 3) {
             //remove gods
-            $cards = array_filter($cards, fn($card) => !$card->isGod());
+            $cards = array_filter($cards, fn($card) => !$card->isGod);
         }
         return $cards;
     }

@@ -536,7 +536,6 @@ export class Game extends BaseGame {
 	}
 
 	async notif_setTableCounter(args) {
-		log('notif_setTableCounter', args)
 		const { name, value, oldValue, inc, absInc, playerId } = args
 		if (name.startsWith('nationInfluenceCounter_')) {
 			return this.board.setInfluenceToken(name.replace('nationInfluenceCounter_', ''), value)
@@ -548,12 +547,10 @@ export class Game extends BaseGame {
 	 * @param notif
 	 */
 	notif_score(notif: NotifScoreArgs) {
-		log('notif_score', notif)
 		this.scoreBoard.updateScore(notif.playerId, notif.scoreType, notif.score)
 	}
 
 	notif_materialMove(notif: NotifMaterialMove) {
-		log('notif_materialMove', notif)
 		switch (notif.type) {
 			case 'CARD':
 				const cards = notif.material as Array<QuorumCard>
@@ -572,7 +569,11 @@ export class Game extends BaseGame {
 		const card = cards.at(0)
 		if (notif.to.startsWith('played-')) {
 			const pId = notif.to.replace('played-', '')
-			this.playerTables[pId].playedCardsStock.addCard(card)
+			if (cards.length == 1) {
+				return await this.playerTables[pId].playedCardsStock.addCard(card)
+			} else {
+				return await this.playerTables[pId].playedCardsStock.addCards(cards, {})
+			}
 		} else {
 			switch (notif.to) {
 				case 'HAND':
