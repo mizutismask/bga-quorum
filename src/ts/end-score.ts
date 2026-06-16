@@ -1,3 +1,4 @@
+import { ALL_SCORING_TYPES } from './Game'
 import { QuorumGame, QuorumPlayer } from './types'
 
 /**
@@ -18,7 +19,6 @@ export class ScoreBoard {
 
 		if (!headers.childElementCount) {
 			headers.innerHTML = '<th></th>'
-
 			players.forEach((player) => {
 				const playerId = Number(player.id)
 
@@ -63,6 +63,42 @@ export class ScoreBoard {
 		`,
 					'score-table-body'
 				)
+
+				dojo.place(
+					`
+		<table id="score-types-${playerId}" class="score-player-table">
+			<thead>
+				<tr>
+					<th colspan="3" style="color: #${player.color}">
+						<span id="score-winner-${playerId}"></span>
+						${player.name}
+					</th>
+				</tr>
+				<tr>
+					<th></th>
+					<th>${''}</th>
+					<th>${_('Total')}</th>
+				</tr>
+			</thead>
+			<tbody>
+				${ALL_SCORING_TYPES.map(
+					(type) => `
+						<tr>
+							<td class="type-${type}">${this.game.getScoringTypeName(type)}</td>
+							<td id="type-${type}-computation-${playerId}" class="score-number"></td>
+							<td id="type-${type}-total-${playerId}" class="score-number total"></td>
+						</tr>
+					`
+				).join('')}
+				<tr>
+					<td colspan="3">${_('Total')}</td>
+					<td id="type-total-${playerId}" class="score-number total">${player.score}</td>
+				</tr>
+			</tbody>
+		</table>
+		`,
+					'score-table-body'
+				)
 			})
 		}
 	}
@@ -90,7 +126,7 @@ export class ScoreBoard {
 		return '-' + score.toString()
 	}
 
-	public updateScore(playerId: number, scoreType: string, score: number, animate: boolean = true) {
+	public updateScore(playerId: number, scoreType: string, score: number|string, animate: boolean = true) {
 		let elt = dojo.byId(scoreType)
 		if (!elt) {
 			const playerVariant = `${scoreType}-${playerId}`

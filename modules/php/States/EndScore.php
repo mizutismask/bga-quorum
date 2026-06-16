@@ -102,7 +102,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
-                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
+                    $this->notifyProvinceScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
                     break;
                 case Constants::PROVINCE_AFRICA:
                     $cardsCount = count(array_filter($playedCards, fn($card) => $card->power === 1));
@@ -111,7 +111,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
-                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
+                    $this->notifyProvinceScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
                     break;
                 case Constants::PROVINCE_ASIA:
                     $cardsCount = count(array_filter($playedCards, fn($card) => $card->power === 2));
@@ -120,17 +120,22 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $multiplier = max(0, $influence - $rank + 1);
                     $score = $cardsCount * $multiplier;
                     $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
-                    $this->notifyScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
+                    $this->notifyProvinceScore($playerId, $province, $score, $influence, $rank, $multiplier, $cardsCount);
                     break;
             }
         }
     }
 
-    private function notifyScore(int $playerId, int $province, int $score, int $influence, int $rank, int $multiplier, int $cardsCount) {
+    private function notifyProvinceScore(int $playerId, int $province, int $score, int $influence, int $rank, int $multiplier, int $cardsCount) {
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $rank, "scoreType" => "province-$province-rank"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $multiplier, "scoreType" => "province-$province-influence"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]);
+    }
+
+    private function notifyCardTypeScore(int $playerId, int $type, int $score, string $computation) {
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $computation, "scoreType" => "type-$type-computation"]);
+        $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"]);
     }
 
     /**
@@ -164,6 +169,8 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $intrigues = array_filter($playedCards, fn($card) => $card->scoringType === Constants::CARD_TYPE_INTRIGUE);
         $score = count($threes) * count($intrigues);
         $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
+
+        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_INTRIGUE, $score, count($threes) . "x" . count($intrigues));
     }
 
     /**
@@ -180,17 +187,24 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         }
 
         $score = 0;
+        $computation = "";
 
         foreach ($resourceCounts as $count) {
             if ($count >= 4) {
                 $score += 6;
+                $computation .= "+6";
             } elseif ($count === 3) {
                 $score += 4;
+                $computation .= "+4";
             } elseif ($count === 2) {
                 $score += 2;
+                $computation .= "+2";
             }
         }
+        $computation = ltrim($computation, '+');
         $this->game->playerScore->inc($playerId, $score, new NotificationMessage(""));
+
+        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_TRADE, $score, $computation);
     }
 
     /**
@@ -199,7 +213,9 @@ class EndScore extends \Bga\GameFramework\States\GameState {
      */
     private function scoreArchitecture(int $playerId, $cardsOfType) {
         $pointsByCount = [0 => 0, 1 => 1, 2 => 4, 3 => 8, 4 => 12, 5 => 18, 6 => 24];
-        return $pointsByCount[count($cardsOfType)];
+        $points = $pointsByCount[count($cardsOfType)];
+        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_ARCHITECTURE, $points, count($cardsOfType) . "->" . $points);
+        return $points;
     }
 
     /**
@@ -223,6 +239,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         );
 
         $score += $groupsOfThree * 10;
+        $this->game->playerScore->inc($playerId, $groupsOfThree * 10, new NotificationMessage(""));
 
         $powerCounts[1] = ($powerCounts[1] ?? 0) - $groupsOfThree;
         $powerCounts[2] = ($powerCounts[2] ?? 0) - $groupsOfThree;
@@ -235,6 +252,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         );
 
         $score += $pairs12 * 5;
+        $this->game->playerScore->inc($playerId, $pairs12 * 5, new NotificationMessage(""));
 
         $powerCounts[1] -= $pairs12;
         $powerCounts[2] -= $pairs12;
@@ -247,5 +265,6 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
         $score += $pairs23 * 5;
         $this->game->playerScore->inc($playerId, $pairs23 * 5, new NotificationMessage(""));
+        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_MILITARY, $score, $groupsOfThree . "x10 + " . $pairs12 + $pairs23 . "x5");
     }
 }

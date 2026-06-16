@@ -93,6 +93,7 @@ interface QuorumGame /*extends Game*/ {
 	addTooltipOnClickHelpButton(idButton: string, tooltipContent: string, delay?: number): void
 	handSelectionChange(selection: NationTile[], lastChange: NationTile | null): void
 	takeAction(action: string, data?: any, options?: { lock: boolean; checkAction: boolean }): Promise<void>
+	getScoringTypeName(type: number): string
 	getProvinceName(province: number): string
 	onProvinceClick(province: number): void
 }
@@ -141,7 +142,7 @@ interface NotifPointsArgs {
 
 interface NotifScoreArgs {
 	playerId: number
-	score: number
+	score: number|string
 	scoreType: string
 }
 

@@ -38,6 +38,13 @@ const ALL_PROVINCES = [
 	PROVINCE_HISPANIA
 ]
 
+export const CARD_TYPE_MILITARY = 11
+export const CARD_TYPE_INTRIGUE = 12
+export const CARD_TYPE_ARCHITECTURE = 13
+export const CARD_TYPE_TRADE = 14
+
+export const ALL_SCORING_TYPES = [CARD_TYPE_MILITARY, CARD_TYPE_INTRIGUE, CARD_TYPE_ARCHITECTURE, CARD_TYPE_TRADE]
+
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
 
@@ -119,7 +126,7 @@ export class Game extends BaseGame {
 
 		log('Ending game setup')
 	}
-	
+
 	private setupTooltips() {
 		//todo change counter names
 		this.setTooltipToClass('revealed-tokens-back-counter', _('counter1 tooltip'))
@@ -246,7 +253,6 @@ export class Game extends BaseGame {
 		})
 	}
 
-
 	private setupHelpPopin() {
 		new HelpManager(this, {
 			buttons: [
@@ -330,7 +336,9 @@ export class Game extends BaseGame {
 	}
 
 	onProvinceClick(province: number): void {
-		this.takeAction('actChooseProvince', { 'province': province }).then(() => Utils.removeClass('province-enabled', $('board')))
+		this.takeAction('actChooseProvince', { 'province': province }).then(() =>
+			Utils.removeClass('province-enabled', $('board'))
+		)
 	}
 
 	public onEnteringState(stateName: string, args: any) {
@@ -367,6 +375,21 @@ export class Game extends BaseGame {
 				return _('Macedonia')
 			default:
 				return _('Neutral')
+		}
+	}
+
+	public getScoringTypeName(scoringType: number): string {
+		switch (scoringType) {
+			case CARD_TYPE_ARCHITECTURE:
+				return _('Architecture')
+			case CARD_TYPE_INTRIGUE:
+				return _('Intrigue')
+			case CARD_TYPE_MILITARY:
+				return _('Military')
+			case CARD_TYPE_TRADE:
+				return _('Trade')
+			default:
+				return _('Unknown')
 		}
 	}
 	private getSelectedIdsAsParam(stock: CardStock<QuorumCard>) {
@@ -496,7 +519,7 @@ export class Game extends BaseGame {
 			['highlightWinnerScore', ANIMATION_MS],
 			['materialMove', ANIMATION_MS],
 			['lastTurn', 1],
-			['setTableCounter', ANIMATION_MS*3],
+			['setTableCounter', ANIMATION_MS * 3],
 			['importantMessage', 3000]
 		]
 
