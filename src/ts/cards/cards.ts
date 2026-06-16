@@ -52,8 +52,12 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 	}
 
 	public getTooltipContent(): TooltipElement<QuorumCard>[] {
-		return [
-			{ title: _('Power:'), contentProvider: (c: QuorumCard) => c.power.toString(), classes: 'card-tooltip-elmt' },
+		const result: TooltipElement<QuorumCard>[] = [
+			{
+				title: _('Power:'),
+				contentProvider: (c: QuorumCard) => (c.isGod ? '' : c.power.toString()),
+				classes: 'card-tooltip-elmt'
+			},
 			{
 				title: _('Influence:'),
 				contentProvider: (c: QuorumCard) => c.influence.toString(),
@@ -70,6 +74,7 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 				classes: 'card-tooltip-elmt'
 			}
 		]
+		return result
 	}
 
 	public getDesc(card: QuorumCard) {
