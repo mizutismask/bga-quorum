@@ -204,14 +204,13 @@ class Game extends \Bga\GameFramework\Table {
     */
     protected function getAllDatas(int $currentPlayerId): array {
         $stateName = $this->getStateName();
-        $isEnd = $stateName === 'endScore' || $stateName === 'gameEnd' || $stateName === 'debugGameEnd';
+        $isEnd = $stateName === 'EndScore' || $stateName === 'GameEnd' || $stateName === 'DebugGameEnd';
 
         $result = [];
         $result['expansion'] = $this->expansionManager->getExpansion();
         $result['version'] = $this->getGameVersion();
         $result['tokens'] = $this->tokenManager->getAll("card_location, card_location_arg");
         $result['orderedProvinces'] = $this->globals->get(Constants::GLBL_ORDERED_PROVINCES);
-        $this->dump('****************orderedProvinces***', $result['orderedProvinces']);
 
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
@@ -246,6 +245,27 @@ class Game extends \Bga\GameFramework\Table {
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
         if ($isEnd) {
+            foreach ($result['players'] as $playerId => &$player) {
+                foreach (Constants::ALL_PROVINCES as $province) {
+                    $details = $this->globals->get("score-$playerId-province-$province");
+                    if ($details) {
+                        foreach ($details as $item) {
+                            $result['scoreProvinceDetails'][] = $item;
+                        }
+                    }
+                }
+                $result['scoreProvinceDetails'][] = $this->globals->get("score-$playerId-province-total");
+                foreach ([Constants::CARD_TYPE_MILITARY, Constants::CARD_TYPE_TRADE, Constants::CARD_TYPE_ARCHITECTURE, Constants::CARD_TYPE_INTRIGUE] as $type) {
+                    $details = $this->globals->get("score-$playerId-type-$type");
+                    if ($details) {
+                        foreach ($details as $item) {
+                            $result['scoreTypeDetails'][] = $item;
+                        }
+                    }
+                }
+                $result['scoreProvinceDetails'][] = $this->globals->get("score-$playerId-type-total");
+            }
+
             $maxScore = $this->playerScore->getMax();
             $result['winners'] = array_keys(array_filter($result['players'], fn($player) => intval($player['score'] == $maxScore)));
             if (count($result['winners']) > 1) {

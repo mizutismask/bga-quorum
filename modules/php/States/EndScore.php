@@ -68,6 +68,11 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
         foreach ($players as $playerId => $player) {
             $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $provinceTotalByPlayer[$playerId], "scoreType" => "total"]);
+            $this->game->globals->set("score-$playerId-province-total", [
+                "playerId" => $playerId,
+                "score" => $provinceTotalByPlayer[$playerId],
+                "scoreType" => "total"
+            ]);
         }
 
         $typeTotalByPlayer = array_fill_keys(array_keys($this->game->getPlayers()), 0);
@@ -79,6 +84,14 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         }
         foreach ($players as $playerId => $player) {
             $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $typeTotalByPlayer[$playerId], "scoreType" => "type-total"]);
+            $this->game->globals->set(
+                "score-$playerId-type-total",
+                [
+                    "playerId" => $playerId,
+                    "score" => $typeTotalByPlayer[$playerId],
+                    "scoreType" => "type-total"
+                ]
+            );
         }
     }
 
@@ -147,11 +160,21 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $multiplier, "scoreType" => "province-$province-influence"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]);
+        $this->game->globals->set("score-$playerId-province-$province", [
+            ["playerId" => $playerId, "score" => $rank, "scoreType" => "province-$province-rank"],
+            ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"],
+            ["playerId" => $playerId, "score" => $multiplier, "scoreType" => "province-$province-influence"],
+            ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]
+        ]);
     }
 
     private function notifyCardTypeScore(int $playerId, int $type, int $score, string $computation) {
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $computation, "scoreType" => "type-$type-computation"]);
         $this->game->notify->all("score", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"]);
+        $this->game->globals->set("score-$playerId-type-$type", [
+            ["playerId" => $playerId, "score" => $computation, "scoreType" => "type-$type-computation"],
+            ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"],
+        ]);
     }
 
     /**
@@ -234,7 +257,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
     private function scoreArchitecture(int $playerId, $cardsOfType): int {
         $pointsByCount = [0 => 0, 1 => 1, 2 => 4, 3 => 8, 4 => 12, 5 => 18, 6 => 24];
         $differentSubTypes = array_unique(array_map(fn($card) => Material::getSubArchitectureType($card->type_arg), $cardsOfType));
-        $index = count($differentSubTypes) ;
+        $index = count($differentSubTypes);
         $points = $pointsByCount[$index];
         $this->game->playerScore->inc($playerId, $points, new NotificationMessage(""));
         $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_ARCHITECTURE, $points, count($differentSubTypes) . "->" . $points);

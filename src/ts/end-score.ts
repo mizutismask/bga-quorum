@@ -56,7 +56,7 @@ export class ScoreBoard {
 								.join('')}
 							<tr>
 								<td colspan="4">${_('Total')}</td>
-								<td id="total-${playerId}">${player.score}</td>
+								<td id="total-${playerId}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -83,7 +83,7 @@ export class ScoreBoard {
 							).join('')}
 							<tr>
 								<td colspan="2">${_('Total')}</td>
-								<td id="type-total-${playerId}">${player.score}</td>
+								<td id="type-total-${playerId}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -93,29 +93,7 @@ export class ScoreBoard {
 				.join('')
 		}
 	}
-	public updateScores(players: QuorumPlayer[]) {
-		/*players.forEach((p) => {
-            document.getElementById(`destination-reached${p.id}`).innerHTML = (
-                p.completedDestinations.length + p.sharedCompletedDestinationsCount
-            ).toString();
-            document.getElementById(`revealed-tokens-back${p.id}`).innerHTML = p.revealedTokensBackCount.toString();
-            document.getElementById(`destination-unreached${p.id}`).innerHTML = this.preventMinusZero(
-                p.uncompletedDestinations?.length
-            );
-            document.getElementById(`revealed-tokens-left${p.id}`).innerHTML = this.preventMinusZero(
-                p.revealedTokensLeftCount
-            );
-            document.getElementById(`total${p.id}`).innerHTML = p.score.toString();
-        });*/
-	}
-
-	private preventMinusZero(score: number) {
-		if (score === 0) {
-			return '0'
-		}
-		return '-' + score.toString()
-	}
-
+	
 	public updateScore(playerId: number, scoreType: string, score: number | string, animate: boolean = true) {
 		let elt = dojo.byId(scoreType)
 		if (!elt) {

@@ -21,8 +21,7 @@ interface QuorumCard extends Card {
 	influence: number
 	isGod: boolean
 }
-interface Token extends Card {
-}
+interface Token extends Card {}
 interface NationTile extends Card {}
 interface TreasureCard extends Card {}
 interface LegacyCard extends Card {}
@@ -53,7 +52,8 @@ interface QuorumGamedatas {
 	turnOrderClockwise: boolean
 	expansion: number
 	// counters
-	scores?: Array<NotifScoreArgs>
+	scoreProvinceDetails?: Array<NotifScoreArgs>
+	scoreTypeDetails?: Array<NotifScoreArgs>
 	winners: number[]
 	version: string
 	counters: Map<string, CounterValue>
@@ -142,7 +142,7 @@ interface NotifPointsArgs {
 
 interface NotifScoreArgs {
 	playerId: number
-	score: number|string
+	score: number | string
 	scoreType: string
 }
 

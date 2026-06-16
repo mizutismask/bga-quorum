@@ -112,7 +112,8 @@ export class Game extends BaseGame {
 		//this.setupHelpPopin()
 
 		this.scoreBoard = new ScoreBoard(this, this.getPlayersInOrder(), this.gamedatas.orderedProvinces)
-		this.gamedatas.scores?.forEach((s) => this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score))
+		this.gamedatas.scoreProvinceDetails?.forEach((s) => this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score))
+		this.gamedatas.scoreTypeDetails?.forEach((s) => this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score))
 		if (this.gamedatas.winners) {
 			this.gamedatas.winners.forEach((pId) => this.scoreBoard.highlightWinnerScore(pId))
 		}
