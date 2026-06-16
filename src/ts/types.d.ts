@@ -20,6 +20,8 @@ interface QuorumCard extends Card {
 	power: number
 	influence: number
 	isGod: boolean
+	scoringType: number
+	architectureSubType: number
 }
 interface Token extends Card {}
 interface NationTile extends Card {}
@@ -94,6 +96,7 @@ interface QuorumGame /*extends Game*/ {
 	handSelectionChange(selection: NationTile[], lastChange: NationTile | null): void
 	takeAction(action: string, data?: any, options?: { lock: boolean; checkAction: boolean }): Promise<void>
 	getScoringTypeName(type: number): string
+	getFullScoringTypeName(card: QuorumCard): string
 	getProvinceName(province: number): string
 	onProvinceClick(province: number): void
 }

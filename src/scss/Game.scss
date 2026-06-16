@@ -30,6 +30,16 @@ html {
 	display: none !important;
 }
 
+.card-tooltip-elmt,
+.card-tooltip-elmt + span {
+	display: inline;
+	margin-left: 5px;
+}
+.card-tooltip-elmt + span::after {
+	content: '\A';
+	white-space: pre;
+}
+
 .province-counter {
 	.icon {
 		background-image: url('img/provinces-logos.png');

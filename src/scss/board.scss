@@ -42,7 +42,7 @@
 			left: 50%;
 			transform: translateX(-50%);
 			border-radius: 50%;
-			filter:drop-shadow(0px 0px 7px black);
+			filter: drop-shadow(0px 0px 7px black);
 
 			&.province-enabled {
 				@include vars.selected-element;
@@ -65,6 +65,9 @@
 				}
 				&[data-value='4'] {
 					background-position: #{calc(3 * 100% / 3)} 50%;
+				}
+				&:hover {
+					scale: 1.4;
 				}
 			}
 		}
@@ -137,6 +140,9 @@
 					.token {
 						//width: 50%;
 						position: relative;
+						&:hover {
+							opacity: 1;
+						}
 					}
 				}
 
@@ -202,6 +208,10 @@
 					&[data-color='#{$color}'] {
 						background-color: ##{$color};
 					}
+				}
+
+				&:hover {
+					opacity: 0.5;
 				}
 			}
 		}

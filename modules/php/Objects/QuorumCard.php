@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Quorum\Objects;
 
+use Bga\Games\Quorum\Material;
 
 /**
  * A QuorumCard is a physical card. It contains informations from matching QuorumCardInfo, with technical informations like id and location.
@@ -35,6 +36,7 @@ class QuorumCard extends QuorumCardInfo {
         $this->rightEffect = $cardInfo->rightEffect;
         $this->scoringType = $cardInfo->scoringType;
         $this->tradeRessources = $cardInfo->tradeRessources;
+        $this->architectureSubType = Material::getSubArchitectureType($this->type_arg);
     }
 
     public static function stripSecretInfo(QuorumCard $card): QuorumCard {

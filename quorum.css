@@ -734,6 +734,9 @@
 #board .province .province-token-slot .province-token[data-value="4"] {
   background-position: 100% 50%;
 }
+#board .province .province-token-slot .province-token:hover {
+  scale: 1.4;
+}
 #board .province .province-slots .province-slot {
   width: 15.6%;
   aspect-ratio: 1;
@@ -791,6 +794,9 @@
 #board .province .province-slots .province-slot.slot-0 .token {
   position: relative;
 }
+#board .province .province-slots .province-slot.slot-0 .token:hover {
+  opacity: 1;
+}
 #board .province .province-slots .province-slot[data-child-count="2"] .token:nth-child(1) {
   transform: translateX(0%);
 }
@@ -841,6 +847,9 @@
 }
 #board .province .province-slots .token[data-color=d0535a] {
   background-color: #d0535a;
+}
+#board .province .province-slots .token:hover {
+  opacity: 0.5;
 }
 #board .ghost-province {
   overflow: hidden;
@@ -968,6 +977,17 @@ html {
 
 .hidden {
   display: none !important;
+}
+
+.card-tooltip-elmt,
+.card-tooltip-elmt + span {
+  display: inline;
+  margin-left: 5px;
+}
+
+.card-tooltip-elmt + span::after {
+  content: "\a";
+  white-space: pre;
 }
 
 .province-counter .icon {

@@ -53,9 +53,22 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 
 	public getTooltipContent(): TooltipElement<QuorumCard>[] {
 		return [
-			{ title: _('Province'), contentProvider: (c: QuorumCard) => this.game.getProvinceName(c.province) },
-			{ title: _('Influence'), contentProvider: (c: QuorumCard) => c.influence.toString() },
-			{ title: _('Power'), contentProvider: (c: QuorumCard) => c.power.toString() }
+			{ title: _('Power:'), contentProvider: (c: QuorumCard) => c.power.toString(), classes: 'card-tooltip-elmt' },
+			{
+				title: _('Influence:'),
+				contentProvider: (c: QuorumCard) => c.influence.toString(),
+				classes: 'card-tooltip-elmt'
+			},
+			{
+				title: _('Province:'),
+				contentProvider: (c: QuorumCard) => this.game.getProvinceName(c.province),
+				classes: 'card-tooltip-elmt'
+			},
+			{
+				title: _('Card type:'),
+				contentProvider: (c: QuorumCard) => this.game.getFullScoringTypeName(c),
+				classes: 'card-tooltip-elmt'
+			}
 		]
 	}
 

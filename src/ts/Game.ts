@@ -45,6 +45,13 @@ export const CARD_TYPE_TRADE = 14
 
 export const ALL_SCORING_TYPES = [CARD_TYPE_MILITARY, CARD_TYPE_INTRIGUE, CARD_TYPE_ARCHITECTURE, CARD_TYPE_TRADE]
 
+export const CARD_TYPE_ARCH_BATH = 20
+export const CARD_TYPE_ARCH_TEMPLE = 21
+export const CARD_TYPE_ARCH_THEATER = 22
+export const CARD_TYPE_ARCH_AQUEDUCT = 23
+export const CARD_TYPE_ARCH_COLISEUM = 24
+export const CARD_TYPE_ARCH_ARCH = 25
+
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
 
@@ -112,7 +119,9 @@ export class Game extends BaseGame {
 		//this.setupHelpPopin()
 
 		this.scoreBoard = new ScoreBoard(this, this.getPlayersInOrder(), this.gamedatas.orderedProvinces)
-		this.gamedatas.scoreProvinceDetails?.forEach((s) => this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score))
+		this.gamedatas.scoreProvinceDetails?.forEach((s) =>
+			this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score)
+		)
 		this.gamedatas.scoreTypeDetails?.forEach((s) => this.scoreBoard.updateScore(s.playerId, s.scoreType, s.score))
 		if (this.gamedatas.winners) {
 			this.gamedatas.winners.forEach((pId) => this.scoreBoard.highlightWinnerScore(pId))
@@ -129,12 +138,12 @@ export class Game extends BaseGame {
 	}
 
 	private setupTooltips() {
-		//todo change counter names
-		this.setTooltipToClass('revealed-tokens-back-counter', _('counter1 tooltip'))
-
-		this.setTooltipToClass('player-turn-order', _('First player'))
-		this.setTooltipToClass('province-arrow', _('Provinces are laid out in circle'))
+		this.setTooltipToClass('province-counters', _('The rank and value you reached for each province'))
 		this.setTooltipToClass('ghost-province', _('Provinces are laid out in circle'))
+		this.setTooltipToClass(
+			'province-token-slot',
+			_('The influence of that province, will be used as a base multiplier according to your rank')
+		)
 	}
 
 	private setupPlayer(player: QuorumPlayer) {
@@ -150,12 +159,12 @@ export class Game extends BaseGame {
 
 	private createTokens() {
 		this.gamedatas.tokens.forEach((t) => {
+			const player = Object.values(this.gamedatas.players).find((p) => Number(p.id) == t.type_arg)
 			const tokenDiv = document.createElement('div')
 			tokenDiv.id = `token-${t.type}-${t.type_arg}`
 			tokenDiv.classList.add('token', 'token-' + t.type)
-			tokenDiv.dataset.color =
-				'' + Object.values(this.gamedatas.players).find((p) => Number(p.id) == t.type_arg).color
-
+			tokenDiv.dataset.color = '' + player.color
+			tokenDiv.title = player.name
 			const dest = document.querySelector<HTMLElement>(`#province-${t.type} .slot-${t.location}`)
 			dest.appendChild(tokenDiv)
 			if (t.location != '0') {
@@ -393,6 +402,37 @@ export class Game extends BaseGame {
 				return _('Unknown')
 		}
 	}
+
+	public getFullScoringTypeName(card: QuorumCard): string {
+		let mainType = this.getScoringTypeName(card.scoringType)
+		if (card.scoringType != CARD_TYPE_ARCHITECTURE) return mainType
+		mainType += ' ('
+		switch (card.architectureSubType) {
+			case CARD_TYPE_ARCH_AQUEDUCT:
+				mainType += _('Aqueduct')
+				break
+			case CARD_TYPE_ARCH_ARCH:
+				mainType += _('Arch')
+				break
+			case CARD_TYPE_ARCH_BATH:
+				mainType += _('Bath')
+				break
+			case CARD_TYPE_ARCH_COLISEUM:
+				mainType += _('Coliseum')
+				break
+			case CARD_TYPE_ARCH_TEMPLE:
+				mainType += _('Temple')
+				break
+			case CARD_TYPE_ARCH_THEATER:
+				mainType += _('Theater')
+				break
+			default:
+				break
+		}
+		mainType += ')'
+		return mainType
+	}
+
 	private getSelectedIdsAsParam(stock: CardStock<QuorumCard>) {
 		return stock
 			.getSelection()

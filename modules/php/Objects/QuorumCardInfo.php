@@ -14,6 +14,7 @@ class QuorumCardInfo {
     public bool $isGod;
     public int $leftEffect;
     public int $rightEffect;
+    public int $architectureSubType;
 
     public function __construct(int $power, int $province, int $influence, int $scoringType, array $tradeRessources = [], int $leftEffect = 0, int $rightEffect = 0) {
         $this->power = $power;
