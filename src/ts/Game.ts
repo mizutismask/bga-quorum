@@ -399,7 +399,7 @@ export class Game extends BaseGame {
 			case CARD_TYPE_TRADE:
 				return _('Trade')
 			default:
-				return _('Unknown')
+				return _('God')
 		}
 	}
 
