@@ -295,11 +295,8 @@ class Game extends \Bga\GameFramework\Table {
             // game is over
             return 100;
         }
-        /*$roundProgression = 100 * count($this->cardManager->getGridCards()) / 12;
-        
-        $round = intval($this->globals->get(GLB_ROUND));
-        return (100 * $this->getMaxScore() / 2) + $roundProgression / ($round == 3 ? 3 : 2);*/
-        return 0;
+        $pId = $this->getLastPlayer();
+        return 100 * $this->cardManager->countCardsInLocation("played-$pId") / 12;
     }
 
     function getGameVersion(): int {
