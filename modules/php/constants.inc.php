@@ -69,6 +69,13 @@ class Constants {
     const CARD_TYPE_TRADE = 14;
     const CARD_TYPE_GOD = 15;
 
+    const CARD_TYPE_ARCH_BATH = 20;
+    const CARD_TYPE_ARCH_TEMPLE = 21;
+    const CARD_TYPE_ARCH_THEATER = 22;
+    const CARD_TYPE_ARCH_AQUEDUCT = 23;
+    const CARD_TYPE_ARCH_COLISEUM = 24;
+    const CARD_TYPE_ARCH_ARCH = 25;
+
     const TRADE_FISH = 1;
     const TRADE_WOOD = 2;
     const TRADE_SHEEP = 3;

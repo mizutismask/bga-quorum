@@ -7,6 +7,7 @@ namespace Bga\Games\Quorum\States;
 use Bga\GameFramework\NotificationMessage;
 use Bga\GameFramework\StateType;
 use Bga\Games\Quorum\Game;
+use Bga\Games\Quorum\Material;
 use Bga\Games\Quorum\Objects\QuorumCard;
 use Constants;
 
@@ -232,9 +233,11 @@ class EndScore extends \Bga\GameFramework\States\GameState {
      */
     private function scoreArchitecture(int $playerId, $cardsOfType): int {
         $pointsByCount = [0 => 0, 1 => 1, 2 => 4, 3 => 8, 4 => 12, 5 => 18, 6 => 24];
-        $points = $pointsByCount[count($cardsOfType)];
+        $differentSubTypes = array_unique(array_map(fn($card) => Material::getSubArchitectureType($card->type_arg), $cardsOfType));
+        $index = count($differentSubTypes) ;
+        $points = $pointsByCount[$index];
         $this->game->playerScore->inc($playerId, $points, new NotificationMessage(""));
-        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_ARCHITECTURE, $points, count($cardsOfType) . "->" . $points);
+        $this->notifyCardTypeScore($playerId, Constants::CARD_TYPE_ARCHITECTURE, $points, count($differentSubTypes) . "->" . $points);
         return $points;
     }
 
