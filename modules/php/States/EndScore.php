@@ -97,7 +97,11 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
     private function scoreTieBreaker() {
         foreach ($this->game->loadPlayersBasicInfos() as $playerId => $playerInfo) {
-            //$this->game->playerScoreAux->set($playerId, $this->game->playerFishCounter->get($playerId), new NotificationMessage(""));
+            $total = 0;
+            foreach ($this->game->nationValueCounters as $counter) {
+                $total += $counter->get($playerId);
+            }
+            $this->game->playerScoreAux->set($playerId, $total);
         }
     }
 
