@@ -127,16 +127,19 @@
 				}
 
 				&.slot-0 {
-					position: absolute;
 					//for tokens in the middle
+					position: absolute;
 					top: 42%;
 					left: 50%;
 					transform: translate(-50%, -50%);
 					display: grid;
 					gap: 5px;
-					grid-template-columns: min-content min-content;
+					grid-template-columns: 1fr 1fr;
 					width: 35%;
 					border-radius: unset;
+
+					align-content: space-evenly;
+
 					.token {
 						//width: 50%;
 						position: relative;

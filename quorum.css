@@ -787,9 +787,10 @@
   transform: translate(-50%, -50%);
   display: grid;
   gap: 5px;
-  grid-template-columns: min-content min-content;
+  grid-template-columns: 1fr 1fr;
   width: 35%;
   border-radius: unset;
+  align-content: space-evenly;
 }
 #board .province .province-slots .province-slot.slot-0 .token {
   position: relative;
