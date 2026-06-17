@@ -4,6 +4,7 @@ namespace Bga\Games\Quorum;
 
 use Bga\GameFramework\Components\Deck;
 use Bga\Games\Quorum\Game;
+use Bga\Games\Quorum\Objects\QuorumCard;
 use Bga\Games\Quorum\QueryBuilder;
 use Constants;
 
@@ -464,8 +465,12 @@ class DeckManager {
                 'toArg' => $this->game->getMostlyActivePlayerId(),
                 'material' => [$card],
             ]);
-            $this->game->notify->all('msg', $notifMsg ?? clienttranslate('${player_name} takes a card'), [
-                'player_name' => $this->game->getPlayerNameById($playerId),
+            $this->game->notify->all('materialMove', "",  [
+                'type' => $this->materialType,
+                'from' => $from,
+                'to' => Constants::MATERIAL_LOCATION_HAND,
+                'toArg' => $this->game->getMostlyActivePlayerId(),
+                'material' => [QuorumCard::stripSecretInfo($card)],
             ]);
         } else {
             $this->game->notify->all('materialMove',  $notifMsg ?? clienttranslate('${player_name} takes a card'), [ //${cardType}
