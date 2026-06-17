@@ -53,7 +53,8 @@ export class CardsManager extends CardsManagerBase<QuorumCard> {
 				game.cardsManager.setBackBackground(div as HTMLDivElement, card)
 			},
 			cardWidth: 248 * multiplier,
-			cardHeight: 347 * multiplier
+			cardHeight: 347 * multiplier,
+			cardBorderRadius: '3px'
 		})
 	}
 
