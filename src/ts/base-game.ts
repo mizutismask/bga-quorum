@@ -1,5 +1,6 @@
 import { GameFeatureConfig } from './gamefeatureconfig'
 import { PlayerTable } from './player-table'
+import { BgaAnimations } from './libs'
 import { ClientActionData, QuorumGamedatas, QuorumPlayer, NotifImportantMessageArgs } from './types'
 
 export const ANIMATION_MS = 500
@@ -12,10 +13,9 @@ export const log = isDebug ? console.log.bind(window.console) : function () {}
 export abstract class BaseGame {
 	protected player_id!: string
 	protected players!: { [playerId: number]: Player }
-	public playerTables: Record<number, PlayerTable> = {};
+	public playerTables: Record<number, PlayerTable> = {}
 	protected playerNumber!: number
-	// @ts-ignore
-	public animationManager: BgaAnimations.Manager
+	public animationManager: InstanceType<typeof BgaAnimations.Manager>
 
 	public bga!: Bga<QuorumPlayer, QuorumGamedatas>
 	public gamedatas!: QuorumGamedatas
@@ -427,4 +427,25 @@ export abstract class BaseGame {
 		return buttonLabel.replace(regex, '')
 	}
 
+	/**
+	 * When real elements styles are location dependent, they are lost during animation, hence animation is not visible. 
+	 * So we get a clone with all the same styles and animate that clone instead of the real element.
+	 * @param elmt
+	 * @returns
+	 */
+	protected createCloneForAnimation(elmt: HTMLElement): HTMLElement {
+		const rect = elmt.getBoundingClientRect()
+		const style = getComputedStyle(elmt)
+
+		const clone = elmt.cloneNode(true) as HTMLElement
+
+		clone.style.backgroundColor = style.backgroundColor
+		clone.style.border = style.border
+		clone.style.borderRadius = style.borderRadius
+		clone.style.filter = style.filter
+		clone.style.width = `${rect.width}px`
+		clone.style.height = `${rect.height}px`
+
+		return clone
+	}
 }

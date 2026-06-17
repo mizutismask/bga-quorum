@@ -667,22 +667,39 @@ export class Game extends BaseGame {
 		}
 	}
 
-	notif_tokenMove(cards: Token[], notif: NotifMaterialMove) {
+	async notif_tokenMove(cards: Token[], notif: NotifMaterialMove) {
 		const card = cards.at(0)
 		switch (notif.to) {
 			case 'BOARD':
-				cards.forEach((c) => {
-					const elmt = document.getElementById(`token-${c.type}-${c.type_arg}`)
-					elmt.parentElement.dataset.childCount = (elmt.children.length - 1).toString()
-					const dest = document.querySelector<HTMLElement>(`#province-${c.type} .slot-${c.location}`)
-					this.animationManager.slideAndAttach(elmt, dest, { duration: ANIMATION_MS })
-					dest.dataset.childCount = dest.children.length.toString()
-				})
+				this.moveToken(card, notif)
 				break
 			default:
 				console.error('Token move destination not handled', notif)
 				break
 		}
+	}
+
+	async moveToken(c: Token, notif: NotifMaterialMove) {
+		const elmt = document.getElementById(`token-${c.type}-${c.type_arg}`)
+		const source = elmt.parentElement
+		const dest = document.querySelector<HTMLElement>(`#province-${c.type} .slot-${c.location}`)
+
+		//since the real token styles are location dependent, they are lost during animation, hence animation is not visible
+		//so we get a clone with all the styles and animate that clone
+		const clone = this.createCloneForAnimation(elmt)
+
+		//hide the real token
+		elmt.style.visibility = 'hidden'
+		//animate
+		await this.animationManager.slideFloatingElement(clone, elmt, dest)
+		//add to dest and show
+		dest.appendChild(elmt)
+		elmt.style.visibility = ''
+		//clean
+		clone.remove()
+
+		source.dataset.childCount = source.children.length.toString()
+		dest.dataset.childCount = dest.children.length.toString()
 	}
 
 	/**
