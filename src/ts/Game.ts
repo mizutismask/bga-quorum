@@ -187,8 +187,8 @@ export class Game extends BaseGame {
 		ALL_PROVINCES.forEach((province) => {
 			$(`counters-${player.id}`).insertAdjacentHTML(
 				'beforeend',
-				`<div id="province-${province}-counter-${player.id}-wrapper" class="counter province-counter">
-					<div class="icon province-${province}"></div> 
+				`<div id="province-${province}-counter-${player.id}-wrapper" class="counter">
+					<div class="province-icon icon province-${province}"></div> 
 					<span id="province-${province}-player-counter-${player.id}"></span>
 					(<span id="province-${province}-value-player-counter-${player.id}" style="padding:0px"></span>)
 				</div>`

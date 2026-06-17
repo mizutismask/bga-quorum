@@ -11,17 +11,27 @@ const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement)
 	game.cardsManager.setFrontBackground(div as HTMLDivElement, card.type_arg)
 
 	//add help
-	const helpId = `${game.cardsManager.getId(card)}-front-info`
-	if (!$(helpId)) {
-		const info: HTMLDivElement = document.createElement('div')
-		info.id = helpId
-		info.innerText = '?'
-		info.classList.add('css-icon', 'card-info')
-		div.appendChild(info)
-		if (game.cardsManager.isCardVisible(card)) {
+	if (game.cardsManager.isCardVisible(card)) {
+		const helpId = `${game.cardsManager.getId(card)}-front-info`
+		if (!$(helpId)) {
+			const info: HTMLDivElement = document.createElement('div')
+			info.id = helpId
+			info.innerText = '?'
+			info.classList.add('css-icon', 'card-info')
+			div.appendChild(info)
 			const tooltipContent = game.cardsManager.getTooltip(card)
 			game.setTooltip(div.id, tooltipContent)
 			game.addTooltipOnClickHelpButton(info.id, tooltipContent)
+		}
+	}
+	if (game.cardsManager.isCardVisible(card)) {
+		const zoomId = `${game.cardsManager.getId(card)}-front-influence-zoom`
+		if (!$(zoomId)) {
+			const zoom: HTMLDivElement = document.createElement('div')
+			zoom.id = zoomId
+			zoom.innerText = card.influence.toString()
+			zoom.classList.add('card-influence-zoom', 'province-icon', `province-${card.province}`)
+			div.appendChild(zoom)
 		}
 	}
 }

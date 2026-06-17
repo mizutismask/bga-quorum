@@ -990,27 +990,42 @@ html {
   white-space: pre;
 }
 
-.province-counter .icon {
+.province-icon {
   background-image: url("img/provinces-logos.png");
   background-size: 600% 100%;
 }
-.province-counter .icon.province-1 {
+.province-icon.province-1 {
   background-position: 0% 0%;
 }
-.province-counter .icon.province-2 {
+.province-icon.province-2 {
   background-position: 20% 0%;
 }
-.province-counter .icon.province-3 {
+.province-icon.province-3 {
   background-position: 40% 0%;
 }
-.province-counter .icon.province-4 {
+.province-icon.province-4 {
   background-position: 60% 0%;
 }
-.province-counter .icon.province-5 {
+.province-icon.province-5 {
   background-position: 80% 0%;
 }
-.province-counter .icon.province-6 {
+.province-icon.province-6 {
   background-position: 100% 0%;
+}
+
+.quorum-card-front .province-icon {
+  background-image: url("img/card-provinces-logos.png");
+  position: absolute;
+  top: 15.6%;
+  left: 1%;
+  width: 35%;
+  aspect-ratio: 1.1;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  padding-top: 2.2%;
+  text-shadow: 0px 0px 1px #383838, 0px 0px 2px #383838, 0px 0px 3px #383838;
 }
 
 .province-counters {
