@@ -1025,7 +1025,7 @@ html {
   font-weight: bold;
   font-size: 12px;
   text-align: center;
-  padding-top: 2.2%;
+  padding-top: 2.1%;
   text-shadow: 0px 0px 1px #383838, 0px 0px 2px #383838, 0px 0px 3px #383838;
 }
 
@@ -1193,6 +1193,11 @@ svg {
 
 .bga-cards_card > .bga-cards_card-sides > .bga-cards_card-side.front > .card-info {
   pointer-events: all;
+}
+
+.card-stock .bga-cards_selectable-card {
+  box-shadow: 0 0 2px 2px rgb(200, 255, 47) !important;
+  outline: none !important;
 }
 
 .log .log-icon {
