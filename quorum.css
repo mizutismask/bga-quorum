@@ -733,7 +733,7 @@
   filter: drop-shadow(0px 0px 1px black);
 }
 #board .province .province-token-slot.province-enabled {
-  box-shadow: 0 0 5px 5px rgb(200, 255, 47);
+  filter: drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47));
 }
 #board .province .province-token-slot .province-token {
   background-image: url("img/influence-tokens.png");
