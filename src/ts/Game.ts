@@ -661,9 +661,7 @@ export class Game extends BaseGame {
 				})
 			}
 		} else {
-			if (notif.toArg == this.getPlayerId()) {
-				return await this.playerTables[this.getPlayerId()].handStock.addCard(card)
-			}
+			return await this.playerTables[notif.toArg].handStock.addCard(card)
 		}
 	}
 
