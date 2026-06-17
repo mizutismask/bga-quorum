@@ -3,7 +3,7 @@
 #board {
 	display: grid;
 	gap: 5px;
-	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 250px)) min(40px, 5%);
+	grid-template-columns: min(40px, 5%) repeat(6, minmax(0, 200px)) min(40px, 5%);
 	width: 100%;
 	align-items: center;
 	justify-content: center;
