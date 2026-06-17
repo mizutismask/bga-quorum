@@ -1,10 +1,10 @@
 {
 	"100": {
-		"name": "With custom sounds",
+		"name": "Show next/previous province miniatures",
 		"needReload": false,
 		"values": {
 			"1": { "name": "Yes" },
-			"2": { "name": "No" }
+			"2": { "name": "No", "cssPref": "hide-province-miniatures" }
 		},
 		"default": 1
 	}
