@@ -496,18 +496,27 @@
 }
 .gamestate_EndOfRound #player-tables .player-table .cstm-player-hand,
 .gamestate_EndOfRound #custom-game-area #river,
+.gamestate_EndOfRound #board .ghost-province,
+.gamestate_EndOfRound .province-arrow,
 .gamestate_GameEnd #player-tables .player-table .cstm-player-hand,
 .gamestate_GameEnd #custom-game-area #river,
+.gamestate_GameEnd #board .ghost-province,
+.gamestate_GameEnd .province-arrow,
 .gamestate_EndScore #player-tables .player-table .cstm-player-hand,
 .gamestate_EndScore #custom-game-area #river,
+.gamestate_EndScore #board .ghost-province,
+.gamestate_EndScore .province-arrow,
 .gamestate_DebugGameEnd #player-tables .player-table .cstm-player-hand,
-.gamestate_DebugGameEnd #custom-game-area #river {
+.gamestate_DebugGameEnd #custom-game-area #river,
+.gamestate_DebugGameEnd #board .ghost-province,
+.gamestate_DebugGameEnd .province-arrow {
   display: none;
 }
 .gamestate_EndOfRound #board,
 .gamestate_GameEnd #board,
 .gamestate_EndScore #board,
 .gamestate_DebugGameEnd #board {
+  grid-template-columns: repeat(6, minmax(0, 200px));
   zoom: 0.7;
 }
 .gamestate_EndOfRound #player-tables .player-table .played-cards,
