@@ -24,7 +24,7 @@ const setupFrontDiv = (game: QuorumGame) => (card: QuorumCard, div: HTMLElement)
 			game.addTooltipOnClickHelpButton(info.id, tooltipContent)
 		}
 	}
-	if (game.cardsManager.isCardVisible(card)) {
+	if (card.type == 1 && game.cardsManager.isCardVisible(card)) {
 		const zoomId = `${game.cardsManager.getId(card)}-front-influence-zoom`
 		if (!$(zoomId)) {
 			const zoom: HTMLDivElement = document.createElement('div')
