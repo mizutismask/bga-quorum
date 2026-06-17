@@ -65,16 +65,34 @@ class GodEffect extends GameState {
         $this->game->tokenManager->moveNationToken($province, $activePlayerId,  $god->influence);
         //effect on the left and right provinces
         $leftProvince = $this->getLeftProvince($province);
-        $this->game->nationInfluenceCounters[$leftProvince]->inc($god->leftEffect, new NotificationMessage(
-            $god->leftEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence'),
-            ['amount' => abs($god->leftEffect), 'province' => $this->game->getProvinceName($leftProvince)]
-        ));
+        $leftValue = $this->game->nationInfluenceCounters[$leftProvince]->get();
+        if ($leftValue + $god->leftEffect < 0 || $leftValue + $god->leftEffect > 4) {
+            $this->notify->all("message", clienttranslate('Province influence can not go upper than 4 or lower than 0'));
+        } else {
+            $this->game->nationInfluenceCounters[$leftProvince]->inc($god->leftEffect, new NotificationMessage(
+                $god->leftEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
+                [
+                    'amount' => abs($god->leftEffect),
+                    'province' => $this->game->getProvinceName($leftProvince),
+                    'newInfluence' => $leftValue + $god->leftEffect
+                ]
+            ));
+        }
 
         $rightProvince = $this->getRightProvince($province);
-        $this->game->nationInfluenceCounters[$rightProvince]->inc($god->rightEffect, new NotificationMessage(
-            $god->rightEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence'),
-            ['amount' => abs($god->rightEffect), 'province' => $this->game->getProvinceName($rightProvince)]
-        ));
+        $rightValue = $this->game->nationInfluenceCounters[$rightProvince]->get();
+        if ($rightValue + $god->rightEffect < 0 || $rightValue + $god->rightEffect > 4) {
+            $this->notify->all("message", clienttranslate('Province influence must be between 0 and 4'));
+        } else {
+            $this->game->nationInfluenceCounters[$rightProvince]->inc($god->rightEffect, new NotificationMessage(
+                $god->rightEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
+                [
+                    'amount' => abs($god->rightEffect),
+                    'province' => $this->game->getProvinceName($rightProvince),
+                    'newInfluence' => $rightValue + $god->rightEffect
+                ]
+            ));
+        }
 
         return $nextState;
     }
