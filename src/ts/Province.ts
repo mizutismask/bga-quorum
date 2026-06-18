@@ -43,9 +43,15 @@ export class Province {
 		return ''
 	}
 
-	public async setInfluenceToken(value: number) {
+	public async setInfluenceToken(value: number, animate: boolean = true) {
 		const existing = this.element.querySelector<HTMLElement>('.province-token-slot .province-token')
-		if (existing) await this.game.animationManager.slideOutAndDestroy(existing, $('upperrightmenu'), {})
+		if (existing) {
+			if (animate) {
+				await this.game.animationManager.slideOutAndDestroy(existing, $('upperrightmenu'), {})
+			} else {
+				existing.remove()
+			}
+		}
 		const slot = this.element.querySelector<HTMLElement>('.province-token-slot')
 		slot.insertAdjacentHTML(
 			'beforeend',
@@ -54,6 +60,8 @@ export class Province {
 			`
 		)
 		const newToken = this.element.querySelector<HTMLElement>('.province-token-slot .province-token')
-		return await this.game.animationManager.slideIn(newToken, $('upperrightmenu'))
+		if (animate) {
+			return await this.game.animationManager.slideIn(newToken, $('upperrightmenu'), {})
+		}
 	}
 }

@@ -50,7 +50,7 @@ export class Board {
 			}
 		})
 	}
-	setInfluenceToken(nation: number, value: number) {
-		return this.provinces[nation].setInfluenceToken(value)
+	setInfluenceToken(nation: number, value: number,animate: boolean = true) {
+		return this.provinces[nation].setInfluenceToken(value, animate)
 	}
 }

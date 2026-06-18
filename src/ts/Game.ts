@@ -112,8 +112,8 @@ export class Game extends BaseGame {
 		$('overall-content').classList.add(`player-count-${this.getPlayersCount()}`)
 
 		this.board = new Board(this, this.gamedatas.orderedProvinces)
-		this.createTokens()
 		this.showProvinceInfluence()
+		this.createTokens()
 
 		this.setupTooltips()
 		//this.setupHelpPopin()
@@ -259,7 +259,7 @@ export class Game extends BaseGame {
 
 	private showProvinceInfluence() {
 		ALL_PROVINCES.forEach((province) => {
-			this.board.setInfluenceToken(province, this.gamedatas[`nationInfluenceCounter_${province}`])
+			this.board.setInfluenceToken(province, this.gamedatas[`nationInfluenceCounter_${province}`], false)
 		})
 	}
 
