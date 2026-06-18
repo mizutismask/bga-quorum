@@ -14,7 +14,6 @@ import {
 } from './types'
 import { ScoreBoard } from './end-score'
 import { Utils } from './utils'
-import { StockUtils } from './stock-utils'
 import { CardsManager } from './cards/cards'
 import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
@@ -652,16 +651,15 @@ export class Game extends BaseGame {
 
 	async addCardToHand(card: QuorumCard, notif: NotifMaterialMove) {
 		if (card.isGod) {
-			this.river.flipCard(card, {})
-			if (notif.toArg == this.getPlayerId()) {
-				return await this.playerTables[this.getPlayerId()].handStock.addCard(card)
-			} else {
-				return await this.river.removeCard(card, {
-					slideTo: this.bga.playerPanels.getElement(notif.toArg)
-				})
-			}
-		} else {
+			await this.river.flipCard(card, {})
+			await this.animationManager.base.wait(1500)//let some time to see the card
 			return await this.playerTables[notif.toArg].handStock.addCard(card)
+		} else {
+			if (notif.toArg == this.getPlayerId() && !this.cardsManager.isCardVisible(card)) {
+				//nothing to do, my card has already been revealed and move privatly in another notif
+			} else {
+				return await this.playerTables[notif.toArg].handStock.addCard(card)
+			}
 		}
 	}
 
