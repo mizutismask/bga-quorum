@@ -11,6 +11,35 @@
 		grid-template-columns: repeat(6, minmax(0, 200px));
 	}
 }
+
+.influence-effect {
+	z-index: 9999;
+}
+
+//needs to be out of #board for god effect animation
+.province-token {
+	background-image: url('img/influence-tokens.png');
+	background-size: 400% 100%;
+	aspect-ratio: 1;
+	width: 100%;
+
+	&[data-value='1'] {
+		background-position: #{calc(0 * 100% / 3)} 50%;
+	}
+	&[data-value='2'] {
+		background-position: #{calc(1 * 100% / 3)} 50%;
+	}
+	&[data-value='3'] {
+		background-position: #{calc(2 * 100% / 3)} 50%;
+	}
+	&[data-value='4'] {
+		background-position: #{calc(3 * 100% / 3)} 50%;
+	}
+	&:hover {
+		scale: 1.4;
+	}
+}
+
 #board {
 	display: grid;
 	gap: 5px;
@@ -58,29 +87,6 @@
 			&.province-enabled {
 				filter: drop-shadow(0px 0px 4px vars.$selected-color) drop-shadow(0px 0px 4px vars.$selected-color)
 					drop-shadow(0px 0px 4px vars.$selected-color);
-			}
-
-			.province-token {
-				background-image: url('img/influence-tokens.png');
-				background-size: 400% 100%;
-				aspect-ratio: 1;
-				width: 100%;
-
-				&[data-value='1'] {
-					background-position: #{calc(0 * 100% / 3)} 50%;
-				}
-				&[data-value='2'] {
-					background-position: #{calc(1 * 100% / 3)} 50%;
-				}
-				&[data-value='3'] {
-					background-position: #{calc(2 * 100% / 3)} 50%;
-				}
-				&[data-value='4'] {
-					background-position: #{calc(3 * 100% / 3)} 50%;
-				}
-				&:hover {
-					scale: 1.4;
-				}
 			}
 		}
 

@@ -115,6 +115,11 @@ interface PlayerTurnArgs {
 	selectableHandCards: QuorumCard[]
 }
 
+interface GodEffectArgs {
+	leftEffect: string
+	rightEffect: string
+}
+
 interface LegacyEffectArgs {
 	nationName: string
 	elementToSteal: number

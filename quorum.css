@@ -689,6 +689,32 @@
   grid-template-columns: repeat(6, minmax(0, 200px));
 }
 
+.influence-effect {
+  z-index: 9999;
+}
+
+.province-token {
+  background-image: url("img/influence-tokens.png");
+  background-size: 400% 100%;
+  aspect-ratio: 1;
+  width: 100%;
+}
+.province-token[data-value="1"] {
+  background-position: 0% 50%;
+}
+.province-token[data-value="2"] {
+  background-position: 33.3333333333% 50%;
+}
+.province-token[data-value="3"] {
+  background-position: 66.6666666667% 50%;
+}
+.province-token[data-value="4"] {
+  background-position: 100% 50%;
+}
+.province-token:hover {
+  scale: 1.4;
+}
+
 #board {
   display: grid;
   gap: 5px;
@@ -734,27 +760,6 @@
 }
 #board .province .province-token-slot.province-enabled {
   filter: drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47));
-}
-#board .province .province-token-slot .province-token {
-  background-image: url("img/influence-tokens.png");
-  background-size: 400% 100%;
-  aspect-ratio: 1;
-  width: 100%;
-}
-#board .province .province-token-slot .province-token[data-value="1"] {
-  background-position: 0% 50%;
-}
-#board .province .province-token-slot .province-token[data-value="2"] {
-  background-position: 33.3333333333% 50%;
-}
-#board .province .province-token-slot .province-token[data-value="3"] {
-  background-position: 66.6666666667% 50%;
-}
-#board .province .province-token-slot .province-token[data-value="4"] {
-  background-position: 100% 50%;
-}
-#board .province .province-token-slot .province-token:hover {
-  scale: 1.4;
 }
 #board .province .province-slots .province-slot {
   width: 15.6%;

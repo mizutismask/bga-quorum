@@ -428,18 +428,21 @@ export abstract class BaseGame {
 	}
 
 	/**
-	 * When real elements styles are location dependent, they are lost during animation, hence animation is not visible. 
+	 * When real elements styles are location dependent, they are lost during animation, hence animation is not visible.
 	 * So we get a clone with all the same styles and animate that clone instead of the real element.
 	 * @param elmt
 	 * @returns
 	 */
-	protected createCloneForAnimation(elmt: HTMLElement): HTMLElement {
+	public createCloneForAnimation(elmt: HTMLElement): HTMLElement {
 		const rect = elmt.getBoundingClientRect()
 		const style = getComputedStyle(elmt)
 
 		const clone = elmt.cloneNode(true) as HTMLElement
 
 		clone.style.backgroundColor = style.backgroundColor
+		clone.style.backgroundImage = style.backgroundImage
+		clone.style.backgroundSize = style.backgroundSize
+		clone.style.backgroundRepeat = style.backgroundRepeat
 		clone.style.border = style.border
 		clone.style.borderRadius = style.borderRadius
 		clone.style.filter = style.filter
