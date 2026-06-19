@@ -891,13 +891,13 @@
 }
 #board .province-arrow {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 52%;
+  transform: translateY(-52%);
   color: #535252;
-  left: 0px;
+  left: -3px;
 }
 #board .province-arrow-right {
-  right: 0px;
+  right: -3px;
   left: unset;
 }
 
