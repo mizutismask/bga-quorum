@@ -21,10 +21,6 @@ trait DebugUtilTrait {
         //$this->gamestate->changeActivePlayer(2343492);
     }
 
-    function debug_addTickets(int $amount = 1) {
-        $this->ticketsCounter->inc($this->getCurrentPlayerId(), $amount);
-    }
-
     /*function debug_CompleteDestinations() {
         $players = $this->getPlayersIds();
         $restriction = " limit " . ($this->getInitialDestinationCardNumber() - 1);
@@ -42,7 +38,7 @@ trait DebugUtilTrait {
     /**
      * To easily test zombie code.
      */
-    public function debug_playAutomatically(int $moves = 11) {
+    public function debug_playAutomatically(int $moves = 20) {
         $count = 0;
         while (intval($this->gamestate->getCurrentMainStateId()) < 90 && $count < $moves) {
             $count++;
