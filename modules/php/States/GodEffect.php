@@ -9,7 +9,6 @@ use Bga\GameFramework\NotificationMessage;
 use Bga\GameFramework\StateType;
 use Bga\GameFramework\States\GameState;
 use Bga\GameFramework\States\PossibleAction;
-use Bga\GameFramework\UserException;
 use Bga\Games\Quorum\Game;
 use Bga\Games\Quorum\QuorumCard;
 use Constants;
@@ -59,42 +58,32 @@ class GodEffect extends GameState {
 
     #[PossibleAction]
     public function actChooseProvince(int $province, int $activePlayerId, array $args) {
-        $nextState = PlayerTurn::class;
         $god =  $this->game->cardManager->getCard($this->globals->get(Constants::GLBL_CURRENT_GOD));
 
         $this->game->tokenManager->moveNationToken($province, $activePlayerId,  $god->influence);
-        //effect on the left and right provinces
-        $leftProvince = $this->getLeftProvince($province);
-        $leftValue = $this->game->nationInfluenceCounters[$leftProvince]->get();
-        if ($leftValue + $god->leftEffect < 0 || $leftValue + $god->leftEffect > 4) {
-            $this->notify->all("message", clienttranslate('Province influence can not go upper than 4 or lower than 0'));
-        } else {
-            $this->game->nationInfluenceCounters[$leftProvince]->inc($god->leftEffect, new NotificationMessage(
-                $god->leftEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
-                [
-                    'amount' => abs($god->leftEffect),
-                    'province' => $this->game->getProvinceName($leftProvince),
-                    'newInfluence' => $leftValue + $god->leftEffect
-                ]
-            ));
+        $this->applyInfluenceEffect($this->getLeftProvince($province), $god->leftEffect);
+        $this->applyInfluenceEffect($this->getRightProvince($province), $god->rightEffect);
+
+        return PlayerTurn::class;
+    }
+
+    private function applyInfluenceEffect(int $province, int $effect): void {
+        $currentInfluence = $this->game->nationInfluenceCounters[$province]->get();
+        $newInfluence = $currentInfluence + $effect;
+
+        if ($newInfluence < 1 || $newInfluence > 4) {
+            $this->notify->all("message", clienttranslate('Province influence must be between 1 and 4'));
+            return;
         }
 
-        $rightProvince = $this->getRightProvince($province);
-        $rightValue = $this->game->nationInfluenceCounters[$rightProvince]->get();
-        if ($rightValue + $god->rightEffect < 0 || $rightValue + $god->rightEffect > 4) {
-            $this->notify->all("message", clienttranslate('Province influence must be between 0 and 4'));
-        } else {
-            $this->game->nationInfluenceCounters[$rightProvince]->inc($god->rightEffect, new NotificationMessage(
-                $god->rightEffect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
-                [
-                    'amount' => abs($god->rightEffect),
-                    'province' => $this->game->getProvinceName($rightProvince),
-                    'newInfluence' => $rightValue + $god->rightEffect
-                ]
-            ));
-        }
-
-        return $nextState;
+        $this->game->nationInfluenceCounters[$province]->inc($effect, new NotificationMessage(
+            $effect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
+            [
+                'amount' => abs($effect),
+                'province' => $this->game->getProvinceName($province),
+                'newInfluence' => $newInfluence,
+            ]
+        ));
     }
 
     private function getLeftProvince(int $province) {
@@ -102,7 +91,7 @@ class GodEffect extends GameState {
         $index = array_search($province, $provinces, true);
 
         if ($index === false) {
-            throw new \BgaSystemException("Unknown province: $province");
+            throw new \Bga\GameFramework\SystemException("Unknown province: $province");
         }
 
         return $provinces[($index - 1 + count($provinces)) % count($provinces)];
@@ -114,7 +103,7 @@ class GodEffect extends GameState {
         $index = array_search($province, $provinces, true);
 
         if ($index === false) {
-            throw new \BgaSystemException("Unknown province: $province");
+            throw new \Bga\GameFramework\SystemException("Unknown province: $province");
         }
 
         return $provinces[($index + 1) % count($provinces)];

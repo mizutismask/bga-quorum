@@ -34,7 +34,7 @@ class DebugGameEnd extends GameState {
 
     #[PossibleAction]
     function endGame() {
-        $this->gamestate->nextState("endGame");
+        $this->gamestate->jumpToState(Constants::STATE_ID_GAME_END);
     }
 
     /**

@@ -1,21 +1,75 @@
 {
-    "table": {
-      "turns_number": {
-        "id": 10,
-        "name": "Number of turns",
-        "type": "int"
-      }
-    },
-    "player": {
-      "turns_number": {
-        "id": 10,
-        "name": "Number of turns",
-        "type": "int"
-      },
-      "game_toto": {
-        "id": 11,
-        "name": "toto",
-        "type": "int"
-      }
-    }
-  }
+	"table": {},
+	"player": {
+		"game_gods_used": {
+			"id": 11,
+			"name": "Gods used",
+			"type": "int"
+		},
+		"game_rank_1": {
+			"id": 12,
+			"name": "Provinces rank 1",
+			"type": "int"
+		},
+		"game_influence_max": {
+			"id": 13,
+			"name": "Max influence",
+			"type": "int"
+		},
+		"game_influence_min": {
+			"id": 14,
+			"name": "Min influence",
+			"type": "int"
+		},
+		"game_province_1_score": {
+			"id": 15,
+			"name": "Asia score",
+			"type": "int"
+		},
+		"game_province_2_score": {
+			"id": 16,
+			"name": "Gallia score",
+			"type": "int"
+		},
+		"game_province_3_score": {
+			"id": 17,
+			"name": "Germania score",
+			"type": "int"
+		},
+		"game_province_4_score": {
+			"id": 18,
+			"name": "Africa score",
+			"type": "int"
+		},
+		"game_province_5_score": {
+			"id": 19,
+			"name": "Macedonia score",
+			"type": "int"
+		},
+		"game_province_6_score": {
+			"id": 20,
+			"name": "Hispania score",
+			"type": "int"
+		},
+		"game_11_score": {
+			"id": 21,
+			"name": "Military score",
+			"type": "int"
+		},
+		"game_12_score": {
+			"id": 22,
+			"name": "Intrigue score",
+			"type": "int"
+		},
+		"game_13_score": {
+			"id": 23,
+			"name": "Architecture score",
+			"type": "int"
+		},
+		"game_14_score": {
+			"id": 24,
+			"name": "Trade score",
+			"type": "int"
+		}
+	}
+}

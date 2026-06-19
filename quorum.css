@@ -493,7 +493,7 @@
 }
 
 .gamestate_EndOfRound #score,
-.gamestate_GameEnd #score,
+.gamestate_gameEnd #score,
 .gamestate_EndScore #score,
 .gamestate_DebugGameEnd #score {
   display: contents;
@@ -502,10 +502,10 @@
 .gamestate_EndOfRound #custom-game-area #river,
 .gamestate_EndOfRound #board .ghost-province,
 .gamestate_EndOfRound .province-arrow,
-.gamestate_GameEnd #player-tables .player-table .cstm-player-hand,
-.gamestate_GameEnd #custom-game-area #river,
-.gamestate_GameEnd #board .ghost-province,
-.gamestate_GameEnd .province-arrow,
+.gamestate_gameEnd #player-tables .player-table .cstm-player-hand,
+.gamestate_gameEnd #custom-game-area #river,
+.gamestate_gameEnd #board .ghost-province,
+.gamestate_gameEnd .province-arrow,
 .gamestate_EndScore #player-tables .player-table .cstm-player-hand,
 .gamestate_EndScore #custom-game-area #river,
 .gamestate_EndScore #board .ghost-province,
@@ -517,7 +517,7 @@
   display: none;
 }
 .gamestate_EndOfRound #board,
-.gamestate_GameEnd #board,
+.gamestate_gameEnd #board,
 .gamestate_EndScore #board,
 .gamestate_DebugGameEnd #board {
   grid-template-columns: repeat(6, minmax(0, 200px));
@@ -525,8 +525,8 @@
 }
 .gamestate_EndOfRound #player-tables .player-table .played-cards,
 .gamestate_EndOfRound #player-tables .player-table.own .played-cards,
-.gamestate_GameEnd #player-tables .player-table .played-cards,
-.gamestate_GameEnd #player-tables .player-table.own .played-cards,
+.gamestate_gameEnd #player-tables .player-table .played-cards,
+.gamestate_gameEnd #player-tables .player-table.own .played-cards,
 .gamestate_EndScore #player-tables .player-table .played-cards,
 .gamestate_EndScore #player-tables .player-table.own .played-cards,
 .gamestate_DebugGameEnd #player-tables .player-table .played-cards,

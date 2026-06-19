@@ -40,6 +40,7 @@ class Constants {
     const STATE_ID_PLAYER_TURN = 30;
     const STATE_ID_GOD_EFFECT = 31;
     const STATE_ID_DEBUG_GAME_END = 97;
+    const STATE_ID_GAME_END = 99;
     const STATE_ID_END_SCORE = 100;
 
     const PROVINCE_NEUTRAL = 0;

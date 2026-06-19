@@ -40,6 +40,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         // Here, we would compute scores if they are not updated live, and compute average statistics
         $this->game->cardManager->sortPlayedCards();
         $this->scorePoints();
+        $this->setStats();
         $this->scoreTieBreaker();
 
         if ($this->game->isStudio()) {
@@ -105,8 +106,23 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         }
     }
 
-    private function getPoints($playerId) {
-        return 0;
+    private function setStats() {
+        foreach ($this->game->getPlayers() as $playerId => $player) {
+            $rankOneCount = 0;
+            $maxInfluence = 0;
+            $minInfluence = 15;
+            foreach ($this->game->nationRankCounters as $counter) {
+                if ($counter->get($playerId) === 1) {
+                    ++$rankOneCount;
+                }
+            }
+            foreach ($this->game->nationValueCounters as $counter) {
+                $maxInfluence = max($maxInfluence, $counter->get($playerId));
+                $minInfluence = min($minInfluence, $counter->get($playerId));
+            }
+            $this->playerStats->set("game_rank_1", $rankOneCount, $playerId);
+            $this->playerStats->set("game_influence_max", $maxInfluence, $playerId);
+        }
     }
 
     /**
@@ -156,6 +172,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     break;
             }
         }
+        $this->playerStats->set("game_province_".$province."_score", $score, $playerId);
         return $score;
     }
 
@@ -204,6 +221,9 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     $scores[$playerId] = $this->scoreIntrigue($playerId, $playedCards[$playerId]);
                     break;
             }
+        }
+        foreach ($scores as $playerId => $score) {
+            $this->playerStats->set("game_".$scoringType."_score", $score, $playerId);
         }
         return $scores;
     }

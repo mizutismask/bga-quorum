@@ -185,8 +185,6 @@ class Game extends \Bga\GameFramework\Table {
     function activateNextPlayerCustom() {
         $player_id = $this->activeNextPlayer();
         $this->giveExtraTime($player_id);
-        $this->playerStats->inc('turns_number', 1, $player_id);
-        $this->tableStats->inc('turns_number', 1);
         $this->notify->all('msg', clienttranslate('&#10148; Start of ${player_name}\'s turn'), ['player_name' => $this->getPlayerNameById($player_id)]);
         //$this->makeSavepoint();
         return $player_id;
@@ -204,7 +202,7 @@ class Game extends \Bga\GameFramework\Table {
     */
     protected function getAllDatas(int $currentPlayerId): array {
         $stateName = $this->getStateName();
-        $isEnd = $stateName === 'EndScore' || $stateName === 'GameEnd' || $stateName === 'DebugGameEnd';
+        $isEnd = $stateName === 'EndScore' || $stateName === 'gameEnd' || $stateName === 'DebugGameEnd';
 
         $result = [];
         $result['expansion'] = $this->expansionManager->getExpansion();

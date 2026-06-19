@@ -57,6 +57,7 @@ class PlayerTurn extends GameState {
             //reveal the card and move it to player hand
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, false, clienttranslate('${player_name} takes a god card'));
             $this->game->globals->set(Constants::GLBL_CURRENT_GOD, $cardId);
+            $this->playerStats->inc("game_gods_used", 1, $activePlayerId);
             $nextState = GodEffect::class;
         } else {
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, true, "");
