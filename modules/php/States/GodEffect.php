@@ -77,7 +77,7 @@ class GodEffect extends GameState {
         }
 
         $this->game->nationInfluenceCounters[$province]->inc($effect, new NotificationMessage(
-            $effect < 0 ? clienttranslate('${province} loses ${amount} influence') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
+            $effect < 0 ? clienttranslate('${province} loses ${amount} influence -> ${newInfluence}') : clienttranslate('${province} gains ${amount} influence -> ${newInfluence}'),
             [
                 'amount' => abs($effect),
                 'province' => $this->game->getProvinceName($province),
