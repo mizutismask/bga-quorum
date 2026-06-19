@@ -38,11 +38,11 @@ export class GodEffect {
 
 						this.addInfluenceEffect(
 							previousSlot.querySelector<HTMLElement>('[data-value]'),
-							Math.max(0, Math.min(Number(token.dataset.value) + Number(args.leftEffect)))
+							Math.max(1, Math.min(4, Number(token.dataset.value) + Number(args.leftEffect)))
 						)
 						this.addInfluenceEffect(
 							nextSlot.querySelector<HTMLElement>('[data-value]'),
-							Math.max(0, Math.min(Number(token.dataset.value) + Number(args.rightEffect)))
+							Math.max(1, Math.min(4, Number(token.dataset.value) + Number(args.rightEffect)))
 						)
 					}
 
