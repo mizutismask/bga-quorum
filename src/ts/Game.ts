@@ -161,7 +161,6 @@ export class Game extends BaseGame {
 	}
 
 	private setupPlayer(player: QuorumPlayer) {
-		document.getElementById(`overall_player_board_${player.id}`)!.dataset.playerColor = player.color
 		this.setupMiniPlayerBoard(player)
 		this.playerTables[player.id] = new PlayerTable(
 			this,
