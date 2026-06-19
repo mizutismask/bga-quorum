@@ -49,11 +49,13 @@ trait DebugUtilTrait {
         }
     }
 
+
     public function debug_jumpToScore() {
         $this->gamestate->jumpToState(Constants::STATE_ID_END_SCORE);
     }
 
-    function endGame() {
-        $this->gamestate->nextState("endGame");
+    
+    function debug_endGame() {
+        $this->gamestate->jumpToState(Constants::STATE_ID_GAME_END);
     }
 }
