@@ -33,8 +33,8 @@ export class ScoreBoard {
 									${player.name}
 								</h3></th>
 								<th>${_('Rank')}</th>
-								<th>${_('Cards count')}</th>
 								<th>${_('Influence')}</th>
+								<th>${_('Cards count')}</th>
 								<th>${_('Total')}</th>
 							</tr>
 						</thead>
@@ -47,8 +47,8 @@ export class ScoreBoard {
 												${this.game.getProvinceName(province)}
 											</td>
 											<td id="province-${province}-rank-${playerId}"></td>
-											<td id="province-${province}-cards-${playerId}"></td>
 											<td id="province-${province}-influence-${playerId}"></td>
+											<td id="province-${province}-cards-${playerId}"></td>
 											<td id="province-${province}-total-${playerId}"></td>
 										</tr>
 									`
