@@ -766,57 +766,57 @@
   filter: drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47)) drop-shadow(0px 0px 4px rgb(200, 255, 47));
 }
 #board .province .province-slots .province-slot {
-  width: 15.6%;
+  width: 16.6%;
   aspect-ratio: 1;
   position: absolute;
   border-radius: 50%;
 }
 #board .province .province-slots .province-slot.left-column {
-  left: 9.5%;
+  left: 3.6%;
 }
 #board .province .province-slots .province-slot.right-column {
-  right: 7.4%;
+  right: 4.2%;
 }
 #board .province .province-slots .province-slot.slot-1, #board .province .province-slots .province-slot.slot-15 {
-  top: 81.7%;
+  top: 83.2%;
 }
 #board .province .province-slots .province-slot.slot-2, #board .province .province-slots .province-slot.slot-14 {
-  top: 70%;
+  top: 71%;
 }
 #board .province .province-slots .province-slot.slot-3, #board .province .province-slots .province-slot.slot-13 {
   top: 59%;
 }
 #board .province .province-slots .province-slot.slot-4, #board .province .province-slots .province-slot.slot-12 {
-  top: 47.4%;
+  top: 46.9%;
 }
 #board .province .province-slots .province-slot.slot-5, #board .province .province-slots .province-slot.slot-11 {
-  top: 36%;
+  top: 34.8%;
 }
 #board .province .province-slots .province-slot.slot-6, #board .province .province-slots .province-slot.slot-10 {
-  top: 25%;
+  top: 22.7%;
 }
 #board .province .province-slots .province-slot.slot-7, #board .province .province-slots .province-slot.slot-9 {
-  top: 13.3%;
+  top: 10.5%;
 }
 #board .province .province-slots .province-slot.slot-7 {
-  left: 21.8%;
+  left: 17.1%;
 }
 #board .province .province-slots .province-slot.slot-9 {
-  right: 18.5%;
+  right: 16.7%;
 }
 #board .province .province-slots .province-slot.slot-8 {
-  left: 43.6%;
-  top: 7%;
+  left: 41.3%;
+  top: 3.8%;
 }
 #board .province .province-slots .province-slot.slot-0 {
   position: absolute;
-  top: 42%;
+  top: 41%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: grid;
   gap: 5px;
   grid-template-columns: 1fr 1fr;
-  width: 35%;
+  width: calc(33.2% + 5px);
   border-radius: unset;
   align-content: space-evenly;
 }

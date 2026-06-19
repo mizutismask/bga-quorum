@@ -92,26 +92,27 @@
 
 		.province-slots {
 			.province-slot {
-				width: 15.6%;
+				$slotWidth: 16.6%;
+				width: $slotWidth;
 				aspect-ratio: 1;
 				position: absolute;
 				//border: 1px solid #535252;
 				border-radius: 50%;
 
 				&.left-column {
-					left: 9.5%;
+					left: 3.6%;
 				}
 				&.right-column {
-					right: 7.4%;
+					right: 4.2%;
 				}
 
 				&.slot-1,
 				&.slot-15 {
-					top: 81.7%;
+					top: 83.2%;
 				}
 				&.slot-2,
 				&.slot-14 {
-					top: 70%;
+					top: 71%;
 				}
 				&.slot-3,
 				&.slot-13 {
@@ -119,41 +120,41 @@
 				}
 				&.slot-4,
 				&.slot-12 {
-					top: 47.4%;
+					top: 46.9%;
 				}
 				&.slot-5,
 				&.slot-11 {
-					top: 36%;
+					top: 34.8%;
 				}
 				&.slot-6,
 				&.slot-10 {
-					top: 25%;
+					top: 22.7%;
 				}
 				&.slot-7,
 				&.slot-9 {
-					top: 13.3%;
+					top: 10.5%;
 				}
 				&.slot-7 {
-					left: 21.8%;
+					left: 17.1%;
 				}
 				&.slot-9 {
-					right: 18.5%;
+					right: 16.7%;
 				}
 				&.slot-8 {
-					left: 43.6%;
-					top: 7%;
+					left: 41.3%;
+					top: 3.8%;
 				}
 
 				&.slot-0 {
 					//for tokens in the middle
 					position: absolute;
-					top: 42%;
+					top: 41%;
 					left: 50%;
 					transform: translate(-50%, -50%);
 					display: grid;
 					gap: 5px;
 					grid-template-columns: 1fr 1fr;
-					width: 35%;
+					width: calc($slotWidth * 2 + 5px);
 					border-radius: unset;
 
 					align-content: space-evenly;
