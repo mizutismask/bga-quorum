@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Quorum;
 
+use Bga\GameFramework\Table;
 use Bga\GameFramework\VisibleSystemException;
 
 class QueryBuilder {
@@ -61,28 +62,41 @@ class QueryBuilder {
   }
 
   public function values($rows = []) {
-    // Fetch starting index if not provided
-    $startingId = null;
-    if ($this->insertPrimaryIndex === false) {
-      $startingId = (int) $this->game->getUniqueValueFromDB(
-        "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '{$this->table}';"
-      );
-    }
-
-    $ids = [];
     $vals = [];
+    $ids  = [];
+
     foreach ($rows as $row) {
       $rowValues = [];
+
       foreach ($row as $val) {
-        $rowValues[] = $val === null ? 'NULL' : "'" . $this->game->escapeStringForDB($val) . "'";
+        $rowValues[] = $val === null
+          ? 'NULL'
+          : "'" . mysql_escape_string($val) . "'";
       }
+
       $vals[] = '(' . implode(',', $rowValues) . ')';
-      $ids[] =
-        $rom[$this->primary] ?? ($this->insertPrimaryIndex === false ? $startingId++ : $row[$this->insertPrimaryIndex]);
+
+      // Case 1: Primary key explicitly provided
+      if ($this->insertPrimaryIndex !== false && $this->insertPrimaryIndex !== null) {
+        $ids[] = $row[$this->insertPrimaryIndex];
+      }
     }
 
     $this->sql .= implode(',', $vals);
-    $this->game->DbQuery($this->sql);
+
+    // Execute INSERT
+    Table::DbQuery($this->sql);
+
+    // Case 2: AUTO_INCREMENT primary key
+    if ($this->insertPrimaryIndex === false) {
+      $firstId = (int) Table::getUniqueValueFromDB("SELECT LAST_INSERT_ID()");
+      $count   = count($rows);
+
+      for ($i = 0; $i < $count; $i++) {
+        $ids[] = $firstId + $i;
+      }
+    }
+
     return $ids;
   }
 
