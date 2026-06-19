@@ -188,7 +188,7 @@ interface NotifImportantMessageArgs {
 	args: Array<any>
 }
 
-type MoveLocation = 'HAND' | 'DECK' | 'STOCK' | 'TABLE' | 'DISCARD' | 'RIVER' | 'BOARD'
+type MoveLocation = 'HAND' | 'DECK' | 'STOCK' | 'TABLE' | 'DISCARD' | 'RIVER' | 'BOARD' | 'DECK_TOP'
 
 interface NotifMaterialMove {
 	type: MaterialType
@@ -197,6 +197,10 @@ interface NotifMaterialMove {
 	fromArg: number
 	toArg: number
 	material: Array<any | string> //elements (cards for exemple), or tokenIds
+}
+
+interface NotifRiverChange extends NotifMaterialMove {
+	newTopCard: QuorumCard
 }
 
 interface SwappedMaterial {

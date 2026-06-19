@@ -10,7 +10,8 @@ import {
 	NotifMaterialMove,
 	NotifScoreArgs,
 	NotifWinnerArgs,
-	Token
+	Token,
+	NotifRiverChange
 } from './types'
 import { ScoreBoard } from './end-score'
 import { Utils } from './utils'
@@ -558,6 +559,7 @@ export class Game extends BaseGame {
 			['score', ANIMATION_MS],
 			['highlightWinnerScore', ANIMATION_MS],
 			['materialMove', ANIMATION_MS],
+			['riverChange', ANIMATION_MS],
 			['lastTurn', 1],
 			['setTableCounter', ANIMATION_MS * 3],
 			['importantMessage', 3000]
@@ -570,7 +572,7 @@ export class Game extends BaseGame {
 				const promise = this[`notif_${notif[0]}`](notifDetails.args)
 
 				// tell the UI notification ends, if the function returned a promise
-				promise?.then(() => (this as any).notifqueue.onSynchronousNotificationEnd())
+				promise?.then(() => (this as any).notifqueue?.onSynchronousNotificationEnd())
 			})
 		})
 	}
@@ -588,6 +590,32 @@ export class Game extends BaseGame {
 	 */
 	notif_score(notif: NotifScoreArgs) {
 		this.scoreBoard.updateScore(notif.playerId, notif.scoreType, notif.score)
+	}
+
+	async notif_riverChange(notif: NotifRiverChange) {
+		const cards = notif.material as Array<QuorumCard>
+		const card = cards.at(0)
+		if (cards.length == 5) {
+			/*await this.riverDeck.addCards(cards, {
+						initialSide: 'back',
+						finalSide: 'back',
+						animationsActive: false
+					})*/
+			await this.river.removeAll({})
+			//await this.animationManager.base.wait(2000)
+			await this.riverDeck.shuffle({animatedCardsMax:20, pauseDelayAfterAnimation: 5000})
+			await this.river.addCards(cards, { bump: 1 })
+			return await this.riverDeck.addCard(notif.newTopCard, { animationsActive: false })
+		} else {
+			await this.riverDeck.addCard(card, {
+				initialSide: 'back',
+				finalSide: 'back',
+				animationsActive: false
+			})
+			await this.riverDeck.flipCard(card, {})
+			await this.river.addCard(card, { bump: 1 })
+			return await this.riverDeck.addCard(notif.newTopCard, { animationsActive: false })
+		}
 	}
 
 	notif_materialMove(notif: NotifMaterialMove) {
@@ -620,27 +648,13 @@ export class Game extends BaseGame {
 					return Promise.all(cards.map((c) => this.addCardToHand(c, notif)))
 					break
 				case 'RIVER':
-					if (cards.length == 5) {
-						/*await this.riverDeck.addCards(cards, {
-						initialSide: 'back',
-						finalSide: 'back',
-						animationsActive: false
-					})*/
-						await this.river.removeAll()
-						await this.riverDeck.shuffle()
-						return await this.river.addCards(cards, { bump: 1 })
-					} else {
-						await this.riverDeck.addCard(card, {
-							initialSide: 'back',
-							finalSide: 'back',
-							animationsActive: false
-						})
-						await this.riverDeck.flipCard(card, {})
-						return await this.river.addCard(card, { bump: 1 })
-					}
+					console.error('should not be called anymore')
 					break
 				case 'DISCARD':
 					return await this.cardsManager.getCardStock(card)?.removeCards(cards, { fadeOut: true })
+					break
+				case 'DECK_TOP':
+					return await this.riverDeck.addCards(cards)
 					break
 				default:
 					console.error('Card move destination not handled', notif)
@@ -652,8 +666,8 @@ export class Game extends BaseGame {
 	async addCardToHand(card: QuorumCard, notif: NotifMaterialMove) {
 		if (card.isGod) {
 			await this.river.flipCard(card, {})
-			await this.animationManager.base.wait(1500)//let some time to see the card
-			return await this.playerTables[notif.toArg].handStock.addCard(card)
+			await this.animationManager.base.wait(1500) //let some time to see the card
+			return await this.playerTables[notif.toArg].handStock.addCard(card, {})
 		} else {
 			if (notif.toArg == this.getPlayerId() && !this.cardsManager.isCardVisible(card)) {
 				//nothing to do, my card has already been revealed and move privatly in another notif

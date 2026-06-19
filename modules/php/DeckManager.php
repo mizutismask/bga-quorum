@@ -505,23 +505,28 @@ class DeckManager {
     }
 
 
-    public function replaceRiver() {
+    public function replaceRiver(bool $notify = true) {
         $oldCards = $this->getRiverCards();
         $this->deck->moveCards($this->game->getIds($oldCards), "discard");
-        $this->game->notify->all('materialMove', "", [
-            'type' => $this->materialType,
-            'from' => Constants::MATERIAL_LOCATION_RIVER,
-            'to' => Constants::MATERIAL_LOCATION_DISCARD,
-            'material' => $oldCards,
-        ]);
+        if ($notify) {
+            $this->game->notify->all('materialMove', "", [
+                'type' => $this->materialType,
+                'from' => Constants::MATERIAL_LOCATION_RIVER,
+                'to' => Constants::MATERIAL_LOCATION_DISCARD,
+                'material' => $oldCards,
+            ]);
+        }
 
         $this->initRiver(count($oldCards));
-        $this->game->notify->all('materialMove', "", [
-            'type' => $this->materialType,
-            'from' => Constants::MATERIAL_LOCATION_DECK,
-            'to' => Constants::MATERIAL_LOCATION_RIVER,
-            'material' => $this->getRiverCards(),
-        ]);
+        if ($notify) {
+
+            $this->game->notify->all('materialMove', "", [
+                'type' => $this->materialType,
+                'from' => Constants::MATERIAL_LOCATION_DECK,
+                'to' => Constants::MATERIAL_LOCATION_RIVER,
+                'material' => $this->getRiverCards(),
+            ]);
+        }
     }
 
     /**

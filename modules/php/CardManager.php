@@ -28,12 +28,12 @@ class CardManager extends DeckManager {
 
     public function refillRiver() {
         $newCard = $this->castSingle($this->deck->pickCardForLocation('deck', 'river'));
-
-        $this->game->notify->all('materialMove', "", [
+        $this->game->notify->all('riverChange', "", [
             'type' => Constants::MATERIAL_TYPE_CARD,
             'from' => Constants::MATERIAL_LOCATION_DECK,
             'to' => Constants::MATERIAL_LOCATION_RIVER,
             'material' => [$newCard->isGod ? QuorumCard::stripSecretInfo($newCard) : $newCard],
+            "newTopCard" => QuorumCard::stripSecretInfo($this->game->cardManager->getTopOfLocation("deck"))
         ]);
     }
 

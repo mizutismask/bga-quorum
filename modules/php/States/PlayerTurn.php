@@ -10,6 +10,7 @@ use Bga\GameFramework\States\GameState;
 use Bga\GameFramework\States\PossibleAction;
 use Bga\GameFramework\UserException;
 use Bga\Games\Quorum\Game;
+use Bga\Games\Quorum\Objects\QuorumCard;
 use Constants;
 
 class PlayerTurn extends GameState {
@@ -61,6 +62,7 @@ class PlayerTurn extends GameState {
             $this->game->cardManager->moveCardToPlayerHand($cardId, $activePlayerId, true, "");
         }
         $this->game->cardManager->refillRiver();
+        //$this->notify->all('materialMove', "", [ 'type' => Constants::MATERIAL_TYPE_CARD, 'from' => Constants::MATERIAL_LOCATION_DECK, 'to' => Constants::MATERIAL_LOCATION_TOP_OF_DECK, 'material' => [QuorumCard::stripSecretInfo($this->game->cardManager->getTopOfLocation("deck"))]]);
         return $nextState;
     }
 
@@ -114,7 +116,7 @@ class PlayerTurn extends GameState {
     #[PossibleAction]
     public function actResetRiver(int $activePlayerId) {
         $river = $this->game->cardManager->getRiverCards();
-        $this->game->cardManager->replaceRiver();
+        $this->game->cardManager->replaceRiver(false);
         //put the old river cards back in the deck and shuffle
         foreach ($river as $card) {
             $this->game->cardManager->moveCardToLocation($card, "deck", 0, false);
@@ -122,6 +124,14 @@ class PlayerTurn extends GameState {
         $this->game->cardManager->shuffle();
 
         $this->globals->set(Constants::GLBL_DID_RESET_RIVER, true);
+
+        $this->game->notify->all('riverChange', "", [
+            'type' => Constants::MATERIAL_TYPE_CARD,
+            'from' => Constants::MATERIAL_LOCATION_DECK,
+            'to' => Constants::MATERIAL_LOCATION_RIVER,
+            'material' => $this->game->cardManager->getRiverCards(),
+            "newTopCard" => QuorumCard::stripSecretInfo($this->game->cardManager->getTopOfLocation("deck"))
+        ]);
         return PlayerTurn::class;
     }
 
