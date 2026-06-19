@@ -274,6 +274,10 @@
 .player-board {
   color: rgb(64, 64, 64);
 }
+.player-board .player-name,
+.player-board .player-name a {
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
 .player-board .fa-star {
   color: rgb(64, 64, 64);
 }
