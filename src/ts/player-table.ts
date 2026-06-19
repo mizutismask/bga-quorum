@@ -36,7 +36,7 @@ export class PlayerTable {
 	}
 
 	private initHand(player: QuorumPlayer, cards: QuorumCard[] = []) {
-		this.handStock = new BgaCards.LineStock<QuorumCard>(this.game.cardsManager, $('hand-' + player.id), {wrap:"nowrap"})
+		this.handStock = new BgaCards.LineStock<QuorumCard>(this.game.cardsManager, $('hand-' + player.id), {wrap:"nowrap", sort: BgaCards.sort('province', "influence")})
 		//this.handStock.setSelectionMode('single')
 		if (cards) {
 			this.handStock.addCards(cards)
