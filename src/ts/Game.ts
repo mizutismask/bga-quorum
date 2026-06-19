@@ -153,6 +153,8 @@ export class Game extends BaseGame {
 				<div class="ghost-tooltip">
 					<img src="${this.bga.images.getImgUrl('roundLayout.jpg')}"</img>
 					<div>${_('Provinces are laid out in circle')}</div>
+					<br/>
+					<div style="font-size: 0.8em">${_('(You can hide this in the preferences menu on the top right corner)')}</div>
 				</div>`
 				)
 			})
