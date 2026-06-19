@@ -19,7 +19,7 @@ export class PlayerTable {
 		const isMyTable = Number(player.id) === game.getPlayerId()
 		const ownClass = isMyTable ? 'own' : ''
 		let html = `
-		<div id="player-table-${player.id}" class="player-order${player.playerNo} player-table ${ownClass}">
+		<div id="player-table-${player.id}" class="whiteblock player-order${player.playerNo} player-table ${ownClass}">
 				<a id="anchor-player-${player.id}"></a>
 				<span class="player-name" style="color:#${player.color}">${player.name}</span>
             </div>
