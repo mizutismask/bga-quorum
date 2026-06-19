@@ -1042,6 +1042,15 @@ html {
   background-position: 100% 0%;
 }
 
+.ghost-tooltip img {
+  width: 200px;
+  aspect-ratio: 1;
+  padding-bottom: 5px;
+}
+.ghost-tooltip {
+  text-align: center;
+}
+
 .quorum-card-front .province-icon {
   background-image: url("img/card-provinces-logos.png");
   position: absolute;

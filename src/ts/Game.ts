@@ -139,11 +139,23 @@ export class Game extends BaseGame {
 
 	private setupTooltips() {
 		this.setTooltipToClass('province-counters', _('The rank and value you reached for each province'))
-		this.setTooltipToClass('ghost-province', _('Provinces are laid out in circle'))
 		this.setTooltipToClass(
 			'province-token-slot',
 			_('The influence of that province, will be used as a base multiplier according to your rank')
 		)
+
+		$('board')
+			.querySelectorAll<HTMLElement>('.ghost-province')
+			.forEach((element) => {
+				this.setTooltip(
+					element.id,
+					`
+				<div class="ghost-tooltip">
+					<img src="${this.bga.images.getImgUrl('roundLayout.jpg')}"</img>
+					<div>${_('Provinces are laid out in circle')}</div>
+				</div>`
+				)
+			})
 	}
 
 	private setupPlayer(player: QuorumPlayer) {
@@ -603,7 +615,7 @@ export class Game extends BaseGame {
 					})*/
 			await this.river.removeAll({})
 			//await this.animationManager.base.wait(2000)
-			await this.riverDeck.shuffle({animatedCardsMax:20, pauseDelayAfterAnimation: 5000})
+			await this.riverDeck.shuffle({ animatedCardsMax: 20, pauseDelayAfterAnimation: 5000 })
 			await this.river.addCards(cards, { bump: 1 })
 			return await this.riverDeck.addCard(notif.newTopCard, { animationsActive: false })
 		} else {

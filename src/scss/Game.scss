@@ -50,6 +50,14 @@ html {
 	}
 }
 
+.ghost-tooltip{
+	img{
+		width: 200px;
+		aspect-ratio: 1;
+		padding-bottom: 5px;
+	}
+	text-align: center;
+}
 .quorum-card-front {
 	.province-icon {
 		background-image: url('img/card-provinces-logos.png');
