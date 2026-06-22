@@ -35,14 +35,15 @@ export class GodEffect {
 
 						const previousSlot = slots[(index - 1 + slots.length) % slots.length]
 						const nextSlot = slots[(index + 1) % slots.length]
-
+						const previousToken = previousSlot.querySelector<HTMLElement>('[data-value]')
 						this.addInfluenceEffect(
-							previousSlot.querySelector<HTMLElement>('[data-value]'),
-							Math.max(1, Math.min(4, Number(token.dataset.value) + Number(args.leftEffect)))
+							previousToken,
+							Math.max(1, Math.min(4, Number(previousToken.dataset.value) + Number(args.leftEffect)))
 						)
+						const nextToken = nextSlot.querySelector<HTMLElement>('[data-value]')
 						this.addInfluenceEffect(
-							nextSlot.querySelector<HTMLElement>('[data-value]'),
-							Math.max(1, Math.min(4, Number(token.dataset.value) + Number(args.rightEffect)))
+							nextToken,
+							Math.max(1, Math.min(4, Number(nextToken.dataset.value) + Number(args.rightEffect)))
 						)
 					}
 
@@ -76,7 +77,7 @@ export class GodEffect {
 		tooltip.style.width = `${rect.width}px`
 		tooltip.style.height = `${rect.height}px`
 		tooltip.style.pointerEvents = 'none'
-		tooltip.style.filter = 'brightness(0.7) saturate(0.9)'//'grayscale(70%) brightness(1.15)'
+		tooltip.style.filter = 'brightness(0.7) saturate(0.9)' //'grayscale(70%) brightness(1.15)'
 
 		document.body.appendChild(tooltip)
 	}
