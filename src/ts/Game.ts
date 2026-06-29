@@ -570,7 +570,7 @@ export class Game extends BaseGame {
 		//
 
 		const notifs = [
-			['score', ANIMATION_MS],
+			['scoreDetail', ANIMATION_MS],
 			['highlightWinnerScore', ANIMATION_MS],
 			['materialMove', ANIMATION_MS],
 			['riverChange', ANIMATION_MS],
@@ -602,7 +602,7 @@ export class Game extends BaseGame {
 	 * Updates a total or subtotal
 	 * @param notif
 	 */
-	notif_score(notif: NotifScoreArgs) {
+	notif_scoreDetail(notif: NotifScoreArgs) {
 		this.scoreBoard.updateScore(notif.playerId, notif.scoreType, notif.score)
 	}
 
