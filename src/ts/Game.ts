@@ -637,11 +637,9 @@ export class Game extends BaseGame {
 		switch (notif.type) {
 			case 'CARD':
 				const cards = notif.material as Array<QuorumCard>
-				this.notif_cardMove(cards, notif)
-				break
+				return this.notif_cardMove(cards, notif)
 			case 'TOKEN':
-				this.notif_tokenMove(notif.material as Array<Token>, notif)
-				break
+				return this.notif_tokenMove(notif.material as Array<Token>, notif)
 			default:
 				console.error('Material type move not handled', notif)
 				break
@@ -661,16 +659,12 @@ export class Game extends BaseGame {
 			switch (notif.to) {
 				case 'HAND':
 					return Promise.all(cards.map((c) => this.addCardToHand(c, notif)))
-					break
 				case 'RIVER':
 					console.error('should not be called anymore')
-					break
 				case 'DISCARD':
 					return await this.cardsManager.getCardStock(card)?.removeCards(cards, { fadeOut: true })
-					break
 				case 'DECK_TOP':
 					return await this.riverDeck.addCards(cards)
-					break
 				default:
 					console.error('Card move destination not handled', notif)
 					break
