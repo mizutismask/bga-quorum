@@ -41,7 +41,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $this->game->cardManager->sortPlayedCards();
         $this->scorePoints();
         $this->scoreTieBreaker();
-        
+
         foreach ($this->game->getWinners() as $playerId) {
             $this->notify->all('highlightWinnerScore', '', [
                 'playerId' => $playerId,
@@ -66,8 +66,9 @@ class EndScore extends \Bga\GameFramework\States\GameState {
             $playedCards[$playerId] = $this->game->cardManager->getCardsInLocation("played-$playerId");
         }
 
+        $this->game->notify->all("simplePause", "", ["time" => 600]);
         $provinceTotalByPlayer = array_fill_keys(array_keys($this->game->getPlayers()), 0);
-        foreach (Constants::ALL_PROVINCES as $province) {
+        foreach ($this->globals->get(Constants::GLBL_ORDERED_PROVINCES) as $province) { //in the order of this game
             foreach ($players as $playerId => $player) {
                 $total = $this->scoreProvince($playerId, $province,  $playedCards[$playerId]);
                 $provinceTotalByPlayer[$playerId] += $total;
@@ -82,15 +83,17 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                 "scoreType" => "total"
             ]);
         }
+        $this->game->notify->all("simplePause", "", ["time" => 1200]);
 
         $typeTotalByPlayer = array_fill_keys(array_keys($this->game->getPlayers()), 0);
-        foreach ([Constants::CARD_TYPE_MILITARY, Constants::CARD_TYPE_TRADE, Constants::CARD_TYPE_ARCHITECTURE, Constants::CARD_TYPE_INTRIGUE] as $scoringType) {
+        foreach ([Constants::CARD_TYPE_MILITARY, Constants::CARD_TYPE_INTRIGUE, Constants::CARD_TYPE_ARCHITECTURE, Constants::CARD_TYPE_TRADE] as $scoringType) {
             $total = $this->scoreCardType($scoringType, $playedCards);
             foreach ($players as $p => $player) {
                 $typeTotalByPlayer[$p] += $total[$p];
             }
         }
         foreach ($players as $playerId => $player) {
+            //no async here, to show all totals at once
             $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $typeTotalByPlayer[$playerId], "scoreType" => "type-total"]);
             $this->game->globals->set(
                 "score-$playerId-type-total",
@@ -187,7 +190,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $rank, "scoreType" => "province-$province-rank"]);
         $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"]);
         $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $multiplier, "scoreType" => "province-$province-influence"]);
-        $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]);
+        $this->game->notify->all("scoreDetailTotal", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "province-$province-total"]);
         $this->game->globals->set("score-$playerId-province-$province", [
             ["playerId" => $playerId, "score" => $rank, "scoreType" => "province-$province-rank"],
             ["playerId" => $playerId, "score" => $cardsCount, "scoreType" => "province-$province-cards"],
@@ -198,7 +201,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
 
     private function notifyCardTypeScore(int $playerId, int $type, int $score, string $computation) {
         $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $computation, "scoreType" => "type-$type-computation"]);
-        $this->game->notify->all("scoreDetail", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"]);
+        $this->game->notify->all("scoreDetailTotal", "", ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"]);
         $this->game->globals->set("score-$playerId-type-$type", [
             ["playerId" => $playerId, "score" => $computation, "scoreType" => "type-$type-computation"],
             ["playerId" => $playerId, "score" => $score, "scoreType" => "type-$type-total"],

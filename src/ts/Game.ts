@@ -569,25 +569,28 @@ export class Game extends BaseGame {
 		// this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
 		//
 
-		const notifs = [
-			['scoreDetail', ANIMATION_MS],
-			['highlightWinnerScore', ANIMATION_MS],
-			['materialMove', ANIMATION_MS],
-			['riverChange', ANIMATION_MS],
-			['lastTurn', 1],
-			['setTableCounter', ANIMATION_MS * 3],
-			['importantMessage', 3000]
+		const manualNotifs = [
+			{ name: 'scoreDetailTotal', duration: ANIMATION_MS * 2 },
+			{ name: 'importantMessage', duration: 3000 },
+			{ name: 'setTableCounter', duration: ANIMATION_MS * 3 }
 		]
+		this.bga.notifications.setupPromiseNotifications({
+			minDuration: ANIMATION_MS,
+			//minDurationNoText: ANIMATION_MS,
+			logger: log,
+			ignoreNotifications: manualNotifs.map((notif) => notif.name)
+		})
 
-		notifs.forEach((notif) => {
-			dojo.subscribe(notif[0], this, (notifDetails: Notif<any>) => {
-				log(`notif_${notif[0]}`, notifDetails.args)
+		manualNotifs.forEach(({ name, duration }) => {
+			dojo.subscribe(name, this, (notifDetails: Notif<any>) => {
+				log(`notif_${name}`, notifDetails.args)
 
-				const promise = this[`notif_${notif[0]}`](notifDetails.args)
+				const promise = this[`notif_${name}`](notifDetails.args)
 
 				// tell the UI notification ends, if the function returned a promise
-				promise?.then(() => (this as any).notifqueue?.onSynchronousNotificationEnd())
+				promise?.then(() => (this as any).bga.gameui.notifqueue.onSynchronousNotificationEnd())
 			})
+			;(this as any).bga.gameui.notifqueue.setSynchronous(name, duration)
 		})
 	}
 
@@ -604,6 +607,9 @@ export class Game extends BaseGame {
 	 */
 	notif_scoreDetail(notif: NotifScoreArgs) {
 		this.scoreBoard.updateScore(notif.playerId, notif.scoreType, notif.score)
+	}
+	notif_scoreDetailTotal(notif: NotifScoreArgs) {
+		this.notif_scoreDetail(notif)
 	}
 
 	async notif_riverChange(notif: NotifRiverChange) {
