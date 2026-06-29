@@ -8,7 +8,7 @@
 		},
 		"game_rank_1": {
 			"id": 12,
-			"name": "Provinces rank 1",
+			"name": "Rank 1 provinces",
 			"type": "int"
 		},
 		"game_influence_max": {
