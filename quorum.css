@@ -830,6 +830,22 @@
 #board .province .province-slots .province-slot.slot-0 .token {
   position: relative;
 }
+#board .province .province-slots .province-slot.slot-0 .token[data-player-order="1"] {
+  grid-row: 1;
+  grid-column: 1;
+}
+#board .province .province-slots .province-slot.slot-0 .token[data-player-order="2"] {
+  grid-row: 1;
+  grid-column: 2;
+}
+#board .province .province-slots .province-slot.slot-0 .token[data-player-order="3"] {
+  grid-row: 2;
+  grid-column: 1;
+}
+#board .province .province-slots .province-slot.slot-0 .token[data-player-order="4"] {
+  grid-row: 2;
+  grid-column: 2;
+}
 #board .province .province-slots .province-slot.slot-0 .token:hover {
   opacity: 1;
 }

@@ -177,6 +177,7 @@ export class Game extends BaseGame {
 			tokenDiv.id = `token-${t.type}-${t.type_arg}`
 			tokenDiv.classList.add('token', 'token-' + t.type)
 			tokenDiv.dataset.color = '' + player.color
+			tokenDiv.dataset.playerOrder = '' + player.playerNo
 			tokenDiv.title = player.name
 			const dest = document.querySelector<HTMLElement>(`#province-${t.type} .slot-${t.location}`)
 			dest.appendChild(tokenDiv)

@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use 'GameVars' as vars;
 
 .hide-province-miniatures {
@@ -162,6 +163,18 @@
 					.token {
 						//width: 50%;
 						position: relative;
+						@for $player-order from 1 through 4 {
+							&[data-player-order='#{$player-order}'] {
+								grid-row: math.ceil(math.div($player-order, 2));
+
+								@if $player-order % 2 == 1 {
+									grid-column: 1;
+								} @else {
+									grid-column: 2;
+								}
+							}
+						}
+
 						&:hover {
 							opacity: 1;
 						}
