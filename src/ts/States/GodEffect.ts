@@ -90,6 +90,7 @@ export class GodEffect {
 	 * This method is called each time we are leaving the game state. You can use this method to perform some user interface changes at this moment.
 	 */
 	onLeavingState(args: GodEffectArgs, isCurrentPlayerActive: boolean) {
+		Utils.removeClass('province-enabled', $('board'))
 		this.listeners.forEach(({ element, enter, leave }) => {
 			element.removeEventListener('mouseenter', enter)
 			element.removeEventListener('mouseleave', leave)
