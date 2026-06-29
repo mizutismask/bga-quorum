@@ -130,7 +130,7 @@ class PlayerTurn extends GameState {
             'type' => Constants::MATERIAL_TYPE_CARD,
             'from' => Constants::MATERIAL_LOCATION_DECK,
             'to' => Constants::MATERIAL_LOCATION_RIVER,
-            'material' => $this->game->cardManager->getRiverCards(),
+            'material' => $this->game->cardManager->getPublicRiverCards(),
             "newTopCard" => QuorumCard::stripSecretInfo($this->game->cardManager->getTopOfLocation("deck"))
         ]);
         return PlayerTurn::class;

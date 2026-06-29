@@ -610,15 +610,10 @@ export class Game extends BaseGame {
 		const cards = notif.material as Array<QuorumCard>
 		const card = cards.at(0)
 		if (cards.length == 5) {
-			/*await this.riverDeck.addCards(cards, {
-						initialSide: 'back',
-						finalSide: 'back',
-						animationsActive: false
-					})*/
 			await this.river.removeAll({})
 			//await this.animationManager.base.wait(2000)
-			await this.riverDeck.shuffle({ animatedCardsMax: 20, pauseDelayAfterAnimation: 5000 })
 			await this.river.addCards(cards, { bump: 1 })
+			await this.riverDeck.shuffle({ animatedCardsMax: 20, pauseDelayAfterAnimation: 50 })
 			return await this.riverDeck.addCard(notif.newTopCard, { animationsActive: false })
 		} else {
 			await this.riverDeck.addCard(card, {
