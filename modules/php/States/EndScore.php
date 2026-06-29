@@ -40,8 +40,15 @@ class EndScore extends \Bga\GameFramework\States\GameState {
         // Here, we would compute scores if they are not updated live, and compute average statistics
         $this->game->cardManager->sortPlayedCards();
         $this->scorePoints();
-        $this->setStats();
         $this->scoreTieBreaker();
+        
+        foreach ($this->game->getWinners() as $playerId) {
+            $this->notify->all('highlightWinnerScore', '', [
+                'playerId' => $playerId,
+            ]);
+        }
+
+        $this->setStats();
 
         if ($this->game->isStudio()) {
             $this->game->stMakeEveryoneActive();
@@ -172,7 +179,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
                     break;
             }
         }
-        $this->playerStats->set("game_province_".$province."_score", $score, $playerId);
+        $this->playerStats->set("game_province_" . $province . "_score", $score, $playerId);
         return $score;
     }
 
@@ -223,7 +230,7 @@ class EndScore extends \Bga\GameFramework\States\GameState {
             }
         }
         foreach ($scores as $playerId => $score) {
-            $this->playerStats->set("game_".$scoringType."_score", $score, $playerId);
+            $this->playerStats->set("game_" . $scoringType . "_score", $score, $playerId);
         }
         return $scores;
     }

@@ -9,7 +9,7 @@ import { QuorumCard, QuorumGame, QuorumPlayer } from './types'
 export class Board {
 	private handStock: LineStock<QuorumCard> | null = null
 	private provinces: Province[] = []
-	
+
 	constructor(
 		private game: QuorumGame,
 		orderedProvinces: number[]
@@ -19,7 +19,7 @@ export class Board {
 			...orderedProvinces,
 			orderedProvinces[0]
 		]
-		
+
 		provincesWithGhosts.forEach((color, index) => {
 			if (index === 0) {
 				$('board').insertAdjacentHTML(
@@ -37,20 +37,22 @@ export class Board {
 				)
 			} else {
 				const province = new Province(this.game, color)
-                this.provinces[color] = province
-                if(index === 1) {
-					$(`province-${color}`).insertAdjacentHTML("beforeend",
-                        `<div class="province-arrow fa fa-chevron-left">`
-                    )
-                }else if(index === provincesWithGhosts.length - 2) {
-					$(`province-${color}`).insertAdjacentHTML("beforeend",
-                        `<div class="province-arrow province-arrow-right fa fa-chevron-right">`
-                    )
-                }
+				this.provinces[color] = province
+				if (index === 1) {
+					$(`province-${color}`).insertAdjacentHTML(
+						'beforeend',
+						`<div class="province-arrow fa fa-chevron-left">`
+					)
+				} else if (index === provincesWithGhosts.length - 2) {
+					$(`province-${color}`).insertAdjacentHTML(
+						'beforeend',
+						`<div class="province-arrow province-arrow-right fa fa-chevron-right">`
+					)
+				}
 			}
 		})
 	}
-	setInfluenceToken(nation: number, value: number,animate: boolean = true) {
+	setInfluenceToken(nation: number, value: number, animate: boolean = true) {
 		return this.provinces[nation].setInfluenceToken(value, animate)
 	}
 }

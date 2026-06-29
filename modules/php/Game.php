@@ -263,13 +263,7 @@ class Game extends \Bga\GameFramework\Table {
                 $result['scoreProvinceDetails'][] = $this->globals->get("score-$playerId-type-total");
             }
 
-            $maxScore = $this->playerScore->getMax();
-            $result['winners'] = array_keys(array_filter($result['players'], fn($player) => intval($player['score'] == $maxScore)));
-            if (count($result['winners']) > 1) {
-                $tieWinners =  array_filter($result['players'], fn($player) => in_array($player["id"], $result['winners']));
-                $maxScore = max(array_map(fn($player) => intval($player['scoreAux']), $tieWinners));
-                $result['winners'] = array_keys(array_filter($tieWinners, fn($player) => intval($player['scoreAux'] == $maxScore)));
-            }
+            $result['winners'] = $this->getWinners();
         } else {
             $result['lastTurn'] = $this->globals->get(Constants::LAST_TURN) > 0;
         }
@@ -298,6 +292,16 @@ class Game extends \Bga\GameFramework\Table {
 
     function getGameVersion(): int {
         return $this->bga->tableOptions->get(300);
+    }
+
+    function getWinners() {
+        $max = $this->playerScore->getMax();
+        $winners =  array_filter($this->playerScore->getAll(), fn($score) => $score == $max);
+        if (count($winners) > 1) {
+            $max = $this->playerScoreAux->getMax();
+            $winners =  array_filter($winners, fn($score) => $score == $max);
+        }
+        return array_keys($winners);
     }
 
     //////////////////////////////////////////////////////////////////////////////

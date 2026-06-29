@@ -630,7 +630,7 @@
   transition: color 0.5s ease-in-out;
 }
 #score-tables .score-number.animatedScore {
-  color: red !important;
+  color: rgb(195, 193, 193) !important;
   /*animation:  grow-then-shrink-animation 3s ;*/
 }
 

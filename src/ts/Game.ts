@@ -724,7 +724,7 @@ export class Game extends BaseGame {
 	/**
 	 * Highlight winner for end score.
 	 */
-	notif_highlightWinnerScore(notif: Notif<NotifWinnerArgs>) {
-		this.scoreBoard?.highlightWinnerScore(notif.args.playerId)
+	notif_highlightWinnerScore(notif: NotifWinnerArgs) {
+		this.scoreBoard?.highlightWinnerScore(notif.playerId)
 	}
 }

@@ -49,14 +49,14 @@ export class ScoreBoard {
 											<td id="province-${province}-rank-${playerId}"></td>
 											<td id="province-${province}-influence-${playerId}"></td>
 											<td id="province-${province}-cards-${playerId}"></td>
-											<td id="province-${province}-total-${playerId}"></td>
+											<td id="province-${province}-total-${playerId}" class="score-number"></td>
 										</tr>
 									`
 								)
 								.join('')}
 							<tr>
 								<td colspan="4">${_('Total')}</td>
-								<td id="total-${playerId}"></td>
+								<td id="total-${playerId}" class="score-number"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -66,7 +66,7 @@ export class ScoreBoard {
 							<tr>
 								<th></th>
 								<th></th>
-								<th>${_('Total')}</th>
+								<th class="score-number">${_('Total')}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -77,13 +77,13 @@ export class ScoreBoard {
 											${this.game.getScoringTypeName(type)}
 										</td>
 										<td id="type-${type}-computation-${playerId}"></td>
-										<td id="type-${type}-total-${playerId}"></td>
+										<td id="type-${type}-total-${playerId}" class="score-number"></td>
 									</tr>
 								`
 							).join('')}
 							<tr>
 								<td colspan="2">${_('Total')}</td>
-								<td id="type-total-${playerId}"></td>
+								<td id="type-total-${playerId}" class="score-number"></td>
 							</tr>
 						</tbody>
 					</table>
