@@ -252,6 +252,7 @@ class Game extends \Bga\GameFramework\Table {
                     }
                 }
                 $result['scoreProvinceDetails'][] = $this->globals->get("score-$playerId-province-total");
+                
                 foreach ([Constants::CARD_TYPE_MILITARY, Constants::CARD_TYPE_TRADE, Constants::CARD_TYPE_ARCHITECTURE, Constants::CARD_TYPE_INTRIGUE] as $type) {
                     $details = $this->globals->get("score-$playerId-type-$type");
                     if ($details) {
