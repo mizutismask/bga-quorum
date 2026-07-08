@@ -180,46 +180,47 @@
 						}
 					}
 				}
+				&:not(.slot-0) {
+					&[data-child-count='2'] {
+						.token:nth-child(1) {
+							transform: translateX(0%);
+						}
 
-				&[data-child-count='2'] {
-					.token:nth-child(1) {
-						transform: translateX(0%);
+						.token:nth-child(2) {
+							transform: translateX(-45%);
+						}
 					}
 
-					.token:nth-child(2) {
-						transform: translateX(-45%);
-					}
-				}
+					&[data-child-count='3'] {
+						.token:nth-child(1) {
+							transform: translateX(0%);
+						}
 
-				&[data-child-count='3'] {
-					.token:nth-child(1) {
-						transform: translateX(0%);
-					}
+						.token:nth-child(2) {
+							transform: translateX(-35%);
+						}
 
-					.token:nth-child(2) {
-						transform: translateX(-35%);
-					}
-
-					.token:nth-child(3) {
-						transform: translateX(-70%);
-					}
-				}
-
-				&[data-child-count='4'] {
-					.token:nth-child(1) {
-						transform: translateX(0%);
+						.token:nth-child(3) {
+							transform: translateX(-70%);
+						}
 					}
 
-					.token:nth-child(2) {
-						transform: translateX(-25%);
-					}
+					&[data-child-count='4'] {
+						.token:nth-child(1) {
+							transform: translateX(0%);
+						}
 
-					.token:nth-child(3) {
-						transform: translateX(-50%);
-					}
+						.token:nth-child(2) {
+							transform: translateX(-25%);
+						}
 
-					.token:nth-child(4) {
-						transform: translateX(-75%);
+						.token:nth-child(3) {
+							transform: translateX(-50%);
+						}
+
+						.token:nth-child(4) {
+							transform: translateX(-75%);
+						}
 					}
 				}
 			}
