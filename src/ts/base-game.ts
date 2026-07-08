@@ -278,7 +278,7 @@ export abstract class BaseGame {
 
 	public toggleActionButtonVisibility(buttonId: string, visible: boolean) {
 		if ($(buttonId)) {
-			dojo.toggleClass(buttonId, 'hidden-important', !visible)
+			dojo.toggleClass(buttonId, 'hidden', !visible)
 		}
 	}
 
