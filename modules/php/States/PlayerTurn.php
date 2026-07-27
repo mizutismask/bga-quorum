@@ -37,7 +37,7 @@ class PlayerTurn extends GameState {
         // Get some values from the current game situation from the database.
         return [
             "canTakeCard" => !$this->globals->get(Constants::GLBL_TOOK_CARD),
-            "canResetRiver" => !$this->globals->get(Constants::GLBL_DID_RESET_RIVER) && $this->game->cardManager->riverContainsEnoughGods(),
+            "canResetRiver" => !$this->globals->get(Constants::GLBL_TOOK_CARD) && !$this->globals->get(Constants::GLBL_DID_RESET_RIVER) && $this->game->cardManager->riverContainsEnoughGods(),
             "selectableRiverCards" => $this->getSelectableRiverCards($activePlayerId),
             "selectableHandCards" => $this->getSelectableHandCards($activePlayerId),
         ];
