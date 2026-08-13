@@ -5,11 +5,11 @@
 @use 'end-score';
 @use 'player-table';
 @use 'board';
-@use '../../node_modules/bga-help/bga-help';
+@use '../ts/libs/help-manager/bga-help';
 @use 'GameVars' as vars;
 
 $BASE_CARD_WIDTH: 246;
-$BASE_CARD_HEIGHT: 344;
+$BASE_CARD_HEIGHT: 344; 
 $cardSizeModifier: 0.5;
 $CARD_WIDTH: calc(#{$BASE_CARD_WIDTH}px * $cardSizeModifier); //also change in stock-utils.ts
 $CARD_HEIGHT: calc(#{$BASE_CARD_HEIGHT}px * $cardSizeModifier);

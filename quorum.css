@@ -959,7 +959,6 @@ html[data-theme=dark] #score-tables table {
   height: 50px;
   border-radius: 25px;
 }
-
 .bga-help_expandable-button .bga-help_folded-content {
   grid-row: 1;
   grid-column: 1;
@@ -967,23 +966,19 @@ html[data-theme=dark] #score-tables table {
   width: 50px;
   height: 50px;
 }
-
 .bga-help_expandable-button .bga-help_unfolded-content {
   grid-row: 1;
   grid-column: 1;
   opacity: 0;
 }
-
 .bga-help_expandable-button[data-folded=false] {
   width: var(--expanded-width);
   height: var(--expanded-height);
   border-radius: var(--expanded-radius);
 }
-
 .bga-help_expandable-button[data-folded=false] .bga-help_folded-content {
   opacity: 0;
 }
-
 .bga-help_expandable-button[data-folded=false] .bga-help_unfolded-content {
   opacity: 1;
 }

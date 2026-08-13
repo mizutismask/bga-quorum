@@ -20,6 +20,7 @@ import { PlayerTurn } from './States/PlayerTurn'
 import { NextPlayer } from './States/NextPlayer'
 import { Board } from './Board'
 import { GodEffect } from './States/GodEffect'
+import { BgaHelpPopinButton, HelpManager } from './libs/help-manager/help-manager'
 
 export const PROVINCE_NEUTRAL = 0
 export const PROVINCE_ASIA = 1
@@ -116,7 +117,7 @@ export class Game extends BaseGame {
 		this.createTokens()
 
 		this.setupTooltips()
-		//this.setupHelpPopin()
+		this.setupHelpPopin()
 
 		this.scoreBoard = new ScoreBoard(this, this.getPlayersInOrder(), this.gamedatas.orderedProvinces)
 		this.gamedatas.scoreProvinceDetails?.forEach(
@@ -281,22 +282,10 @@ export class Game extends BaseGame {
 		new HelpManager(this, {
 			buttons: [
 				new BgaHelpPopinButton({
-					title: _('Roles in play'),
+					title: _('Scoring card'),
 					html: this.getHelpHtml(),
 					buttonBackground: 'white',
 					buttonColor: '#266059'
-				}),
-				new BgaHelpExpandableButton({
-					unfoldedHtml: `<div id="player-help-visible-wrapper" >
-						<div id="player-help-visible" class="player-help-visible" style="margin: 5px;" data-player-color="${
-							this.getCurrentPlayer()?.color ?? 'fff'
-						}"></div>
-						</div>`,
-					//foldedHtml: `?`,
-					expandedWidth: '250px',
-					expandedHeight: '182px',
-					expandedRadius: '3%',
-					foldedContentExtraClasses: 'button-help-expandable'
 				})
 			]
 		})
