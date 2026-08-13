@@ -301,7 +301,7 @@ export class Game extends BaseGame {
 		new HelpManager(this, {
 			buttons: [
 				new BgaHelpPopinButton({
-					title: _('Scoring cards'),
+					title: _('Scoring helps'),
 					html: this.getHelpHtml(),
 					buttonBackground: 'white',
 					buttonColor: '#266059'
