@@ -20,5 +20,5 @@ montage `ls -v .` -background none -tile 6 -geometry 80x80+0+0 card-provinces-lo
 montage `ls -v .` -background none -tile 4 -geometry 70x70+0+0 influence-tokens.png
 
 
-mogrify -path ./cropped -crop 248x347+30+55 +repage -quality 100 *.jpg
-montage `ls -v .` -tile 10 -geometry +0+0 helpCards.jpg
+magick mogrify -path ./cropped -format png -crop 403x563+49+89 +repage -filter Lanczos -resize 340x476! -adaptive-sharpen 0x0.6 *.png
+magick montage `ls -v ./cropped/*.png` -background white -tile 10 -geometry +0+0 -sampling-factor 4:4:4 -quality 100 helpCards.jpg

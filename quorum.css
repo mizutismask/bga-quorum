@@ -1301,42 +1301,45 @@ svg {
   font-weight: bold;
 }
 
-#help-popin div {
+#help-dialog-content {
+  width: 355px;
+}
+#help-dialog-content #help-popin div {
   display: inline-block;
 }
-#help-popin .help-scoring-card {
-  width: 246px;
-  height: 344px;
+#help-dialog-content #help-popin .help-scoring-card {
+  width: 340px;
+  aspect-ratio: 248/347;
   background-image: url("img/helpCards.jpg");
   background-size: 1000% auto;
 }
-#help-popin #help-scoring-type {
+#help-dialog-content #help-popin #help-scoring-type {
   background-position: 0 0;
 }
-body[data-preferred-language=es] #help-popin #help-scoring-type {
+body[data-preferred-language=es] #help-dialog-content #help-popin #help-scoring-type {
   background-position: 22.2222222222% 0;
 }
-body[data-preferred-language=it] #help-popin #help-scoring-type {
+body[data-preferred-language=it] #help-dialog-content #help-popin #help-scoring-type {
   background-position: 44.4444444444% 0;
 }
-body[data-preferred-language=pt] #help-popin #help-scoring-type {
+body[data-preferred-language=pt] #help-dialog-content #help-popin #help-scoring-type {
   background-position: 66.6666666667% 0;
 }
-body[data-preferred-language=ca] #help-popin #help-scoring-type {
+body[data-preferred-language=ca] #help-dialog-content #help-popin #help-scoring-type {
   background-position: 88.8888888889% 0;
 }
-#help-popin #help-scoring-province {
+#help-dialog-content #help-popin #help-scoring-province {
   background-position: 11.1111111111% 0;
 }
-body[data-preferred-language=es] #help-popin #help-scoring-province {
+body[data-preferred-language=es] #help-dialog-content #help-popin #help-scoring-province {
   background-position: 33.3333333333% 0;
 }
-body[data-preferred-language=it] #help-popin #help-scoring-province {
+body[data-preferred-language=it] #help-dialog-content #help-popin #help-scoring-province {
   background-position: 55.5555555556% 0;
 }
-body[data-preferred-language=pt] #help-popin #help-scoring-province {
+body[data-preferred-language=pt] #help-dialog-content #help-popin #help-scoring-province {
   background-position: 77.7777777778% 0;
 }
-body[data-preferred-language=ca] #help-popin #help-scoring-province {
+body[data-preferred-language=ca] #help-dialog-content #help-popin #help-scoring-province {
   background-position: 100% 0;
 }
