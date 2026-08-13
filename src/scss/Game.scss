@@ -327,3 +327,34 @@ svg {
 	font-size: 28pt;
 	font-weight: bold;
 }
+
+#help-popin{
+	div{
+		display: inline-block;
+	}
+	.help-scoring-card{
+		width: 246px;
+		height: 344px;
+		background-image: url('img/helpCards.jpg');
+		background-size: 1000% auto;
+	}
+	#help-scoring-type{
+		background-position: 0 0;
+
+		@each $language, $card-index in ('es': 2, 'it': 4, 'pt': 6, 'ca': 8) {
+			body[data-preferred-language='#{$language}'] & {
+				background-position: calc($card-index * 100% / 9) 0;
+			}
+		}
+	}
+	#help-scoring-province{
+		background-position: calc(100% / 9) 0;
+
+		@each $language, $card-index in ('es': 3, 'it': 5, 'pt': 7, 'ca': 9) {
+			body[data-preferred-language='#{$language}'] & {
+				background-position: calc($card-index * 100% / 9) 0;
+			}
+		}
+	}
+	
+}

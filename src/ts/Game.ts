@@ -53,6 +53,8 @@ export const CARD_TYPE_ARCH_AQUEDUCT = 23
 export const CARD_TYPE_ARCH_COLISEUM = 24
 export const CARD_TYPE_ARCH_ARCH = 25
 
+const SUPPORTED_LANGUAGES = ['es', 'it', 'pt', 'ca'] //for help card language, plus EN obviously
+
 export class Game extends BaseGame {
 	public cardsManager!: CardsManager
 
@@ -65,6 +67,7 @@ export class Game extends BaseGame {
 	private board: Board
 	public river: LineStock<QuorumCard>
 	private riverDeck: Deck<QuorumCard>
+	private playersMetadataTries = 0
 
 	constructor(bga: Bga<QuorumPlayer, QuorumGamedatas>) {
 		super()
@@ -135,7 +138,23 @@ export class Game extends BaseGame {
 		this.setupNotifications()
 		BgaAutofit.init()
 
+		this.waitForPlayersMetadata()
+
 		log('Ending game setup')
+	}
+
+	private waitForPlayersMetadata(): void {
+		if (this.bga.gameui.players_metadata) {
+			document.body.dataset.preferredLanguage = this.bga.gameui.players_metadata[this.getPlayerId()].language
+			return
+		}
+
+		if (++this.playersMetadataTries >= 3) {
+			console.warn('players_metadata still null after 3 attempts, cards language is resolved to default')
+			return
+		}
+
+		setTimeout(() => this.waitForPlayersMetadata(), 500)
 	}
 
 	private setupTooltips() {
@@ -282,7 +301,7 @@ export class Game extends BaseGame {
 		new HelpManager(this, {
 			buttons: [
 				new BgaHelpPopinButton({
-					title: _('Scoring card'),
+					title: _('Scoring cards'),
 					html: this.getHelpHtml(),
 					buttonBackground: 'white',
 					buttonColor: '#266059'
@@ -293,13 +312,11 @@ export class Game extends BaseGame {
 
 	private getHelpHtml() {
 		let html = `
-			<div id="help-popin"> `
-		/*new Set(this.gamedatas.rolesInPlay).forEach((r) => {
-				html += this.getRoleHtml(r, this.gamedatas.rolesInPlay.filter((allR) => allR === r).length)
-				})*/
-		html += `
-				</div>
-				`
+			<div id="help-popin"> 
+				<div id="help-scoring-type" class="help-scoring-card"></div>
+				<div id="help-scoring-province" class="help-scoring-card"></div>
+			</div>`
+
 		return html
 	}
 
@@ -371,6 +388,10 @@ export class Game extends BaseGame {
 	///////////////////////////////////////////////////
 	//// Utility methods
 	///////////////////////////////////////////////////
+	public getSupportedLanguage() {
+		const lang = (this.bga.gameui as any).players_metadata?.[this.getPlayerId()]?.language ?? 'EN'
+		return SUPPORTED_LANGUAGES.includes(lang) ? lang.toUpperCase() : 'EN'
+	}
 
 	public getProvinceName(province: number): string {
 		switch (province) {
